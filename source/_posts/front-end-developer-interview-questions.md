@@ -29,7 +29,7 @@ tags: [Javascript]
   * 常用框架
   * 已掌握的mvc框架
   * javascript 高阶函数
-  * 对mvc及mvvc的理解
+  * 对mvc及mvvm的理解
   * Http协议
   * 前端常用优化技巧
   * 为哪些开源项目做出过贡献
