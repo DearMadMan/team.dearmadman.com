@@ -19,7 +19,6 @@ tags: [php, laravel]
 我们用代码来描述一下：
 
 ``` php
-
 class Boy {
   protected $girl;
   
@@ -48,7 +47,6 @@ $boy = new Boy($girl); // Right! So Happy!
 我们将上述代码修正一下我们初学时都写过的代码:
 
 ``` php
-
 class Boy {
   protected $girl;
 
@@ -66,7 +64,6 @@ class Boy {
 重生自己。。。扒开自己。。。把`Girl`扔了。。。把 `LoliGirl`塞进去。。。
 
 ``` php
-
 class LoliGirl {
 
 }
@@ -90,7 +87,6 @@ class Boy {
 好吧，我们让`Boy`强大一点：
 
 ``` php
-
 interface Girl {
   // Boy need knows that I have some abilities.
 }
@@ -143,7 +139,6 @@ $boy = new Boy($vixen);
 现在我们看文档给的例子应该就不难理解了:
 
 ``` php
-
 <?php
 
 namespace App\Jobs;
@@ -210,19 +205,16 @@ PHP实现的反射可以在官网文档中进行查看： **[反射API](http://p
 ##### Example
 
 ``` php
-
 $reflector = new ReflectionClass('App\User');
 
 if ($reflector->isInstantiable()) {
   $user = $refector->newInstance(); //in other case you can send any arguments
 }
-
 ```
 
 laravel的服务容器的`build`方法中需要通过`反射服务`来解析依赖关系，比如说`construct`函数中需要传递的依赖参数有哪些? 它就需要用到如下方法：
 
 ``` php
-
    $constructor = $reflector->getConstructor();
 
    // If there are no constructors, that means there are no dependencies then
@@ -235,7 +227,6 @@ laravel的服务容器的`build`方法中需要通过`反射服务`来解析依�
    }
 
    $dependencies = $constructor->getParameters();
-
 ```
 
 现在我们应该对laravel如何实现依赖的自动注入有点想法了吧？来整理一下疑问：
@@ -255,7 +246,6 @@ laravel的服务容器的`build`方法中需要通过`反射服务`来解析依�
 
 
 ``` php
-
 $container->bind('a', function () {
   return new B();  // just this for you
 });
