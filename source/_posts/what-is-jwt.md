@@ -42,7 +42,7 @@ tags: [php]
 
 ## JWT长什么样？
 
-JWT是由三段信息构成的，将这三段信息分别进行base64加密，然后用`.`链接一起就构成了Jwt字符串。就像这样:
+JWT是由三段信息文本构成的, 这三段信息文本用`.`链接一起就构成了Jwt字符串。就像这样:
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
