@@ -58,6 +58,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 jwt的头部承载两部分信息：
 * 声明类型，这里是jwt
 * 声明加密的算法 通常直接使用 HMAC SHA256
+
 完整的头部就像下面这样的JSON：
 ``` 
 {
