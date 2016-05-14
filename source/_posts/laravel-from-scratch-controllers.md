@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 控制器
+title: laravel 基础教程 —— 控制器
 date: 2016-05-02 08:49:43
 tags: [php, laravel]
 ---

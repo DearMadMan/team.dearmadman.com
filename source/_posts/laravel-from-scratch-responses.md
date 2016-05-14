@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 响应
+title: laravel 基础教程 —— 响应
 date: 2016-05-03 07:11:03
 tags: [php, laravel]
 ---

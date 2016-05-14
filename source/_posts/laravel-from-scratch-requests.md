@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 请求
+title: laravel 基础教程 —— 请求
 date: 2016-05-02 13:42:16
 tags: [php, laravel]
 ---

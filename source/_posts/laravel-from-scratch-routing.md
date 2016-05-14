@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 路由
+title: laravel 基础教程 —— 路由
 date: 2016-04-19 16:28:42
 tags: [php, laravel]
 ---

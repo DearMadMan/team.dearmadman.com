@@ -1,4 +1,4 @@
-title: 什么是JWT -- JSON WEB TOKEN
+title: 什么是 JWT -- JSON WEB TOKEN
 date: 2016-04-21 17:16:54
 tags: [php]
 ---

@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 安装
+title: laravel 基础教程 —— 安装
 date: 2016-04-18 14:51:26
 tags: [php, laravel]
 ---

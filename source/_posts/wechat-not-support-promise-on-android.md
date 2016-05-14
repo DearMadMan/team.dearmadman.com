@@ -1,4 +1,4 @@
-title: 安卓端微信浏览器不支持promise
+title: 安卓端微信浏览器不支持 promise
 date: 2016-03-31 11:55:26
 tags: [javascript]
 ---

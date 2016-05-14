@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 中间件 
+title: laravel 基础教程 —— 中间件 
 date: 2016-04-30 09:36:38
 tags: [php, laravel]
 ---

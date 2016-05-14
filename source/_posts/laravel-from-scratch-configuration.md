@@ -1,4 +1,4 @@
-title: laravel基础教程 —— 配置
+title: laravel 基础教程 —— 配置
 date: 2016-04-18 16:19:40
 tags: [php, laravel]
 ---
