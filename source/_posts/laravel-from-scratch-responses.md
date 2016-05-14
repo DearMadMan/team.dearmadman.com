@@ -178,7 +178,7 @@ return redirect()->route('login');
 return redirect()->route('profile', ['id' => 1]);
 ```
 
-如果你需要重定向的路由是使用`Eloquent`模型的`id`作为参数识别的路由,那么你可以直接在`route`方法中传递用户实例，它会在动被解析到id：
+如果你需要重定向的路由是使用`Eloquent`模型的`id`作为参数识别的路由,那么你可以直接在`route`方法中传递用户实例，它会自动被解析到id：
 
 ```php
 return redirect()->route('profile', [$user]);
