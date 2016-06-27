@@ -1,6 +1,6 @@
 title: 如何有效的面试前端工程师
 date: 2016-03-28 11:19:32
-tags: [Javascript]
+tags: [javascript]
 ---
 
 # 如何面试前端开发工程师？
