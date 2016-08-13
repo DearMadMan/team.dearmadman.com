@@ -15,7 +15,7 @@ tags: [php, laravel]
 
 ## 安装
 
-如果你安装了 Python 的 [setuptools](http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions) 模块，那么你就可以使用 `easy_install` 来进行安装，这是首先的安装方式：
+如果你安装了 Python 的 [setuptools](http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions) 模块，那么你就可以使用 `easy_install` 来进行安装，这是首选的安装方式：
 
 ```bash
 easy_install supervisor
