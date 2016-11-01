@@ -71,3 +71,12 @@ deploy:
   type: git
   repo: git@github.com:DearMadMan/team.dearmadman.com.git
   branch: gh-pages
+
+marked:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true 

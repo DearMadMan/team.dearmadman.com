@@ -776,7 +776,7 @@ $books = App\Book::with('author', 'publisher')->get();
 
 **嵌套的预加载**
 
-你可以使用 `.` 语法来加载嵌套的关联。比如，让我们在一个 Eloquent 语句中一次加载所有书籍的作者以及作者的死人通讯簿：
+你可以使用 `.` 语法来加载嵌套的关联。比如，让我们在一个 Eloquent 语句中一次加载所有书籍的作者以及作者的私人通讯簿：
 
 ```php
 $books = App\Book::with('author.contacts')->get();
