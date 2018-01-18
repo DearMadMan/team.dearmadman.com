@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="laravel基础教程  —— 安装环境需求 PHP &amp;gt;= 5.5.9 OpenSSL 扩展 PDO 扩展 Mbstring 扩展 Tokenizer 扩展  安装方式通过Homestead安装初学者不建议此方式安装!  会明显增加上手难度  安装方式参考文档： Laravel Homestead ps: 如果是win用户，我劝你还是用此方式安装吧 通过Composer安装 Composer">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 安装">
+<meta property="og:url" content="http://yoursite.com/2016/04/18/laravel-from-scratch-initial-setup/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="laravel基础教程  —— 安装环境需求 PHP &amp;gt;= 5.5.9 OpenSSL 扩展 PDO 扩展 Mbstring 扩展 Tokenizer 扩展  安装方式通过Homestead安装初学者不建议此方式安装!  会明显增加上手难度  安装方式参考文档： Laravel Homestead ps: 如果是win用户，我劝你还是用此方式安装吧 通过Composer安装 Composer">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 安装">
+<meta name="twitter:description" content="laravel基础教程  —— 安装环境需求 PHP &amp;gt;= 5.5.9 OpenSSL 扩展 PDO 扩展 Mbstring 扩展 Tokenizer 扩展  安装方式通过Homestead安装初学者不建议此方式安装!  会明显增加上手难度  安装方式参考文档： Laravel Homestead ps: 如果是win用户，我劝你还是用此方式安装吧 通过Composer安装 Composer">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/18/laravel-from-scratch-initial-setup/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 安装 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/18/laravel-from-scratch-initial-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-18T14:51:26+08:00">
+                2016-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="laravel基础教程-——-安装"><a href="#laravel基础教程-——-安装" class="headerlink" title="laravel基础教程  —— 安装"></a>laravel基础教程  —— 安装</h1><h2 id="环境需求"><a href="#环境需求" class="headerlink" title="环境需求"></a>环境需求</h2><ul>
+<li>PHP &gt;= 5.5.9</li>
+<li>OpenSSL 扩展</li>
+<li>PDO 扩展</li>
+<li>Mbstring 扩展</li>
+<li>Tokenizer 扩展</li>
+</ul>
+<h2 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h2><h3 id="通过Homestead安装"><a href="#通过Homestead安装" class="headerlink" title="通过Homestead安装"></a>通过Homestead安装</h3><p><strong>初学者不建议此方式安装!  会明显增加上手难度</strong>  安装方式参考文档： <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="external">Laravel Homestead</a></p>
+<p><code>ps: 如果是win用户，我劝你还是用此方式安装吧</code></p>
+<h3 id="通过Composer安装"><a href="#通过Composer安装" class="headerlink" title="通过Composer安装"></a>通过Composer安装</h3><blockquote>
+<p>Composer是PHP的软件包管理系统, 是 PHP 用来管理依赖（dependency）关系的工具。你可以在自己的项目中声明所依赖的外部工具库（libraries），Composer 会帮你安装这些依赖的库文件。</p>
+</blockquote>
+<h4 id="安装Composer"><a href="#安装Composer" class="headerlink" title="安装Composer"></a>安装Composer</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https:<span class="comment">//getcomposer.org/download/1.0.0/composer.phar -O &amp;&amp; mv composer.phar /usr/local/bin/composer</span></div></pre></td></tr></table></figure>
+<h4 id="安装laravel"><a href="#安装laravel" class="headerlink" title="安装laravel"></a>安装laravel</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer <span class="keyword">global</span> <span class="keyword">require</span> <span class="string">"laravel/installer"</span></div></pre></td></tr></table></figure>
+<h4 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h4><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">laravel <span class="keyword">new</span> my-<span class="keyword">project</span></div></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>所有配置文件都在<code>my-project/config</code>目录下</p>
+<h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3><p><code>storage</code>和<code>bootstrap/cache</code>目录下需要有写权限，否则laravel没办法运行.</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod <span class="number">755</span> <span class="params">-R</span> storage bootstrap/<span class="keyword">cache</span></div></pre></td></tr></table></figure>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd my-project &amp;&amp; php artisan serve </div><div class="line"><span class="comment">// laravel development server started on http://localhost:8000/</span></div></pre></td></tr></table></figure>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>其实安装本身并不难，你有可能会卡壳在下载环节，这初学时这确实浪费了不少时间。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/17/refactoring-to-pattern/" rel="next" title="设计模式之谈：从重构到模式">
+                <i class="fa fa-chevron-left"></i> 设计模式之谈：从重构到模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/18/laravel-from-scratch-configuration/" rel="prev" title="laravel 基础教程 —— 配置">
+                laravel 基础教程 —— 配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#laravel基础教程-——-安装"><span class="nav-number">1.</span> <span class="nav-text">laravel基础教程  —— 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境需求"><span class="nav-number">1.1.</span> <span class="nav-text">环境需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装方式"><span class="nav-number">1.2.</span> <span class="nav-text">安装方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Homestead安装"><span class="nav-number">1.2.1.</span> <span class="nav-text">通过Homestead安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Composer安装"><span class="nav-number">1.2.2.</span> <span class="nav-text">通过Composer安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Composer"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">安装Composer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装laravel"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">安装laravel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新建项目"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">新建项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限"><span class="nav-number">1.2.4.</span> <span class="nav-text">权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行"><span class="nav-number">1.2.5.</span> <span class="nav-text">运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">1.3.</span> <span class="nav-text">结尾</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

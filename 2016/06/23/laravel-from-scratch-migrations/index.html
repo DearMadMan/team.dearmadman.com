@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库：迁移简介迁移就像是为数据库提供的版本控制，这允许你的团队可以轻易的修改和共享应用数据库结构。迁移通常配合 laravel 的结构生成器来轻松的构建应用中的数据库结构。 Laravel 的 Schema 假面提供了创建和操作数据库的相关支持。它为所有 Laravel 支持的数据库系统提供了丰富流畅的相同的 API 接口。 生成迁移你可以使用 make:migration Artisan 命令">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 迁移">
+<meta property="og:url" content="http://yoursite.com/2016/06/23/laravel-from-scratch-migrations/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="数据库：迁移简介迁移就像是为数据库提供的版本控制，这允许你的团队可以轻易的修改和共享应用数据库结构。迁移通常配合 laravel 的结构生成器来轻松的构建应用中的数据库结构。 Laravel 的 Schema 假面提供了创建和操作数据库的相关支持。它为所有 Laravel 支持的数据库系统提供了丰富流畅的相同的 API 接口。 生成迁移你可以使用 make:migration Artisan 命令">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 迁移">
+<meta name="twitter:description" content="数据库：迁移简介迁移就像是为数据库提供的版本控制，这允许你的团队可以轻易的修改和共享应用数据库结构。迁移通常配合 laravel 的结构生成器来轻松的构建应用中的数据库结构。 Laravel 的 Schema 假面提供了创建和操作数据库的相关支持。它为所有 Laravel 支持的数据库系统提供了丰富流畅的相同的 API 接口。 生成迁移你可以使用 make:migration Artisan 命令">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/23/laravel-from-scratch-migrations/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 迁移 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/23/laravel-from-scratch-migrations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 迁移</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-23T22:18:46+08:00">
+                2016-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据库：迁移"><a href="#数据库：迁移" class="headerlink" title="数据库：迁移"></a>数据库：迁移</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>迁移就像是为数据库提供的版本控制，这允许你的团队可以轻易的修改和共享应用数据库结构。迁移通常配合 laravel 的结构生成器来轻松的构建应用中的数据库结构。</p>
+<p>Laravel 的 <code>Schema</code> 假面提供了创建和操作数据库的相关支持。它为所有 Laravel 支持的数据库系统提供了丰富流畅的相同的 API 接口。</p>
+<h2 id="生成迁移"><a href="#生成迁移" class="headerlink" title="生成迁移"></a>生成迁移</h2><p>你可以使用 <code>make:migration</code> Artisan 命令来生成迁移：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:migration create_users_table</div></pre></td></tr></table></figure>
+<p>新生成的迁移将会被存放在 <code>database/migrations</code> 目录下，每个迁移文件都包含了创建时的时间戳，这样就可以指导 Laravel 按序的进行迁移操作。</p>
+<p>你也可以使用 <code>--table</code> 和 <code>--create</code> 选项来指导迁移所创建的表的名称。这些选项只是简单的填充生成的迁移文件为指定的表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan make:migration add_votes_to_users_table --table=users</div><div class="line"></div><div class="line">php artisan make:migration create_users_table --create=users</div></pre></td></tr></table></figure>
+<p>如果你想要自定义生成迁移的路径，你可以使用 <code>--path</code> 选项。所提供的路径应该是基于应用根目录的相对路径。</p>
+<h2 id="迁移结构"><a href="#迁移结构" class="headerlink" title="迁移结构"></a>迁移结构</h2><p>迁移类中包含了两个方法：<code>up</code> 和 <code>down</code>。<code>up</code> 方法用来添加新的表，列或者数据库中的索引。而 <code>down</code> 方法应该简单的执行 <code>up</code> 方法的逆操作。</p>
+<p>在这个两个方法里你可以使用 Laravel 的结构生成器来进行表的创建和修改。对于所有的 <code>Schema</code> 生成器中可用的方法，请参考 <a href="https://laravel.com/docs/5.2/migrations#creating-tables" target="_blank" rel="external">文档</a>。比如，让我们来看一个简单的创建一个 <code>flights</code> 表的迁移：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Schema</span>\<span class="title">Blueprint</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Migrations</span>\<span class="title">Migration</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateFlightsTable</span> <span class="keyword">extends</span> <span class="title">Migration</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Run the migrations.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">up</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Schema::create(<span class="string">'flights'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</div><div class="line">       $table-&gt;increments(<span class="string">'id'</span>);</div><div class="line">       $table-&gt;string(<span class="string">'name'</span>);</div><div class="line">       $table-&gt;string(<span class="string">'airline'</span>);</div><div class="line">       $table-&gt;timestamps();</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Reverse the migrations.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">down</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      Schema::drop(<span class="string">'flights'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="执行迁移"><a href="#执行迁移" class="headerlink" title="执行迁移"></a>执行迁移</h2><p>你可以使用 <code>migrate</code> Artisan 命令来执行迁移操作。如果你使用 <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="external">Homestead virtual machine</a>，你应该在你的虚拟机中运行如下命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
+<p>如果你在执行迁移的过程中出现 “class not found” 错误，你可以尝试运行 <code>composer dump-autoload</code> 命令然后重新运行迁移命令。</p>
+<p><strong>在生成环境中强制迁移操作</strong></p>
+<p>有时候迁移的操作是有害的，这意味着你可能会丢失数据。为了保护你在生产环境中不随意的进行迁移操作，Laravel 会提示你确认执行这些操作。你可以使用 <code>--force</code> 标识来取消这些提示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate --force</div></pre></td></tr></table></figure>
+<h3 id="回滚迁移"><a href="#回滚迁移" class="headerlink" title="回滚迁移"></a>回滚迁移</h3><p>你可以使用 <code>rollback</code> 命令来将迁移回滚到上一次的迁移操作。你需要注意的是，这个回滚是对最后一次迁移的批量操作的回滚，它可能会包含多个迁移文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate:rollback</div></pre></td></tr></table></figure>
+<p><code>migrate:reset</code> 命令将回滚所有的迁移操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate:reset</div></pre></td></tr></table></figure>
+<p><strong>在同一个命令里执行回滚 / 迁移操作</strong></p>
+<p><code>migrate:refresh</code> 命令会一次回滚所有的迁移操作，然后接着执行 <code>migrate</code> 命令。该命令可以有效的重新创建你的整个数据库：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan migrate:refresh</div><div class="line"></div><div class="line">php artisan migrate:refresh --seed</div></pre></td></tr></table></figure>
+<h2 id="编写迁移"><a href="#编写迁移" class="headerlink" title="编写迁移"></a>编写迁移</h2><h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><p>你可以使用 <code>Schema</code> 假面的 <code>create</code> 方法来创建一个新的数据库表。<code>create</code> 方法接收两个参数，第一个参数为表的名称，第二个参数是一个 <code>Closure</code>，该闭包接收一个 <code>Blueprint</code> 对象用来对表进行定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::create(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</div><div class="line">  $table-&gt;increments(<span class="string">'id'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>当然，当创建表时，你也可以使用任意的结构生成器的 <a href="https://laravel.com/docs/5.2/migrations#creating-columns" target="_blank" rel="external">列方法</a> 来定义表的列。</p>
+<p><strong>检查表 / 列是否已经存在</strong></p>
+<p>你可以通过使用 <code>hasTable</code> 和 <code>hasColumn</code> 方法来简单的检查所给定的表或者列是否存在：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Schema::hasTable(<span class="string">'users'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (Schema::hasColumn(<span class="string">'users'</span>, <span class="string">'email'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>连接 &amp; 存储引擎</strong></p>
+<p>如果你想在不是默认的数据库连接中执行 schema 的操作，你可以使用 <code>connection</code> 方法来选择数据库连接：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::connection(<span class="string">'foo'</span>)-&gt;create(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;increments(<span class="string">'id'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你也可以在结构生成器中设置 <code>engine</code> 属性来指定表的存储引擎：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Schema::create(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;engine = <span class="string">'InnoDB'</span>;</div><div class="line"></div><div class="line">  $table-&gt;increments(<span class="string">'id'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="重命名-删除表"><a href="#重命名-删除表" class="headerlink" title="重命名 / 删除表"></a>重命名 / 删除表</h2><p>你可以使用 <code>rename</code> 方法来重命名已经存在的表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Schema::rename($from, $to);</div></pre></td></tr></table></figure>
+<p>你可以使用 <code>drop</code> 或者 <code>dropifExists</code> 方法来删除存在的表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::drop(<span class="string">'users'</span>);</div><div class="line"></div><div class="line">Schema::dropIfExists(<span class="string">'users'</span>);</div></pre></td></tr></table></figure>
+<p><strong>重命名含有外键的表</strong></p>
+<p>在对表进行重命名之前，你应该先确认表中所有的外键约束在迁移文件中都有一个明确的名称，而不是让 Laravel 分配基于惯例的名称。另外，外键约束名称将引用旧表名。</p>
+<h3 id="创建列"><a href="#创建列" class="headerlink" title="创建列"></a>创建列</h3><p>你可以使用 <code>Schema</code> 假面的 <code>table</code> 方法来进行已经存在表的更新操作。像 <code>create</code> 方法一样，<code>table</code> 方法接收两个参数：表的名称和一个接收 <code>Blueprint</code> 实例的闭包，我们可以使用 <code>Blueprint</code> 实例来在表中添加列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'email'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>可用的列类型</strong></p>
+<p>当然，结构生成器包含了各种的列类型，你可以在构建表时使用它们：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$table-&gt;bigIncrements(&#39;id&#39;);</code></td>
+<td>使用 “UNSIGNED BIG INTEGER” 类型来设置自增的 ID（主键）</td>
+</tr>
+<tr>
+<td><code>$table-&gt;bigInteger(&#39;votes&#39;);</code></td>
+<td>使用 BIGINT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;binary(&#39;data&#39;);</code></td>
+<td>使用 BLOB 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;boolean(&#39;confirmed&#39;);</code></td>
+<td>使用 BOOLEAN 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;char(&#39;name&#39;, 4);</code></td>
+<td>使用 CHAR 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;date(&#39;created_at&#39;);</code></td>
+<td>使用 DATE 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;dateTime(&#39;created_at&#39;);</code></td>
+<td>使用 DATETIME 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;dateTimeTz(&#39;created_at&#39;);</code></td>
+<td>使用 DATETIME (和时区) 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;decimal(&#39;amount&#39;, 5, 2);</code></td>
+<td>使用 DECIMAL 类型并伴随一个精度和尺度</td>
+</tr>
+<tr>
+<td><code>$table-&gt;double(&#39;column&#39;, 15, 8);</code></td>
+<td>使用 DOUBLE 类型并伴随一个精度，总共 15 个有效数组，并且其中 8 个是小数</td>
+</tr>
+<tr>
+<td><code>$table-&gt;enum(&#39;choices&#39;, [&#39;foo&#39;, &#39;bar&#39;]);</code></td>
+<td>使用 ENUM 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;float(&#39;amount&#39;);</code></td>
+<td>使用 FLOAT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;increments(&#39;id&#39;);</code></td>
+<td>使用 UNSIGNED INTEGER 类型设置自增的 ID（主键）</td>
+</tr>
+<tr>
+<td><code>$table-&gt;integer(&#39;votes&#39;);</code></td>
+<td>使用 INTEGER 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;ipAddress(&#39;visitor&#39;);</code></td>
+<td>使用 IP 地址类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;json(&#39;options&#39;);</code></td>
+<td>使用 JSON 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;jsonb(&#39;options&#39;);</code></td>
+<td>使用 JSONB 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;longText(&#39;description&#39;);</code></td>
+<td>使用 LONGTEXT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;macAddress(&#39;device&#39;);</code></td>
+<td>使用 MAC 地址类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;mediumInteger(&#39;numbers&#39;);</code></td>
+<td>使用 MEDIUMINT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;mediumText(&#39;description&#39;);</code></td>
+<td>使用 MEDIUMTEXT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;morphs(&#39;taggable&#39;);</code></td>
+<td>添加一个 INTEGER 类型的 <code>taggable_id</code> 和一个 STRING 类型的 <code>taggable_type</code></td>
+</tr>
+<tr>
+<td><code>$table-&gt;nullableTimestamps();</code></td>
+<td>和 <code>timestamps()</code> 一样，除了允许 NULLs</td>
+</tr>
+<tr>
+<td><code>$table-&gt;rememberToken();</code></td>
+<td>添加 VARCHAR(100) NULL <code>remember_token</code></td>
+</tr>
+<tr>
+<td><code>$table-&gt;smallInteger(&#39;votes&#39;);</code></td>
+<td>使用 SMALLINT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;softDeletes();</code></td>
+<td>为软删除添加 <code>delete_at</code> 列</td>
+</tr>
+<tr>
+<td><code>$table-&gt;string(&#39;email&#39;);</code></td>
+<td>使用 VARCHAR 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;string(&#39;name&#39;, 100);</code></td>
+<td>使用 VARCHAR 类型并伴随一个长度。</td>
+</tr>
+<tr>
+<td><code>$table-&gt;text(&#39;description&#39;);</code></td>
+<td>使用 TEXT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;time(&#39;sunrise&#39;);</code></td>
+<td>使用 TIME 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;timeTz(&#39;sunrise&#39;);</code></td>
+<td>使用 TIME （伴随时区）类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;tinyInteger(&#39;numbers&#39;);</code></td>
+<td>使用 TINYINT 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;timestamp(&#39;added_on&#39;);</code></td>
+<td>使用 TIMESTAMP 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;timestampTz(&#39;added_on&#39;);</code></td>
+<td>使用 TIMESTAMP 类型</td>
+</tr>
+<tr>
+<td><code>$table-&gt;timestamps();</code></td>
+<td>添加 <code>created_at</code> 和 <code>updated_at</code> 列</td>
+</tr>
+<tr>
+<td><code>$table-&gt;uuid(&#39;id&#39;);</code></td>
+<td>使用 UUID 类型</td>
+</tr>
+</tbody>
+</table>
+<p><strong>修改列</strong></p>
+<p>除了上面所列出的列类型，这里也提供了一些其他在添加列的同时增加一些修正的功能。比如，你可以使用 <code>nullable</code> 方法来让列可以为 <code>NULL</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'email'</span>)-&gt;nullable(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>下面列出了一些可用的列的修正方法，这里并没有包含 <a href="https://laravel.com/docs/5.2/migrations#creating-indexes" target="_blank" rel="external">index modifiers</a>:</p>
+<table>
+<thead>
+<tr>
+<th>变化</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-&gt;first()</code></td>
+<td>将列放在表的首列（仅支持 MySQL)</td>
+</tr>
+<tr>
+<td><code>-&gt;after(&#39;column&#39;)</code></td>
+<td>将列放置在其他列之后（仅支持 MySQL)</td>
+</tr>
+<tr>
+<td><code>-&gt;nullable()</code></td>
+<td>允许列中存在 NULL 值</td>
+</tr>
+<tr>
+<td><code>-&gt;default($value)</code></td>
+<td>为列指定默认值</td>
+</tr>
+<tr>
+<td><code>-&gt;unsigned()</code></td>
+<td>设置 <code>integer</code> 列为 <code>UNSIGNED</code></td>
+</tr>
+<tr>
+<td><code>-&gt;comment(&#39;my comment&#39;)</code></td>
+<td>为列添加注释</td>
+</tr>
+</tbody>
+</table>
+<h3 id="进行列的修改"><a href="#进行列的修改" class="headerlink" title="进行列的修改"></a>进行列的修改</h3><p><strong>先决条件</strong></p>
+<p>在进行列的修改之前，你需要先在 <code>composer.json</code> 文件中添加 <code>doctrine/dbal</code> 用来。Doctrine DBAL 类库用来确定列的当前状态，并创建指定列所需调整的 SQL 查询。</p>
+<p><strong>更新列的属性</strong></p>
+<p><code>change</code> 方法允许你修改已存在的列的类型，或者修改列的属性。比如，你可能希望增加字符串类型的列的长度。你可以使用 <code>change</code> 方法来让 <code>name</code> 列的长度从 25 到 50：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'name'</span>, <span class="number">50</span>)-&gt;change(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>我们也想要将列修改为允许 NULL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'name'</span>, <span class="number">50</span>)-&gt;nullable()-&gt;chage(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 修改表中含有 <code>enum</code> 类型的列的表中的任意列，目前都没有得到支持。</p>
+</blockquote>
+<p><strong>列的重命名</strong></p>
+<p>你可以使用结构生成器的 <code>renameColumn</code> 方法来对列进行重命名,在进行重命名之前，你需要确保 <code>composer.json</code> 文件中引入了 <code>doctrine/dbal</code> 依赖：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;renameColumn(<span class="string">'from'</span>, <span class="string">'to'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 重命名表中含有 <code>enum</code> 类型的列的表，目前都没有得到支持。</p>
+</blockquote>
+<h3 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h3><p>你可以使用结构生成器中的 <code>dropColumn</code> 方法来删除一列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;dropColumn(<span class="string">'votes'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你也可以传递一个包含了列名称的数组到 <code>dropColumn</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;dropColumn([<span class="string">'votes'</span>, <span class="string">'avatar'</span>, <span class="string">'location'</span>]); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：如果你删除的是 SQLite 数据库里的列，你需要先在 <code>composer.json</code> 文件里引入 <code>doctrine/dbal</code> 依赖，并且执行 <code>composer update</code> 命令来安装这个类库。<br>注意： 在使用 SQLite 数据库时，使用单个迁移操作来删除或者修改多个列是行不通的。</p>
+</blockquote>
+<h3 id="建立索引"><a href="#建立索引" class="headerlink" title="建立索引"></a>建立索引</h3><p>结构生成器支持多种类型的索引。首先，让我们看一个简单的例子，这个例子指定列的值应该是唯一的。为了创建索引，我们可以简单的在列的定义中链式调用 <code>unique</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;string(<span class="string">'email'</span>)-&gt;unique();</div></pre></td></tr></table></figure>
+<p>另外，你也可以在定义完列之后添加索引：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;unique(<span class="string">'email'</span>);</div></pre></td></tr></table></figure>
+<p>你也可以通过传递一个列名的数组到 <code>index</code> 方法来创建一个复合的索引：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;index([<span class="string">'account_id'</span>, <span class="string">'created_at'</span>]);</div></pre></td></tr></table></figure>
+<p>Laravel 会自动的生成一个合理的索引名称，但是你也可以传递第二个参数来指定索引名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;index(<span class="string">'email'</span>, <span class="string">'my_index_name'</span>);</div></pre></td></tr></table></figure>
+<p><strong>可用的索引类型</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$table-&gt;primary(&#39;id&#39;);</code></td>
+<td>添加主键</td>
+</tr>
+<tr>
+<td><code>$table-&gt;primary([&#39;first&#39;, &#39;last&#39;]);</code></td>
+<td>添加复合键</td>
+</tr>
+<tr>
+<td><code>$table-&gt;unique(&#39;email&#39;);</code></td>
+<td>添加唯一的索引</td>
+</tr>
+<tr>
+<td><code>$table-&gt;unique(&#39;state&#39;, &#39;my_index_name&#39;);</code></td>
+<td>添加自定义的索引名称</td>
+</tr>
+<tr>
+<td><code>$table-&gt;index(&#39;state&#39;);</code></td>
+<td>添加基础的索引</td>
+</tr>
+</tbody>
+</table>
+<h3 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h3><p>你需要指定一个索引的名称才能删除索引，默认的 Laravel 会自动的分配一个合理的名称到索引。它只是简单的连接表名，索引的列名，索引的类型。这里有一些示例：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$table-&gt;dropPrimary(&#39;users_id_primary&#39;);</code></td>
+<td>从用户表中删除主键</td>
+</tr>
+<tr>
+<td><code>$table-&gt;dropUnique(&#39;users_email_unique&#39;);</code></td>
+<td>从用户表中删除唯一的索引</td>
+</tr>
+<tr>
+<td><code>$table-&gt;dropIndex(&#39;geo_stage_index&#39;);</code></td>
+<td>从 geo 表中删除基础的索引</td>
+</tr>
+</tbody>
+</table>
+<p>如果你传递一个列名所组成的数组到删除索引的方法中，常规的索引的名称将根据表名，列名和键的类型来生成：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'geo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;dropIndex([<span class="string">'state'</span>]); <span class="comment">// Drops index 'geo_state_index' </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="外键约束"><a href="#外键约束" class="headerlink" title="外键约束"></a>外键约束</h3><p>Laravel 也对创建外键约束提供了支持，外键约束用于强制参照表中数据的完整性。比如，让我们在 <code>posts</code> 表中定义一个 <code>user_id</code> 列，并且关联 <code>users</code> 表中的 <code>id</code> 列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'posts'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;integer(<span class="string">'user_id'</span>)-&gt;unsigned();</div><div class="line"></div><div class="line">  $table-&gt;foreign(<span class="string">'user_id'</span>)-&gt;references(<span class="string">'id'</span>)-&gt;on(<span class="string">'users'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你也可以指定约束的“关于删除”和“更新”属性所需要的操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$table-&gt;foreign(<span class="string">'user_id'</span>)</div><div class="line">      -&gt;references(<span class="string">'id'</span>)-&gt;on(<span class="string">'users'</span>)</div><div class="line">      -&gt;onDelete(<span class="string">'cascade'</span>);</div></pre></td></tr></table></figure>
+<p>你可以使用 <code>dropForegin</code> 方法来移除外键。外键约束使用了和索引相同的命名方式。所以，我们会串联表名，列名，和 “_foreign” 后缀：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;dropForeign(<span class="string">'posts_user_id_foreign'</span>);</div></pre></td></tr></table></figure>
+<p>或者你也可以通过传递一个包含列名的数组，它会自动的使用惯例命名来进行外键的移除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$table-&gt;dropForeign([<span class="string">'user_id'</span>]);</div></pre></td></tr></table></figure>
+<p>你也可以在你的迁移中使用下面的方法来开启或者关闭外键约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::enableForeignKeyConstraints();</div><div class="line"></div><div class="line">Schema::diableForeignKeyConstraints();</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/23/laravel-from-scratch-query-builder/" rel="next" title="laravel 基础教程 —— 查询生成器">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 查询生成器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/24/laravel-from-scratch-seeding/" rel="prev" title="laravel 基础教程 —— Seeding">
+                laravel 基础教程 —— Seeding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库：迁移"><span class="nav-number">1.</span> <span class="nav-text">数据库：迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成迁移"><span class="nav-number">1.2.</span> <span class="nav-text">生成迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移结构"><span class="nav-number">1.3.</span> <span class="nav-text">迁移结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行迁移"><span class="nav-number">1.4.</span> <span class="nav-text">执行迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚迁移"><span class="nav-number">1.4.1.</span> <span class="nav-text">回滚迁移</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写迁移"><span class="nav-number">1.5.</span> <span class="nav-text">编写迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建表"><span class="nav-number">1.6.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重命名-删除表"><span class="nav-number">1.7.</span> <span class="nav-text">重命名 / 删除表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建列"><span class="nav-number">1.7.1.</span> <span class="nav-text">创建列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进行列的修改"><span class="nav-number">1.7.2.</span> <span class="nav-text">进行列的修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除列"><span class="nav-number">1.7.3.</span> <span class="nav-text">删除列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立索引"><span class="nav-number">1.7.4.</span> <span class="nav-text">建立索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除索引"><span class="nav-number">1.7.5.</span> <span class="nav-text">删除索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键约束"><span class="nav-number">1.7.6.</span> <span class="nav-text">外键约束</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

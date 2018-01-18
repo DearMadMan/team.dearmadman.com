@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="队列简介laravel 的队列服务对各种不同的后台队列服务提供了统一的 API。队列允许你延迟执行消耗时间的任务，比如发送一封邮件。这样可以有效的降低请求响应的时间。 配置队列的配置文件被存储在 config/queue.php 中。在这个文件中你会发现框架所支持的队列驱动的配置连接示例。这些驱动包括：数据库，Beanstalkd，Amazon SQS，Redis，和一个同步（本地使用）的驱动。">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 队列">
+<meta property="og:url" content="http://yoursite.com/2016/06/10/laravel-from-scratch-queues/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="队列简介laravel 的队列服务对各种不同的后台队列服务提供了统一的 API。队列允许你延迟执行消耗时间的任务，比如发送一封邮件。这样可以有效的降低请求响应的时间。 配置队列的配置文件被存储在 config/queue.php 中。在这个文件中你会发现框架所支持的队列驱动的配置连接示例。这些驱动包括：数据库，Beanstalkd，Amazon SQS，Redis，和一个同步（本地使用）的驱动。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 队列">
+<meta name="twitter:description" content="队列简介laravel 的队列服务对各种不同的后台队列服务提供了统一的 API。队列允许你延迟执行消耗时间的任务，比如发送一封邮件。这样可以有效的降低请求响应的时间。 配置队列的配置文件被存储在 config/queue.php 中。在这个文件中你会发现框架所支持的队列驱动的配置连接示例。这些驱动包括：数据库，Beanstalkd，Amazon SQS，Redis，和一个同步（本地使用）的驱动。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/10/laravel-from-scratch-queues/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 队列 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/10/laravel-from-scratch-queues/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 队列</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-10T12:15:50+08:00">
+                2016-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>laravel 的队列服务对各种不同的后台队列服务提供了统一的 API。队列允许你延迟执行消耗时间的任务，比如发送一封邮件。这样可以有效的降低请求响应的时间。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>队列的配置文件被存储在 <code>config/queue.php</code> 中。在这个文件中你会发现框架所支持的队列驱动的配置连接示例。这些驱动包括：数据库，<a href="http://kr.github.com/beanstalkd" target="_blank" rel="external">Beanstalkd</a>，<a href="http://aws.amazon.com/sqs" target="_blank" rel="external">Amazon SQS</a>，<a href="http://redis.io/" target="_blank" rel="external">Redis</a>，和一个同步（本地使用）的驱动。</p>
+<p>还有一个名为 <code>null</code> 的驱动表明不使用队列任务。</p>
+<h3 id="队列先决条件"><a href="#队列先决条件" class="headerlink" title="队列先决条件"></a>队列先决条件</h3><p><strong>数据库</strong></p>
+<p>如果使用 <code>database</code> 队列驱动，你需要添加一个数据表来处理队列任务。你可以使用 <code>queue:table</code> Artisan 命令来生成一个迁移表。一旦该迁移表生成完成，你就可以使用 <code>migrate</code> 命令来迁移到数据库中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line"></div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
+<p><strong>其他队列依赖</strong></p>
+<p>下面列出了其它队列驱动及其相应的依赖：</p>
+<ul>
+<li>Amazon SQS: <code>aws/aws-sdk-php ~3.0</code></li>
+<li>Beanstalkd: <code>pda/pheanstalk ~3.0</code></li>
+<li>Redis: <code>predis/predis ~1.0</code></li>
+</ul>
+<h2 id="编写任务类"><a href="#编写任务类" class="headerlink" title="编写任务类"></a>编写任务类</h2><h3 id="生成任务类"><a href="#生成任务类" class="headerlink" title="生成任务类"></a>生成任务类</h3><p>默认的，所有的可队列执行的任务都被存储在 <code>app/Jobs</code> 目录下，你可以通过 Artisan 命令来生成一个新的队列任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job SendReminderEmail</div></pre></td></tr></table></figure>
+<p>该命令会在 <code>app/Jobs</code> 目录下生成一个新的类。该类会实现 <code>Illuminate\Contracts\Queue\ShouldQueue</code> 接口，该接口表明 laravel 应该将该任务添加到后台的任务队列中，而不是同步执行。</p>
+<h3 id="任务类结构"><a href="#任务类结构" class="headerlink" title="任务类结构"></a>任务类结构</h3><p>任务类是十分简单的，通常它只包含一个 <code>handle</code> 方法来在队列任务执行时被调用。我们来看一个简单的任务示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Jobs</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Jobs</span>\<span class="title">Job</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Mail</span>\<span class="title">Mailer</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">SerializesModels</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">InteractsWithQueue</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Queus</span>\<span class="title">ShouldQueue</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SendReminderEmail</span> <span class="keyword">extends</span> <span class="title">Job</span> <span class="keyword">implements</span> <span class="title">ShouldQueue</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">InteractsWithQueue</span>, <span class="title">SerializesModels</span>;</div><div class="line"></div><div class="line">  <span class="keyword">protected</span> $user;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Create a new job instance.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> User $user</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(User $user)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;user = $user;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Execute the job.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> Mailer $mailer</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(Mailer $mailer)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      $mailer-&gt;send(<span class="string">'emails.reminder'</span>, [<span class="string">'user'</span> =&gt; <span class="keyword">$this</span>-&gt;user], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//</span></div><div class="line">      &#125;);</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;user-&gt;reminders()-&gt;create(...);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个例子中，你需要注意的是，我们可以直接的在队列任务的构造函数中传送一个 Eloquent 模型。因为我们引入了 <code>SerializesModels</code> trait，所以当队列任务执行时，Eloquent 模型会被优雅的序列化和反序列化。如果队列任务在构造器中接收了 Eloquent 模型，那么队列任务只会序列化模型的 ID。而在任务需要进行处理时，队列系统会从数据库中自动的根据 ID 检索出模型实例。这在应用中完全是透明的，这样就可以避免了序列化完整的模型可能在队列中出现的问题。</p>
+<p><code>handle</code> 方法会在队列任务执行时进行调用。你需要知道的是，我们可以在任务的 <code>handle</code> 方法中可以使用类型提示来进行依赖的注入。laravel 的服务容器会自动的将这些依赖注入进去。</p>
+<p><strong>有异常发生</strong></p>
+<p>如果任务进行的过程中有异常被抛出。它会自动的将任务释放，同时追加到队列的尾端以使任务可以进行再次尝试。该任务会被持续释放进行尝试除非尝试的次数超出了所设置的最大次数。你可以在队列监听器 <code>queue:listen</code> 或者 <code>queue:work</code> Artisan 任务命令中添加 <code>--tries</code> 选项来设置最大可尝试次数。我们将在后续篇幅中详细的介绍队列监听器。</p>
+<p><strong>手动的释放任务到队列尾端</strong></p>
+<p>你可以使用 <code>release</code> 方法来进行手动的释放任务。laravel 命令生成的任务类中已经引入了 <code>InteractsWithQueue</code> trait，这个性状提供了访问任务队列的 <code>release</code> 方法。该方法接收一个参数：你希望任务再次可用的间隔（秒）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(Mailer $mailer)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">if</span> (condition) &#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;release(<span class="number">10</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>检查任务已尝试的次数</strong></p>
+<p>就如上面我们所谈到的，如果在任务进行的过程中，异常出现，那么队列会自动的释放任务并将任务推送到队列的尾端使其可以进行再次尝试。你可以通过 <code>attempts</code> 方法来检查任务的释放次数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(Mailer $mailer)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;attempts() &gt; <span class="number">3</span>) &#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="推送任务到队列"><a href="#推送任务到队列" class="headerlink" title="推送任务到队列"></a>推送任务到队列</h2><p>位于 <code>app/Http/Controllers/Controller.php</code> 的 laravel 基础控制器使用了 <code>DispatchesJobs</code> trait。这个性状提供了一些方法允许你方便的推送任务到队列。比如 <code>dispatch</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Jobs</span>\<span class="title">SendReminderEmail</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Send a reminder e-mail to a given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendReminderEmail</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $user = User::findOrFail($id);</div><div class="line"></div><div class="line">     <span class="keyword">$this</span>-&gt;dispatch(<span class="keyword">new</span> SendReminderEmail($user));</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong><code>DispatchesJobs</code> 性状</strong></p>
+<p>当然，有时候你可能希望在应用中的任何地方进行任务的分发，而不仅仅只在路由或者控制器中。出于这个原因，你可以使用 <code>DispatchesJobs</code> trait 到任何你需要在应用中调用分发任务的类中，这样你就可以在这个类中使用 <code>dispatch</code> 方法，下面给出一个简单的使用 trait 的示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Bus</span>\<span class="title">DispatchesJobs</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleClass</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">DispatchesJobs</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong><code>dispatch</code> 方法</strong></p>
+<p>或者，你可以使用 <code>dispatch</code> 全局帮助方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/job'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  dispatch(<span class="keyword">new</span> App\Jobs\PerformTask); </div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="string">'Done!'</span>;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>对任务指定队列</strong></p>
+<p>你也可以指定任务需要被分配到的队列。</p>
+<p>你可以对你的队列任务进行分类，来将任务推送到不同的队列中，你甚至是可以分配各种队列工作的优先权。这并不是推送任务到队列配置文件中所定义的不同的队列连接上，而是仅在单个连接中指定的队列进行的操作。你可以使用任务实例的 <code>onQueue</code> 方法来指定队列。<code>onQueue</code> 来自 <code>Illuminate\Bus\Queueable</code> trait，该性状已经被 <code>App\Jobs\Job</code> 基类所引入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Jobs</span>\<span class="title">SendReminderEmail</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Send a reminder e-mail to a given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendReminderEmail</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $user = User::findOrFail($id);</div><div class="line"></div><div class="line">    $job = (<span class="keyword">new</span> SendReminderEmail($user))-&gt;onQueue(<span class="string">'emails'</span>);</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;dispatch($job);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="延迟任务"><a href="#延迟任务" class="headerlink" title="延迟任务"></a>延迟任务</h3><p>有时候，你可能会想要延迟执行队列任务。比如，你可能希望有一个队列任务可以在用户注册后的 5 分钟发送一封提醒邮件。你可以在任务类中使用 <code>delay</code> 方法来完成，该方法是通过 <code>Illuminate\Bus\Queueable</code> 性状提供的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Jobs</span>\<span class="title">SendReminderEmail</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Send a reminder e-mail to a given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendReminderEmail</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $user = User::findOrFail($id);</div><div class="line"></div><div class="line">     $job = (<span class="keyword">new</span> SendReminderEamil($user))-&gt;delay(<span class="number">60</span> * <span class="number">5</span>);</div><div class="line"></div><div class="line">     <span class="keyword">$this</span>-&gt;dispatch($job);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个例子中，我们指定了任务应该在队列中延迟 5 分钟执行。</p>
+<blockquote>
+<p>注意： Amazon SQS 服务有最大延迟执行限制，其最多可延迟 15 分钟。</p>
+</blockquote>
+<h2 id="任务事件"><a href="#任务事件" class="headerlink" title="任务事件"></a>任务事件</h2><p><strong>任务生命周期事件</strong></p>
+<p>你可以使用 <code>Queue::before</code> 和 <code>Queue::after</code> 方法来注册一个回调在队列任务开始之前或者队列执行成功之后调用。回调为添加额外的日志，持续执行子任务或者增加统计信息等提供了非常好的机会。比如，我们可以在 laravel 的 <code>AppServiceProvider</code> 中定义一个任务成功执行后的事件监听，并附加一个回调到事件中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Queue</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">Events</span>\<span class="title">JobProcessed</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Bootstrap any application services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Queue::after(<span class="function"><span class="keyword">function</span> <span class="params">(JobProcessed $event)</span> </span>&#123;</div><div class="line">       <span class="comment">// $event-&gt;connectionName</span></div><div class="line">       <span class="comment">// $event-&gt;job</span></div><div class="line">       <span class="comment">// $event-&gt;data</span></div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register the service provider.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行队列监听器"><a href="#运行队列监听器" class="headerlink" title="运行队列监听器"></a>运行队列监听器</h2><p><strong>开始进行队列监听</strong></p>
+<p>laravel 包含了一个 Artisan 命令来运行推送到队列中的任务的执行。你可以使用 <code>queue:listen</code> 命令来运行监听器：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
+<p>你也可以指定监听哪一个连接的队列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen connection-name</div></pre></td></tr></table></figure>
+<p>你需要注意的是，这个命令执行，它会持续的运行，除非你手动的进行停止。你可以通过使用 <a href="http://supervisord.org/" target="_blank" rel="external">Supervisor</a> 进程监控来确保队列监听器的运行。</p>
+<p><strong>队列优先级</strong></p>
+<p>你可以通过使用 <code>,</code> 来分割连接的队列，以确定队列的运行优先级：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue=high,low</div></pre></td></tr></table></figure>
+<p>在这个例子中，任务会优先执行 <code>high</code> 的队列，然后才会运行 <code>low</code> 队列中的任务。</p>
+<p><strong>指定任务的超时时间</strong></p>
+<p>你可以设置任务的超时时间：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --timeout=<span class="number">60</span></div></pre></td></tr></table></figure>
+<p><strong>指定队列的睡眠时间</strong></p>
+<p>另外，你可以指定队列轮询新的任务需要等待的时间（秒）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --sleep=<span class="number">5</span></div></pre></td></tr></table></figure>
+<p>你需要注意的是，队列只会在队列中没有需要执行的任务时才会进行睡眠。如果队列中有多个可执行的任务，那么队列会持续的进行任务的执行，而不会进行睡眠操作。</p>
+<p><strong>执行队列的首个任务</strong></p>
+<p>你可以使用 <code>queue:work</code> 命令来只执行队列的首个任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:work</div></pre></td></tr></table></figure>
+<h3 id="Supervisor-配置"><a href="#Supervisor-配置" class="headerlink" title="Supervisor 配置"></a>Supervisor 配置</h3><p>Supervisor 是 Linux 操作系统的一个进程监控器，并且它可以自动的在 <code>queue:listen</code> 或者 <code>queue:work</code> 命令失败时进行重启。你可以使用下面的命令在 Ubuntu 中安装 Supervisor:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
+<p>Supervisor 配置文件通常都存储在 <code>/etc/supervisor/conf.d</code> 目录中。在这个目录中，你可以创建任意数量的配置文件来指导 supervisor 来管理监控进程。比如，让我们创建一个 <code>laravel-worker.conf</code> 文件来开始和监控 <code>queue:work</code> 进程：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[program:laravel-worker]</div><div class="line">process_name=%(program_name)s_%(process_num)<span class="number">02</span>d</div><div class="line">command= php /home/forge/app.com/artisan queue:work sqs --sleep=<span class="number">3</span> --tries=<span class="number">3</span> --daemon</div><div class="line">autostart=<span class="keyword">true</span></div><div class="line">autorestart=<span class="keyword">true</span></div><div class="line">user=forge</div><div class="line">numprocs=<span class="number">8</span></div><div class="line">redirect_stderr=<span class="keyword">true</span></div><div class="line">stdout_logfile=/home/forge/app.com/worker.log</div></pre></td></tr></table></figure>
+<p>上面的例子中，<code>numprocs</code> 会指导 Supervisor 运行 8 个 <code>queue:work</code> 进程并且对其进行监控，它会自动的在其失败时进行重启。当然，你可以修改命令的 <code>queue:work sqs</code> 部分来使用你所期望的队列驱动。</p>
+<p>一旦配置文件创建完成，你可以使用下面的命令来更新 Supervisor 的配置文件和启动进程：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo supervisorctl reread</div><div class="line"></div><div class="line">sudo supervisorctl update</div><div class="line"></div><div class="line">sudo supervisorctl start laravel-worker:*</div></pre></td></tr></table></figure>
+<p>关于更多的 Supervisor 的配置信息，请参考 <a href="http://supervisord.org/index.html" target="_blank" rel="external">Supervisor documentation</a>。另外，你也可以使用 <a href="https://forge.laravel.com/" target="_blank" rel="external">Laravel Forge</a> 来从一个方便的 Web 界面自动的配置和管理你的 Supervisor 配置。</p>
+<h3 id="队列监控器守护进程"><a href="#队列监控器守护进程" class="headerlink" title="队列监控器守护进程"></a>队列监控器守护进程</h3><p><code>queue:work</code> Artisan 命令包含了一个 <code>--daemon</code> 选项来强迫队列工作持续的执行任务而不重新引导框架。这相比较 <code>queue:lsten</code> 命令来说会显著的减少 CPU 的消耗：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">php artisan queue:work connection-name --daemon</div><div class="line"></div><div class="line">php artisan queue:work connection-name --daemon --sleep=<span class="number">3</span></div><div class="line"></div><div class="line">php artisan queue:work connection-name --daemon --sleep=<span class="number">3</span> --tries=<span class="number">3</span></div></pre></td></tr></table></figure>
+<p>就如你所看到的，<code>queue:work</code> 任务支持和 <code>queue:listen</code> 差不多的选项。你可以通过使用 <code>php artisan help queue:work</code> 命令来显示可用选项。</p>
+<p><strong>对于守护进程的编码注意事项</strong></p>
+<p>队列任务的守护进程不会在每个任务执行之前重新引导框架，所以，你应该注意在你的任务完成时清除一些比较重的资源消耗。比如，如果你使用 GD 类库来处理图片，你应该在任务执行完成后使用 <code>imagedestroy</code> 来将其从内存中进行释放。</p>
+<h3 id="部署具有守护进程的队列监听器"><a href="#部署具有守护进程的队列监听器" class="headerlink" title="部署具有守护进程的队列监听器"></a>部署具有守护进程的队列监听器</h3><p>因为队列工作的守护进程是一个常驻进程。它不会再你的代码改变时进行重启。所以，你应该使用部署脚本来在代码变更时重新部署使用守护进程的队列工作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:restart</div></pre></td></tr></table></figure>
+<p>该命令会优雅的指导队列完成当前的任务后死亡，所以不会存在任务的遗漏。你应该注意的是，当你执行 <code>queue:restart</code> 命令时，队列工作就会死亡，所以你应该使用一种进程管理器，比如 Supervisor，你可以配置它来自动的重启队列工作。</p>
+<blockquote>
+<p>注意：该命令依赖于缓存系统来制定重启时间表。默认的 APCu 不支持在 CLI 中运行任务。如果你使用 APCu，你应该添加 <code>apc.enable_cli=1</code> 到你的 APCu 配置中。</p>
+</blockquote>
+<h2 id="与失败的任务进行交互"><a href="#与失败的任务进行交互" class="headerlink" title="与失败的任务进行交互"></a>与失败的任务进行交互</h2><p>由于很多事情并不能如计划中的那样进行，有时候队列任务的执行可能会失败，不要担心，它发生对我们来说是最好的！laravel 包含了一种便捷的方式来指定任务应该重复尝试的次数。如果任务被重复执行到指定的次数，它就会被记录到 <code>failed_jobs</code> 表中。这个表的名字你可以通过 <code>config/queue.php</code> 配置文件进行定制。</p>
+<p>你可以使用 <code>queue:failed-table</code> 命令来生成一个 <code>failed_jobs</code> 迁移表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:failed-table</div></pre></td></tr></table></figure>
+<p>当你运行队列监听器时，你可以使用 <code>--tries</code> 选项来指定任务的最大尝试次数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen connection-name --tries=<span class="number">3</span></div></pre></td></tr></table></figure>
+<h3 id="失败任务事件"><a href="#失败任务事件" class="headerlink" title="失败任务事件"></a>失败任务事件</h3><p>如果你希望在队列任务失败时执行某些操作，你可以使用 <code>Queue::failing</code> 方法来注册一个监听事件。这个事件对通过 email 或者 <a href="https://www.hipchat.com/" target="_blank" rel="external">HipChat</a> 通知你的团队提供了一个很好的机会。比如，你可以在 <code>AppServiceProvider</code> 在事件中附加一个回调：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Queue</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">Events</span>\<span class="title">JobFailed</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Bootstrap any application service.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Queue::failing(<span class="function"><span class="keyword">function</span> <span class="params">(JobFailed $event)</span> </span>&#123;</div><div class="line">       <span class="comment">// $event-connectionName</span></div><div class="line">       <span class="comment">// $event-&gt;job</span></div><div class="line">       <span class="comment">// $event-data</span></div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register the service provider.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>任务类中的失败方法</strong></p>
+<p>你可以在任务类中定义一个 <code>failed</code> 方法来进行更为精细的控制，这允许你在任务出现失败时来执行一些指定的动作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Jobs</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Jobs</span>\<span class="title">Job</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Mail</span>\<span class="title">Mailer</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">SerializesModels</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">InteractsWithQueue</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Queue</span>\<span class="title">ShouldQueue</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SendReminderEmail</span> <span class="keyword">extends</span> <span class="title">Job</span> <span class="keyword">implements</span> <span class="title">ShouldQueue</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">InteractsWithQueue</span>, <span class="title">SerializesModels</span>;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Execute the job.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Mailer $mailer</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(Mailer $mailer)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">//</span></div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Handle a job failure.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">failed</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">// Called when the job is failing...</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="重新执行失败的任务"><a href="#重新执行失败的任务" class="headerlink" title="重新执行失败的任务"></a>重新执行失败的任务</h3><p>你可以使用 <code>queue:failed</code> Artisan 命令来显示数据库 <code>failed_jobs</code> 表中失败的任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:failed</div></pre></td></tr></table></figure>
+<p><code>queue:failed</code> 命令会列出任务的 ID，连接，队列，和失败时间。任务 ID 可以用来进行失败任务的尝试。比如，你可以尝试重新执行 ID 为 5 的任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:retry <span class="number">5</span></div></pre></td></tr></table></figure>
+<p>你可以使用 <code>queue:retry all</code> 命令来重启所有的任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:retry all</div></pre></td></tr></table></figure>
+<p>如果你希望删除失败的任务，你可以使用 <code>queue:forget</code> 命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:forget <span class="number">5</span></div></pre></td></tr></table></figure>
+<p>你可以使用 <code>queue:flush</code> 命令来清除所有失败的任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:flush</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/10/laravel-from-scratch-pagination/" rel="next" title="laravel 基础教程 —— 分页">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 分页
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/10/laravel-from-scratch-redis/" rel="prev" title="laravel 基础教程 —— Redis">
+                laravel 基础教程 —— Redis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#队列"><span class="nav-number">1.</span> <span class="nav-text">队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列先决条件"><span class="nav-number">1.1.2.</span> <span class="nav-text">队列先决条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写任务类"><span class="nav-number">1.2.</span> <span class="nav-text">编写任务类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成任务类"><span class="nav-number">1.2.1.</span> <span class="nav-text">生成任务类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务类结构"><span class="nav-number">1.2.2.</span> <span class="nav-text">任务类结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推送任务到队列"><span class="nav-number">1.3.</span> <span class="nav-text">推送任务到队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟任务"><span class="nav-number">1.3.1.</span> <span class="nav-text">延迟任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务事件"><span class="nav-number">1.4.</span> <span class="nav-text">任务事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行队列监听器"><span class="nav-number">1.5.</span> <span class="nav-text">运行队列监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervisor-配置"><span class="nav-number">1.5.1.</span> <span class="nav-text">Supervisor 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列监控器守护进程"><span class="nav-number">1.5.2.</span> <span class="nav-text">队列监控器守护进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署具有守护进程的队列监听器"><span class="nav-number">1.5.3.</span> <span class="nav-text">部署具有守护进程的队列监听器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与失败的任务进行交互"><span class="nav-number">1.6.</span> <span class="nav-text">与失败的任务进行交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失败任务事件"><span class="nav-number">1.6.1.</span> <span class="nav-text">失败任务事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新执行失败的任务"><span class="nav-number">1.6.2.</span> <span class="nav-text">重新执行失败的任务</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Artisan 控制台简介Artisan 是 laravel 自带的命令行工具接口的名称。它为应用的开发提供了多种有用的命令工具。Artisan 的底层驱动是强大的 Symfony 控制台组件。你可以使用 list 命令来查看可用的 Artisan 命令： 1php artisan list 所有的命令都提供了帮助文档，你可以在相应的命令前使用 help 来查看相关命令的选项和参数： 1php a">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— Artisan 命令">
+<meta property="og:url" content="http://yoursite.com/2016/05/27/laravel-from-scratch-artisan-console/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Artisan 控制台简介Artisan 是 laravel 自带的命令行工具接口的名称。它为应用的开发提供了多种有用的命令工具。Artisan 的底层驱动是强大的 Symfony 控制台组件。你可以使用 list 命令来查看可用的 Artisan 命令： 1php artisan list 所有的命令都提供了帮助文档，你可以在相应的命令前使用 help 来查看相关命令的选项和参数： 1php a">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— Artisan 命令">
+<meta name="twitter:description" content="Artisan 控制台简介Artisan 是 laravel 自带的命令行工具接口的名称。它为应用的开发提供了多种有用的命令工具。Artisan 的底层驱动是强大的 Symfony 控制台组件。你可以使用 list 命令来查看可用的 Artisan 命令： 1php artisan list 所有的命令都提供了帮助文档，你可以在相应的命令前使用 help 来查看相关命令的选项和参数： 1php a">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/27/laravel-from-scratch-artisan-console/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— Artisan 命令 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/27/laravel-from-scratch-artisan-console/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— Artisan 命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-27T09:07:43+08:00">
+                2016-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Artisan-控制台"><a href="#Artisan-控制台" class="headerlink" title="Artisan 控制台"></a>Artisan 控制台</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Artisan 是 laravel 自带的命令行工具接口的名称。它为应用的开发提供了多种有用的命令工具。Artisan 的底层驱动是强大的 Symfony 控制台组件。你可以使用 <code>list</code> 命令来查看可用的 Artisan 命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan <span class="keyword">list</span></div></pre></td></tr></table></figure>
+<p>所有的命令都提供了帮助文档，你可以在相应的命令前使用 <code>help</code> 来查看相关命令的选项和参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan help migrate</div></pre></td></tr></table></figure>
+<h2 id="编写命令"><a href="#编写命令" class="headerlink" title="编写命令"></a>编写命令</h2><p>除了 Artisan 自带的命令之外，laravel 也允许你自行定义自己的命令工具，你可以将自定义的命令工具存放到 <code>app/Console/Commands</code> 目录下，你当然也可以存放在其他任何想要存放的目录，只要你所存放的位置能基于 <code>composer.json</code> 的设置进行自动加载就行。</p>
+<p>你可以使用 <code>make:console</code> Artisan 命令，来进行新命令工具的生成，这个命令会生成一个命令的样本来帮助你开始：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:console SendEmails</div></pre></td></tr></table></figure>
+<p>上面的命令会生成一个 <code>SendEmails</code> 类，并存放在 <code>app/Console/Commands/SendEmails.php</code>，当你构建命令时，你可以使用 <code>--command</code> 参数来设置命令工具所对应的名称。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:console SendEmails --command=emails:send</div></pre></td></tr></table></figure>
+<h3 id="命令结构"><a href="#命令结构" class="headerlink" title="命令结构"></a>命令结构</h3><p>一旦你的命令被生成，你需要在其中填充 <code>signature</code> 和 <code>description</code> 属性。这些内容会在你使用 <code>list</code> 命令时在屏幕上显示。</p>
+<p>当你的命令被执行时，会触发 <code>handle</code> 方法，你可以在这个方法里编写相应的命令逻辑。让我们来看一个命令示例。</p>
+<p>你应该知道我们可以在命令类的构造函数中进行依赖的注入。laravel 服务容器会自动的注入所有在构造函数中使用类型提示的依赖。为了使代码有更好的重用性，保持控制台命令的轻量，让它们推迟到应用服务来完成具体的任务是一种很好的实践。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Console</span>\<span class="title">Commands</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">DripEmailer</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Console</span>\<span class="title">Command</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SendEmails</span> <span class="keyword">extends</span> <span class="title">Command</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The name and signature of the console command.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $signature = <span class="string">'email:send &#123;user&#125;'</span>;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * The console command descritpion</span></div><div class="line"><span class="comment">    * </span></div><div class="line"><span class="comment">    * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">protected</span> $description = <span class="string">'Send drip e-mails to a user'</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * The drip e-mail service.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@var</span> DripEmailer</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">protected</span> $drip;</div><div class="line"></div><div class="line">     <span class="comment">/**</span></div><div class="line"><span class="comment">      * Create a new command instance.</span></div><div class="line"><span class="comment">      *</span></div><div class="line"><span class="comment">      * <span class="doctag">@param</span> DripEmailer $drip</span></div><div class="line"><span class="comment">      * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">      */</span></div><div class="line">      <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(DripEmailer $drip)</span></span></div><div class="line"><span class="function">      </span>&#123;</div><div class="line">        <span class="keyword">parent</span>::__construct();</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;drip = $drip;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">/**</span></div><div class="line"><span class="comment">       * Execute the console command.</span></div><div class="line"><span class="comment">       * </span></div><div class="line"><span class="comment">       * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">       */</span></div><div class="line">       <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function">       </span>&#123;</div><div class="line">         <span class="keyword">$this</span>-&gt;drip-&gt;send(User::find(<span class="keyword">$this</span>-&gt;argument(<span class="string">'user'</span>)));</div><div class="line">       &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="命令-I-O"><a href="#命令-I-O" class="headerlink" title="命令 I/O"></a>命令 I/O</h2><h3 id="定义期望的输入"><a href="#定义期望的输入" class="headerlink" title="定义期望的输入"></a>定义期望的输入</h3><p>当我们编写命令行工具时，通常都是通过用户输入的参数或者选项来收集输入。laravel 使这一切变的非常简单。你可以使用 <code>signature</code> 属性在你的命令中定义你所期望得到的输入名称。<code>signature</code> 属性允许你使用一行富有表现力类路由的语法来定义命令行中的名称，参数和选项。</p>
+<p>所有用户所提供的参数和选项都被包裹在大括号内。在下面的示例中，命令行工具定义了一个必须的参数：<code>user</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The name and signature of the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $signature = <span class="string">'email:send &#123;user&#125;'</span></div></pre></td></tr></table></figure>
+<p>你也可以使参数可选，或者为一个可选的参数定义一个默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Optional argument...</span></div><div class="line">email:send &#123;user?&#125;</div><div class="line"></div><div class="line"><span class="comment">// Optional argument with default value...</span></div><div class="line">email:send &#123;user=foo&#125;</div></pre></td></tr></table></figure>
+<p>选项和参数一样，它们也是用户的一种输入。但是它们在命令行被指定时会使用 <code>--</code> 作为前缀。我们可以像下面这样在 signature 中定义选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The name and signature of the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $signature = <span class="string">'email:send &#123;user&#125; &#123;--queeue&#125;'</span>;</div></pre></td></tr></table></figure>
+<p>在这个示例中，<code>--queue</code> 可以在使用 Artisan 命令时被指定。如果指定了 <code>--queque</code>，那么这个选项的值将会为 <code>true</code>。否则选项的值将为 <code>false</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan emial:send <span class="number">1</span> --queue</div></pre></td></tr></table></figure>
+<p>你也可以通过在选项后面添加 <code>=</code> 号来表明这个选项是需要通过用户输入的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The name and signature of the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $signature = <span class="string">'email:send &#123;user&#125; &#123;--queue=&#125;'</span>;</div></pre></td></tr></table></figure>
+<p>在这个例子中，用户传递一个值到选项像下面这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan email:send <span class="number">1</span> --queue=<span class="keyword">default</span></div></pre></td></tr></table></figure>
+<p>你也可以分配一个默认值到选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">email:send &#123;user&#125; &#123;--queue=<span class="keyword">default</span>&#125;</div></pre></td></tr></table></figure>
+<p>你也可以为选项定义一个简写，你需要使用 <code>|</code> 来分割简写与选项名称，并将简写像下面的示例一样前置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">email:send &#123;user&#125; &#123;--Q|queue&#125;</div></pre></td></tr></table></figure>
+<p>如果你想要定义参数或选项期望得到的是输入数组，你可以使用 <code>*</code> 通配符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">email:send &#123;user*&#125;</div><div class="line">email:send &#123;user&#125; &#123;--id=*&#125;</div></pre></td></tr></table></figure>
+<p><strong>输入说明</strong></p>
+<p>你也可以分配描述信息到选项或者参数中，你需要使用 <code>:</code> 来进行分割描述和选项或参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The name and signature of the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $signature = <span class="string">'email:send</span></div><div class="line"><span class="string">                         &#123;user: The ID of the user&#125;</span></div><div class="line"><span class="string">                         &#123;--queue= : Whether the job should be queued&#125;'</span>;</div></pre></td></tr></table></figure>
+<h3 id="检索输入"><a href="#检索输入" class="headerlink" title="检索输入"></a>检索输入</h3><p>当你的命令工具存在时，你明显会需要访问命令行中所期望得到的参数或选项的值。你可以使用 <code>argument</code> 和 <code>option</code> 方法来得到：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Execute the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   $userId = <span class="keyword">$this</span>-&gt;argument(<span class="string">'user'</span>);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>你可以通过调用不带参数的 <code>argument</code> 方法来获取所有参数所组成的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$arguments = <span class="keyword">$this</span>-&gt;argument();</div></pre></td></tr></table></figure>
+<p>选项可以非常简单的类似参数一样的通过 <code>option</code> 方法进行检索。选项可以像参数那样当调用无参数的 <code>option</code> 方法时返回所有选项所组成的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve a specific option...</span></div><div class="line">$queueName = <span class="keyword">$this</span>-&gt;option(<span class="string">'queue'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Retrieve all options...</span></div><div class="line">$options = <span class="keyword">$this</span>-&gt;option();</div></pre></td></tr></table></figure>
+<p>如果相应的参数或选项没有被检索到，会返回 <code>null</code>。</p>
+<h3 id="为输入进行提示"><a href="#为输入进行提示" class="headerlink" title="为输入进行提示"></a>为输入进行提示</h3><p>除了显示输出之外，你可能也需要在执行你的命令行工具的过程中向用户索求额外的输入。你可以使用 <code>ask</code> 方法来进行提示用户输入，这个方法将接收用户的输入并返回输入的内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Execute the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   $name = <span class="keyword">$this</span>-&gt;ask(<span class="string">'What is your name?'</span>);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><code>secret</code> 方法与 <code>ask</code> 方法非常相似，只是用户在控制台中输入的内容并不是可见的。这个方法通常是询问用户密码相关时使用的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$password = <span class="keyword">$this</span>-&gt;secret(<span class="string">'What is the password?'</span>);</div></pre></td></tr></table></figure>
+<p><strong>要求确认</strong></p>
+<p>如果你只是需要用户的确认，你可以使用 <code>confirm</code> 方法。默认的，该方法返回 <code>false</code>. 但是如果用户在响应中输入了 <code>y</code>，该方法将返回 <code>true</code>.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;confirm(<span class="string">'Do you wish to continue? [y|N]'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>给用户一个选择</strong></p>
+<p><code>anticipate</code> 方法可以用来对可选的内容进行自动完成的提示。这里只是对用户有可能选择的内容进行自动完成提示，并非强制要求用户仅选择可选的内容:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = <span class="keyword">$this</span>-&gt;anticipate(<span class="string">'What is your name?'</span>, [<span class="string">'Taylor'</span>, <span class="string">'Dayle'</span>]);</div></pre></td></tr></table></figure>
+<p>如果你需要给用户预置选项你可以使用 <code>choice</code> 方法。用户必须选中选项中的索引，用户选中相应的索引的答案的值将会被返回。你可以设置一个默认的索引值，这个索引值将在用户没有做出任何选择时返回：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = <span class="keyword">$this</span>-&gt;choice(<span class="string">'What is your name?'</span>, [<span class="string">'Taylor'</span>, <span class="string">'Dayle'</span>], $default);</div></pre></td></tr></table></figure>
+<h3 id="编写输出"><a href="#编写输出" class="headerlink" title="编写输出"></a>编写输出</h3><p>你可以使用 <code>line</code>，<code>info</code>，<code>comment</code>，<code>question</code> 和 <code>error</code> 方法发送输出到控制台。这些方法会使用相应的 ANSI 颜色来表明相应的目的。</p>
+<p>你可以使用 <code>info</code> 方法来向用户显示一个信息消息。通常，这条消息在控制台中是一个绿色的文本：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Execute the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">$this</span>-&gt;info(<span class="string">'Display this on the screen'</span>);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>你可以使用 <code>error</code> 方法来显示一个错误消息。错误消息通常都是红色的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;error(<span class="string">'Something went wrong!'</span>);</div></pre></td></tr></table></figure>
+<p> 你可以使用 <code>line</code> 方法来显示一个原生的控制台输出。<code>line</code> 方法并没有对消息设置任何的独特颜色信息：</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;line(<span class="string">'Display thie on the screen'</span>);</div></pre></td></tr></table></figure>
+<p> <strong>表格布局</strong></p>
+<p> 你可以使用 <code>table</code> 方法来简单的对多行或多列的数据进行格式化布局。你只需要向方法中传递头部和行信息到方法中就可以了。宽度和高度将会自动的通过所给定的数据进行计算：</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$headers = [<span class="string">'Name'</span>, <span class="string">'Email'</span>];</div><div class="line"></div><div class="line">$users = App\User::all([<span class="string">'name'</span>, <span class="string">'email'</span>])-&gt;toArray();</div><div class="line"></div><div class="line"><span class="keyword">$this</span>-&gt;table($headers, $users);</div></pre></td></tr></table></figure>
+<p> <strong>进度条</strong></p>
+<p>对于一些耗时的任务来说，有一个进度提示是非常有用的。如果使用输出对象，我们就可以开始，推进和停止进度条。你需要在你开始进度条之前定义步长。然后根据进行的每一步来推进进度条：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$user = App\User::all();</div><div class="line"></div><div class="line">$bar = <span class="keyword">$this</span>-&gt;output-&gt;createProgressBar(count($users));</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;performTask($user);</div><div class="line"></div><div class="line">  $bar-&gt;advance();</div><div class="line">&#125;</div><div class="line">$bar-&gt;finish();</div></pre></td></tr></table></figure>
+<p>你可以通过查看 <a href="http://symfony.com/doc/2.7/components/console/helpers/progressbar.html" target="_blank" rel="external">Symfony Progress Bar component documentation</a> 来获取更多的选项信息。</p>
+<h2 id="注册命令行"><a href="#注册命令行" class="headerlink" title="注册命令行"></a>注册命令行</h2><p>一旦你完成了命令行的编写，你还需要注册其在 Artisan 命令中可用。这些需要在 <code>app/Console/Kernel.php</code> 文件中完成。</p>
+<p>在这个文件中，你会发现 <code>commands</code> 属性，它是一个命令行类的列表。当 Artisan 启动时，所有在这个列表中的命令都会通过服务容器解析到 Arisan:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $commands = [</div><div class="line">  Commands\SendEmails::class</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="通过代码调用命令"><a href="#通过代码调用命令" class="headerlink" title="通过代码调用命令"></a>通过代码调用命令</h2><p>有时候你可能希望在控制台之外执行 Artisan 命令。比如，你希望在控制器的路由中触发 Artisan 命令。你可以使用 <code>Artisan</code> 假面的 <code>call</code> 方法来完成这些。<code>call</code> 方法接收一个命令名称，和一个包含所有参数和选项所组成的数组，命令执行完成之后会返回一个退出代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/foo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  $exitCode = Artisan::call(<span class="string">'email:send'</span>, [</div><div class="line">    <span class="string">'user'</span> =&gt; <span class="number">1</span>, <span class="string">'--queue'</span> =&gt; <span class="string">'default'</span></div><div class="line">  ]); </div><div class="line"></div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>通过使用 <code>Artisan</code> 假面的 <code>queue</code> 方法，你甚至可以队列化 <code>Artisan</code> 命令，在后台进程中队列工人会按序的帮你执行完成命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/foo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  Artisan::queue(<span class="string">'email:send'</span>, [</div><div class="line">    <span class="string">'user'</span> =&gt; <span class="number">1</span>, <span class="string">'--queue'</span> =&gt; <span class="string">'default'</span></div><div class="line">  ]);</div><div class="line"></div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果你需要强制指定一个不接受字符串值的选项的值为一个字符串，就像 <code>migrate:refresh</code> 命令，你可以使用 <code>--force</code> 标识并传递一个布尔值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$exitCode = Artisan::call(<span class="string">'migrate:refresh'</span>, [</div><div class="line">  <span class="string">'--force'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<h3 id="在命令行中调用另外的命令"><a href="#在命令行中调用另外的命令" class="headerlink" title="在命令行中调用另外的命令"></a>在命令行中调用另外的命令</h3><p>有时候，你可能希望在命令行工具中调用另外一个已经存在的 Artisan 命令。你可以使用 <code>call</code> 方法来完成这些。<code>call</code> 方法接收命令的名称和一个包含所有参数和选项的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Execute the console command.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">$this</span>-&gt;call(<span class="string">'email:send'</span>, [</div><div class="line">    <span class="string">'user'</span> =&gt; <span class="number">1</span>, <span class="string">'--queue'</span> =&gt; <span class="string">'default'</span></div><div class="line">   ]);</div><div class="line"></div><div class="line">   <span class="comment">//</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>如果你希望调用另外一个控制台命令而不希望它有任何的输出，你可以使用 <code>callSilent</code> 方法，<code>callSilent</code> 方法具有 <code>call</code> 方法相同的调用方式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;callSilent(<span class="string">'email:send'</span>, [</div><div class="line">  <span class="string">'user'</span> =&gt; <span class="number">1</span>, <span class="string">'--queue'</span> =&gt; <span class="string">'default'</span></div><div class="line">]);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/25/laravel-from-scratch-authorization/" rel="next" title="laravel 基础教程 —— 授权">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 授权
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/27/laravel-from-scratch-billing/" rel="prev" title="laravel 基础教程 —— 计费">
+                laravel 基础教程 —— 计费 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Artisan-控制台"><span class="nav-number">1.</span> <span class="nav-text">Artisan 控制台</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写命令"><span class="nav-number">1.2.</span> <span class="nav-text">编写命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令结构"><span class="nav-number">1.2.1.</span> <span class="nav-text">命令结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令-I-O"><span class="nav-number">1.3.</span> <span class="nav-text">命令 I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义期望的输入"><span class="nav-number">1.3.1.</span> <span class="nav-text">定义期望的输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检索输入"><span class="nav-number">1.3.2.</span> <span class="nav-text">检索输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为输入进行提示"><span class="nav-number">1.3.3.</span> <span class="nav-text">为输入进行提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写输出"><span class="nav-number">1.3.4.</span> <span class="nav-text">编写输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册命令行"><span class="nav-number">1.4.</span> <span class="nav-text">注册命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过代码调用命令"><span class="nav-number">1.5.</span> <span class="nav-text">通过代码调用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在命令行中调用另外的命令"><span class="nav-number">1.5.1.</span> <span class="nav-text">在命令行中调用另外的命令</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

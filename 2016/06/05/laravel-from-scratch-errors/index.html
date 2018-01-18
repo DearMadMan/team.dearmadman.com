@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="错误和日志简介当你开始一个新的 laravel 项目时，你一定会需要到对错误和异常的处理，而这些 laravel 都已经为你配置好了。另外，laravel 还集成了 Monolog 日志组件库，它提供了各种强大的日志处理器。 配置错误详情 你的应用中通过浏览器来展示的错误详情程度是通过你的 config/app.php 配置文件中的 debug 选项来进行配置的。默认的该配置项遵从 .env 文件">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 错误和日志">
+<meta property="og:url" content="http://yoursite.com/2016/06/05/laravel-from-scratch-errors/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="错误和日志简介当你开始一个新的 laravel 项目时，你一定会需要到对错误和异常的处理，而这些 laravel 都已经为你配置好了。另外，laravel 还集成了 Monolog 日志组件库，它提供了各种强大的日志处理器。 配置错误详情 你的应用中通过浏览器来展示的错误详情程度是通过你的 config/app.php 配置文件中的 debug 选项来进行配置的。默认的该配置项遵从 .env 文件">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 错误和日志">
+<meta name="twitter:description" content="错误和日志简介当你开始一个新的 laravel 项目时，你一定会需要到对错误和异常的处理，而这些 laravel 都已经为你配置好了。另外，laravel 还集成了 Monolog 日志组件库，它提供了各种强大的日志处理器。 配置错误详情 你的应用中通过浏览器来展示的错误详情程度是通过你的 config/app.php 配置文件中的 debug 选项来进行配置的。默认的该配置项遵从 .env 文件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/05/laravel-from-scratch-errors/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 错误和日志 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/05/laravel-from-scratch-errors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 错误和日志</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-05T21:28:09+08:00">
+                2016-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="错误和日志"><a href="#错误和日志" class="headerlink" title="错误和日志"></a>错误和日志</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当你开始一个新的 laravel 项目时，你一定会需要到对错误和异常的处理，而这些 laravel 都已经为你配置好了。另外，laravel 还集成了 <a href="https://github.com/Seldaek/monolog" target="_blank" rel="external">Monolog</a> 日志组件库，它提供了各种强大的日志处理器。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>错误详情</strong></p>
+<p>你的应用中通过浏览器来展示的错误详情程度是通过你的 <code>config/app.php</code> 配置文件中的 <code>debug</code> 选项来进行配置的。默认的该配置项遵从 <code>.env</code> 文件中的 <code>APP_DEBUG</code> 环境变量。</p>
+<p><strong>日志模式</strong></p>
+<p>larvel 提供了几种开箱即用的日志模式：<code>single</code>，<code>daily</code>，<code>syslog</code> 和 <code>errorlog</code>。比如，如果你希望使用每日日期文件记录日志来替换默认的单文件记录方式。你可以简单的在 <code>config/app.php</code> 配置文件中该设置 <code>log</code> 选项的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'log'</span> =&gt; <span class="string">'daily'</span></div></pre></td></tr></table></figure>
+<p>当使用 <code>daily</code> 日志模式时，laravel 默认只会保留 5 天内的日志文件。如果你需要保留更多的日志文件，你需要在 <code>config/app.php</code> 文件中添加 <code>log_max_files</code> 选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'log_max_files'</span> =&gt; <span class="number">30</span></div></pre></td></tr></table></figure>
+<p><strong>自定义 Monolog 配置</strong></p>
+<p>如果你想要在应用中对 Monolog 的配置拥有完全的控制，你可以使用应用的 <code>configureMonologUsing</code> 方法。你应该在 <code>bootstrap/app.php</code> 文件中进行方法的调用，并且你应该把它放置在返回 <code>$app</code> 之前：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$app-&gt;configureMonologUsing(<span class="function"><span class="keyword">function</span> <span class="params">($monolog)</span> </span>&#123;</div><div class="line">  $monolog-&gt;pushHandler(...); </div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">return</span> $app;</div></pre></td></tr></table></figure>
+<p>默认的，laravel 会记录所有等级的日志。在生产环境中，你可能会想要只记录某些等级的日志，你可以通过在 <code>app.php</code> 配置文件中添加 <code>log_level</code> 选项来做到。laravel 会记录这个等级的日志和比这个等级日志更高级的日志。比如，设置 <code>log_level</code> 为 <code>error</code>，那么它会记录 <code>error</code>，<code>critical</code>，<code>alert</code> 和 <code>emergency</code> 等级的消息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'log_level'</span> =&gt; app_env(<span class="string">'APP_LOG_LEVEL'</span>, <span class="string">'debug'</span>),</div></pre></td></tr></table></figure>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>所有的异常都会在 <code>App\Exceptions\Handler</code> 类中进行处理。该类包含了两个方法：<code>report</code> 和 <code>render</code>。我们将会对这个两个方法进行详细的剖析。</p>
+<h3 id="Report-方法"><a href="#Report-方法" class="headerlink" title="Report 方法"></a>Report 方法</h3><p><code>report</code> 方法被用来记录异常或者发送异常到其他的服务中去，比如 <a href="https://bugsnag.com/" target="_blank" rel="external">BugSnag</a> 或者 <a href="https://github.com/getsentry/sentry-laravel" target="_blank" rel="external">Sentry</a>。默认的，<code>report</code> 方法只是简单的传递异常到异常记录的基类中。事实上，你可以自由的按照自己的希望去记录异常。</p>
+<p>比如，如果你希望用不同的方式来记录不同类型的异常，你可以使用 PHP 的 <code>instanceof</code> 方法来进行筛选操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Report or log an exception.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * This is a great spot to send exceptions to Sentry, Bugsnag, etc.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> \Exception $e</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">report</span><span class="params">(Exception $e)</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">if</span> ($e <span class="keyword">instanceof</span> CustomException) &#123;</div><div class="line">     <span class="comment">//</span></div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="keyword">return</span> <span class="keyword">parent</span>::report($e);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><strong>根据类型来忽略异常</strong></p>
+<p>异常处理类的 <code>$dontReport</code> 属性包含了一个需要忽略的异常类数组。这个数组中类型的异常将不会被记录。默认的 404 类型的错误就不会记录在日志文件中，你可以按需在这个数组中进行追加忽略的异常类名。</p>
+<h3 id="Render-方法"><a href="#Render-方法" class="headerlink" title="Render 方法"></a>Render 方法</h3><p><code>render</code> 方法用来将异常转换为传递回浏览器的响应信息。默认异常会被传递到基类并返回一个响应。事实上，你可以自由的按需进行定制化响应：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Render an exception into an HTTP response.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> \Illuminate\Http\Request $request</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> \Exception $e</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> \Illuminate\Http\Response</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">render</span><span class="params">($request, Exception $e)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">if</span> ($e <span class="keyword">instanceof</span> CustomException) &#123;</div><div class="line">    <span class="keyword">return</span> response()-&gt;view(<span class="string">'errors.custom'</span>, [], <span class="number">500</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="keyword">parent</span>::render($request, $e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="HTTP-异常"><a href="#HTTP-异常" class="headerlink" title="HTTP 异常"></a>HTTP 异常</h2><p>有些异常是直接从服务器来描述 HTTP 的错误代码。比如，这可能是一个“页面没有找到”的错误（404），一个“未授权”的错误（401）或者是一个“开发错误”（500）。为了在你的应用中快速的生成这种类型的响应，你可以使用下面的方式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">abort(<span class="number">404</span>);</div></pre></td></tr></table></figure>
+<p><code>abort</code> 方法会立即的提出一个异常，该异常会在异常处理中被渲染。你也可以在该方法中提供一个可选的响应文本：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">abort(<span class="number">403</span>, <span class="string">'Unauthorized action.'</span>);</div></pre></td></tr></table></figure>
+<p>该方法可以在请求的生命周期中的任意时间点使用。</p>
+<h3 id="自定义-HTTP-错误页面"><a href="#自定义-HTTP-错误页面" class="headerlink" title="自定义 HTTP 错误页面"></a>自定义 HTTP 错误页面</h3><p>laravel 使根据 HTTP 响应状态码来创建自定义的错误页面非常简单。比如，你可能希望自定义一个错误页面来提供给 404 HTTP 状态码。你可以创建一个 <code>resoucres/views/errors/404.blade.php</code> 文件。该文件会在应用抛出 404 错误时自动的提供服务。</p>
+<p>在该目录下的视图的命名应该与 HTTP 状态码相对应。</p>
+<h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>laravel 的日志系统是基于强大的 <a href="http://github.com/seldaek/monolog" target="_blank" rel="external">Monolog</a> 类库的。默认的，laravel 设置了 <code>storage/logs</code> 目录来存放日志文件。你可以使用 <code>Log</code> 假面来记录日志信息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Log</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show the profile for the given user.</span></div><div class="line"><span class="comment">   * </span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">showProfile</span><span class="params">($id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Log::info(<span class="string">'Showing user profile for user: '</span> . $id);</div><div class="line"></div><div class="line">     <span class="keyword">return</span> view(<span class="string">'user.profile'</span>, [<span class="string">'user'</span> =&gt; User:findOrFail($id)]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>日志记录器根据 <a href="http://tools.ietf.org/html/rfc5424" target="_blank" rel="external">RFC 5424</a> 规范定义了 8 中日志等级：<strong>emergency</strong>,<strong>alert</strong>,<strong>critical</strong>,<strong>error</strong>,<strong>warning</strong>,<strong>notice</strong>,<strong>info</strong> 和 <strong>debug</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Log::emergency($error);</div><div class="line">Log::alert($error);</div><div class="line">Log::critical($error);</div><div class="line">Log::error($error);</div><div class="line">Log::warning($error);</div><div class="line">Log::notice($error);</div><div class="line">Log::info($error);</div><div class="line">Log::debug($error);</div></pre></td></tr></table></figure>
+<p><strong>上下文信息</strong></p>
+<p>你可以在入日志方法中传递一个上下文数据的数组，这个上下文数据将会被格式化并在日志信息中显示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Log::info(<span class="string">'User failed to login.'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]);</div></pre></td></tr></table></figure>
+<p><strong>访问底层的 Monolog 实例</strong></p>
+<p>Monolog 拥有多种额外日志处理方法。如果你需要，你可以在 laravel 中使用下面的方式访问底层的 Monolog 实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$monolog = Log::getMonolog();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/05/laravel-from-scratch-encryption/" rel="next" title="laravel 基础教程 —— 加密">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 加密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/06/laravel-from-scratch-events/" rel="prev" title="laravel 基础教程 —— 事件">
+                laravel 基础教程 —— 事件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#错误和日志"><span class="nav-number">1.</span> <span class="nav-text">错误和日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理"><span class="nav-number">1.3.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Report-方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">Report 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Render-方法"><span class="nav-number">1.3.2.</span> <span class="nav-text">Render 方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-异常"><span class="nav-number">1.4.</span> <span class="nav-text">HTTP 异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义-HTTP-错误页面"><span class="nav-number">1.4.1.</span> <span class="nav-text">自定义 HTTP 错误页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志"><span class="nav-number">1.5.</span> <span class="nav-text">日志</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

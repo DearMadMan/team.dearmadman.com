@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Eloquent: 起步简介Laravel 的 Eloquent ORM 提供了一种漂亮简洁的关系映射的模型来与数据库进行交互。所有的数据库表都有相应的模型，这些模型被用来与表进行交互。模型允许你直接查询数据库表中的数据，及插入新的记录到数据表中。 在开始之前，你需要确保完成了 config/database.php 配置文件中的数据库配置。对于更多的配置数据库相关的信息，请参考 文档。 定义模型">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— Eloquent">
+<meta property="og:url" content="http://yoursite.com/2016/06/24/laravel-from-scratch-eloquent/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Eloquent: 起步简介Laravel 的 Eloquent ORM 提供了一种漂亮简洁的关系映射的模型来与数据库进行交互。所有的数据库表都有相应的模型，这些模型被用来与表进行交互。模型允许你直接查询数据库表中的数据，及插入新的记录到数据表中。 在开始之前，你需要确保完成了 config/database.php 配置文件中的数据库配置。对于更多的配置数据库相关的信息，请参考 文档。 定义模型">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— Eloquent">
+<meta name="twitter:description" content="Eloquent: 起步简介Laravel 的 Eloquent ORM 提供了一种漂亮简洁的关系映射的模型来与数据库进行交互。所有的数据库表都有相应的模型，这些模型被用来与表进行交互。模型允许你直接查询数据库表中的数据，及插入新的记录到数据表中。 在开始之前，你需要确保完成了 config/database.php 配置文件中的数据库配置。对于更多的配置数据库相关的信息，请参考 文档。 定义模型">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/24/laravel-from-scratch-eloquent/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— Eloquent | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/24/laravel-from-scratch-eloquent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— Eloquent</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-24T14:26:51+08:00">
+                2016-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Eloquent-起步"><a href="#Eloquent-起步" class="headerlink" title="Eloquent: 起步"></a>Eloquent: 起步</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel 的 Eloquent ORM 提供了一种漂亮简洁的关系映射的模型来与数据库进行交互。所有的数据库表都有相应的模型，这些模型被用来与表进行交互。模型允许你直接查询数据库表中的数据，及插入新的记录到数据表中。</p>
+<p>在开始之前，你需要确保完成了 <code>config/database.php</code> 配置文件中的数据库配置。对于更多的配置数据库相关的信息，请参考 <a href="https://laravel.com/docs/5.2/database#configuration" target="_blank" rel="external">文档</a>。</p>
+<h2 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h2><p>在开始之前，让我们先来创建一个 Eloquent 模型。模型通常存放在 <code>app</code> 目录下，但是你也可以自由的放置在任何地方，只要它能够根据你的 <code>composer.json</code> 文件的指导进行自动的加载。所有的 Eloquent 模型都继承自 <code>Illuminate\Database\Eloquent\Model</code> 类。</p>
+<p>最简单的创建一个模型类的方式就是使用 <code>make:model</code> Artisan 命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:model User</div></pre></td></tr></table></figure>
+<p>如果你希望在你生成模型的同时生成一份数据库迁移，你可以使用 <code>--migration</code> 或者 <code>-m</code> 选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan make:model User --migration</div><div class="line"></div><div class="line">php artisan make:model User -m</div></pre></td></tr></table></figure>
+<h3 id="Eloquent-模型约定"><a href="#Eloquent-模型约定" class="headerlink" title="Eloquent 模型约定"></a>Eloquent 模型约定</h3><p>现在，让我们来看一个 <code>Flight</code> 模型的示例，我们将通过它获取和存储数据库中 <code>flights</code> 表的数据：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>表名称</strong></p>
+<p>你需要注意我们上面的代码中并没有指出 <code>Flight</code> 模型使用哪个数据库的表。如果你没有明确的指出模型所对应的表，那么 Eloquent 将使用类的蛇形命名的复数形式来使用相应的数据表。所以，在这个例子中，Eloquent 将会假定 <code>Flight</code> 模型存储的记录被放在 <code>flights</code> 表中。你可以使用 <code>table</code> 属性来指定表名：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The table associated with the model.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $table = <span class="string">'my_flights'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>主键</strong></p>
+<p>Eloquent 也会假定所有表的主键列名为 <code>id</code>。你也可使用 <code>$primaryKey</code> 属性来手动的指定表的主键。</p>
+<p>另外，Eloquent 也会假定主键是一个自增的整型值，这意味着，在默认情况下主键会被自动的转为 <code>int</code>。如果你希望使用非自增或者非数字的主键，那么你需要在模型中将公开的 <code>$incrementing</code> 属性设置为 <code>false</code>。</p>
+<p><strong>时间戳</strong></p>
+<p>默认的，Eloquent 期望模型表中存在 <code>created_at</code> 和 <code>updated_at</code> 列，如果你不希望 Eloquent 自主的管理这两列，你可以在模型中设置 <code>$timestamps</code> 属性为 <code>false</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Indicates if the model should be timestamped.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> bool</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> $timestamps = <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你需要自定义时间戳的格式，你可以设置 <code>$dateFormat</code> 属性。这个属性用来决定日期属性存储在数据库中的格式，以及模型在进行序列化为数组或者 JSON 时的显示样式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The storage format of the model's date columns.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $dateFormat = <span class="string">'U'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>数据库连接</strong></p>
+<p>默认的，所有的 Eloquent 模型都会使用应用配置的默认的数据库连接。如果你希望模型使用不同的数据库连接，你可以使用 <code>$connection</code> 属性：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The connection name for the model.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $connection = <span class="string">'connection-name'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="检索多个模型"><a href="#检索多个模型" class="headerlink" title="检索多个模型"></a>检索多个模型</h2><p>一旦你创建了模型和其相应的数据表，你就为从数据库中检索数据做好了准备。你可以把 Eloquent 模型作为一个强大的查询生成器来使用，它允许通过模型流畅的查询相应的表中的数据。比如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Flight</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlightController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show a list of all available flights.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $flights = Flight::all();</div><div class="line"></div><div class="line">    <span class="keyword">return</span> view(<span class="string">'flight.index'</span>, [<span class="string">'flights'</span> =&gt; $flights]);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>访问列的值</strong></p>
+<p>如果你获得了 Eloquent 模型的实例，那么你可以通过模型中相应的列名的属性来访问表中列的值。比如，让我们循环查询的结果，并通过获取的 <code>Flight</code> 实例来获得 <code>name</code> 列的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($flights <span class="keyword">as</span> $flight) &#123;</div><div class="line">  <span class="keyword">echo</span> $flight-&gt;name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>添加额外的条件</strong></p>
+<p>Eloquent 的 <code>all</code> 方法会返回模型表中所有的记录。由于所有的 Eloquent 模型都可以作为查询生成器来进行服务，所以你可以在这些查询中增加额外的条件，然后使用 <code>get</code> 方法来检索结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$flights = App\Flight::where(<span class="string">'active'</span>, <span class="number">1</span>)</div><div class="line">             -&gt;orderBy(<span class="string">'name'</span>, <span class="string">'desc'</span>)</div><div class="line">             -&gt;take(<span class="number">10</span>)</div><div class="line">             -&gt;get();</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：由于 Eloquent 模型也是查询生成器，所以你可以回顾一下查询生成器中所有可用的方法，因为它们同样可以在 Eloquent 中进行使用。</p>
+</blockquote>
+<p><strong>集合</strong></p>
+<p>对于像 <code>all</code> 和 <code>get</code> 这样的 Eloquent 方法会返回多个结果，这将返回一个 <code>Illuminate\Database\Eloquent\Collection</code> 实例。<code>Collection</code> 类提供了各种有用的方法与 Eloquent 结果进行交互。当然，你可以简单的对集合进行循环，因为他实现了 ArrayAccess 接口：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($flights <span class="keyword">as</span> $flight) &#123;</div><div class="line">  <span class="keyword">echo</span> $flight-&gt;name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>对结果进行分块</strong></p>
+<p>如果你需要处理数千条 Eloquent 记录，那么你可以使用 <code>chunk</code> 方法。<code>chunk</code> 方法会从 Eloquent 模型中检索出一小块记录，然后将其传递给 <code>Closure</code> 进行处理。使用 <code>chunk</code> 方法在处理大量结果集时可有有效的降低内存的消耗：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Flight::chunk(<span class="number">200</span>, <span class="function"><span class="keyword">function</span> <span class="params">($flights)</span> </span>&#123;</div><div class="line">  <span class="keyword">foreach</span> ($flights <span class="keyword">as</span> $flight) &#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">  &#125; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>传递到方法的第一个参数是你要设置进行分块的大小。而传递到第二个参数的闭包将会在从数据库检索出每块内容时进行调用。</p>
+<h2 id="检索单个模型-统计"><a href="#检索单个模型-统计" class="headerlink" title="检索单个模型 / 统计"></a>检索单个模型 / 统计</h2><p>当然，除了可以从表中检索出所有的记录之外，你也可以使用 <code>find</code> 和 <code>first</code> 方法来从数据库中检索出单条的数据。这将会返回一个单独的模型实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve a model by its primary key...</span></div><div class="line">$flight = App\Flight::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="comment">// Retrieve the first model matching the query constraints...</span></div><div class="line">$flight = App\Flight::where(<span class="string">'active'</span>, <span class="number">1</span>)-&gt;first();</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>find</code> 方法时传递一个包含主键所组成的数组，这将返回所有匹配到记录的集合：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$flights = App\Flight::find([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</div></pre></td></tr></table></figure>
+<p><strong>未发现时的异常</strong></p>
+<p>有时候，你可能希望在没有找到匹配的模型时抛出一个异常。这对路由或者控制器来说尤其有用。<code>findOrFail</code> 和 <code>firstOrFail</code> 方法可以从查询中检索出首个匹配的结果，但是，如果结果中没有匹配的项，那么会抛出一个 <code>Illuminate\Database\Eloquent\ModelNotFoundException</code> 异常：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$model = App\Flight::findOrFail(<span class="number">1</span>);</div><div class="line"></div><div class="line">$model = App\Flight::where(<span class="string">'legs'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;firstOrFail();</div></pre></td></tr></table></figure>
+<p>如果异常没有被捕获，那么会直接传递给用户一个 <code>404</code> HTTP 响应。所以当你在使用这些方法时是没有必要编写明确的检查并返回 <code>404</code> 响应的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/api/flights/&#123;id&#125;'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($id)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> App\Flight::findOrFail($id); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="检索统计"><a href="#检索统计" class="headerlink" title="检索统计"></a>检索统计</h3><p>当然，你可以使用 <code>count</code>，<code>sum</code>，<code>max</code> 和其他 <a href="https://laravel.com/docs/5.2/queries" target="_blank" rel="external">查询生成器</a> 所提供的的 <a href="https://laravel.com/docs/5.2/queries#aggregates" target="_blank" rel="external">聚合函数</a>。这些方法会返回适当的数值，而不是完整的模型实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$count = App\Flight::where(<span class="string">'active'</span>, <span class="number">1</span>)-&gt;count();</div><div class="line"></div><div class="line">$max = App\Flight::where(<span class="string">'active'</span>, <span class="number">1</span>)-&gt;max(<span class="string">'price'</span>);</div></pre></td></tr></table></figure>
+<h2 id="插入-amp-更新模型"><a href="#插入-amp-更新模型" class="headerlink" title="插入 &amp; 更新模型"></a>插入 &amp; 更新模型</h2><h3 id="基础插入"><a href="#基础插入" class="headerlink" title="基础插入"></a>基础插入</h3><p>想要在数据库中插入新的记录，只需要简单的创建模型实例，然后设置模型的属性，再调用 <code>save</code> 方法就可以了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Flight</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlightController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Create a new flight instance.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(Request $request)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">// Validate the request...</span></div><div class="line"></div><div class="line">     $flight = <span class="keyword">new</span> Flight;</div><div class="line"></div><div class="line">     $flight-&gt;name = $request-&gt;name;</div><div class="line"></div><div class="line">     $flight-&gt;save();</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个例子中，我们简单的从流入的 HTTP 请求中的 <code>name</code> 参数分配到 <code>App\Flight</code> 模型实例的 <code>name</code> 属性上。当我们调用 <code>save</code> 方法时，这条记录将会插入到数据库中，同时 <code>created_at</code> 和 <code>updated_at</code> 时间戳也会自动的被进行设置，所以这并不需要进行手动的设置它们。</p>
+<h3 id="基础的更新"><a href="#基础的更新" class="headerlink" title="基础的更新"></a>基础的更新</h3><p><code>save</code> 方法也可用来更新数据库中已经存在的数据模型。为了更新模型，你应该首先检索到它们，然后设置任何你想要更新的属性，接着调用 <code>save</code> 方法。这一次，<code>updated_at</code> 时间戳会自动的进行更新，所以你并不需要手动的更新这个值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$flight = App\Flight::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$flight-&gt;name = <span class="string">'New Flight Name'</span>;</div><div class="line"></div><div class="line">$flight-&gt;save();</div></pre></td></tr></table></figure>
+<p>你也可以针对查询匹配的多个模型进行更新操作。比如，所有 <code>active</code> 并且 <code>destination</code> 为 <code>San Diego</code> 的航班将会被标记为延迟：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">App\Flight::where(<span class="string">'active'</span>, <span class="number">1</span>)</div><div class="line">          -&gt;where(<span class="string">'destination'</span>, <span class="string">'San Diego'</span>)</div><div class="line">          -&gt;update([<span class="string">'delayed'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<p><code>update</code> 方法接收一个想要更新的列的键值对数组。</p>
+<h3 id="批量赋值"><a href="#批量赋值" class="headerlink" title="批量赋值"></a>批量赋值</h3><p>你也可以使用 <code>create</code> 方法来在一行中存储一个新的模型。一个新增的模型实例将会从方法中返回。事实上，在开始做这些之前，你需要先指定模型的 <code>fillable</code> 或者 <code>guarded</code> 属性，它们是针对批量赋值时的保护措施。</p>
+<p>当用户通过 HTTP 请求传递一些意外的参数时，这可能会造成批量赋值时一些问题的出现，或许参数中存在一些你并不想改变的列值的参数。比如，一个恶意的用户可能会在请求中嵌入一个 <code>is_admin</code> 参数，然后这些参数映射到你的 <code>create</code> 方法中，这就使用户将自己升级为了超级管理员。</p>
+<p>所以，在开始之前，你需要先定义哪些模型属性是可以进行批量分配的。你可以使用模型 <code>$fillable</code> 属性，让我们在 <code>Flight</code> 模型中添加允许 <code>name</code> 属性的批量赋值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dlight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that are mass assignable.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $fillable = [<span class="string">'name'</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦我们使一个属性可以进行批量赋值。那么我们可以使用 <code>create</code> 方法直接的添加记录到数据中。<code>create</code> 方法会返回存储后的模型实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$flight = App\Flight::create([<span class="string">'name'</span> =&gt; <span class="string">'Flight 10'</span>]);</div></pre></td></tr></table></figure>
+<p>而 <code>$fillable</code> 就像是为批量赋值提供了一种白名单的机制。你也可以选择使用 <code>$guarded</code>。<code>$guarded</code> 属性应该包含一个你不想要进行批量赋值的属性所组成的数组。所有不在这个数组中的属性都将可以进行批量赋值。所以，<code>$guarded</code> 就像一个黑名单的功能。当然，你应该只使用 <code>$fillable</code> 或者 <code>$guarded</code> 中的一个，而不是全部：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that aren't mass assignable.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $guarded = [<span class="string">'price'</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的例子中，除了 <code>price</code>，所有的属性都可以进行批量赋值。</p>
+<p><strong>其他创建方法</strong></p>
+<p>这里也有其他两种方法可以使用批量赋值进行模型的创建：<code>firstOrCreate</code> 和 <code>firstOrNew</code>。<code>firstOrCreate</code> 方法会尝试根据给定的列的键值对从数据库定位相关的模型。如果相关的模型没有找到，那么会根据给定的属性在数据库中新增一条记录。</p>
+<p><code>firstOrNew</code> 方法和 <code>firstOrCreate</code> 方法一样，但是它在模型没找到时只会返回一个新的模型实例，并不会在数据库中新增一条记录。你需要手动的使用 <code>save</code> 方法来将其存储到数据库中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve the flight by the attributes, or create it if it doesn't exists...</span></div><div class="line">$flight = App\Flight::firstOrCreate([<span class="string">'name'</span> =&gt; <span class="string">'Flight 10'</span>]);</div><div class="line"></div><div class="line"><span class="comment">// Retrieve the flight by the attributes, or instantiate a new instance...</span></div><div class="line">$flight = App\Flight::firstOrNew([<span class="string">'name'</span> =&gt; <span class="string">'Flight 10'</span>]);</div></pre></td></tr></table></figure>
+<h2 id="删除模型"><a href="#删除模型" class="headerlink" title="删除模型"></a>删除模型</h2><p>你可以在模型实例中使用 <code>delete</code> 方法来删除模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$flight = App\Flight::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$flight-&gt;delete();</div></pre></td></tr></table></figure>
+<p><strong>根据键删除存在的模型</strong></p>
+<p>在上面的例子中，我们先从数据库中检索出相关的模型，然后才调用 <code>delete</code> 方法来进行删除。事实上，如果你知道了模型的主键，那么你完全可以不用去检索到它。你可以直接使用 <code>destroy</code> 方法来进行删除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">App\Flight::destroy(<span class="number">1</span>);</div><div class="line"></div><div class="line">App\Flight::destroy([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</div><div class="line"></div><div class="line">App\Flight::destroy(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</div></pre></td></tr></table></figure>
+<p><strong>通过查询删除模型</strong></p>
+<p>当然，你也可以通过查询删除一个模型集。在这个例子中，我们将删除所有标记为未启用的航班：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$deletedRows = App\Flight::where(<span class="string">'active'</span>, <span class="number">0</span>)-&gt;delete();</div></pre></td></tr></table></figure>
+<h3 id="软删除"><a href="#软删除" class="headerlink" title="软删除"></a>软删除</h3><p>除了从数据库中真实的删除数据之外，Eloquent 也可以进行软删除操作。当模型是一个软删除模型时，它们并不会真正的从数据库中清除记录。实际上，它们会将模型的 <code>deleted_at</code> 属性进行设置，并且将其更新到数据库中。如果模型中的 <code>deleted_at</code> 的值不是 <code>NULL</code>，那么它就被标记为软删除了。如果你需要启用软删除模型，你需要在模型中引入 <code>Illuminate\Database\Eloquent\SoftDeletes</code> trait，并且在模型的 <code>$dates</code> 属性中添加 <code>deleted_at</code> 列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">SoftDeletes</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">SoftDeletes</span>;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that should be mutated to dates.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $dates = [<span class="string">'deleted_at'</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，你应该在数据表中添加 <code>deleted_at</code> 列。Laravel 的 <a href="https://laravel.com/docs/5.2/migrations" target="_blank" rel="external">结构生成器</a> 中提供了生成该列的方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'flights'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;softDeletes(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>现在，当我们调用 <code>delete</code> 方法时，<code>deleted_at</code> 列会被设置为当前时间。并且，当查询启用软删除的模型时，已经被软删除的模型将自动从结果中剔除。</p>
+<p>你可以使用 <code>trashed</code> 方法来判断所给定的模型是否已经被软删除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($flight-&gt;trashed()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="查询软删除的模型"><a href="#查询软删除的模型" class="headerlink" title="查询软删除的模型"></a>查询软删除的模型</h3><p><strong>包含软删除的模型</strong></p>
+<p>就如上面我们所提到的，被软删除的模型将自动的从结果中进行剔除。事实上，你可以使用 <code>withTrashed</code> 方法来强制结果中显示已经被软删除的模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$flights = App\Flight::withTrashed()</div><div class="line">             -&gt;where(<span class="string">'account_id'</span>, <span class="number">1</span>)</div><div class="line">             -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>whitTrashed</code> 方法也可以在关联查询中进行使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$flight-&gt;history()-&gt;withTrashed()-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>只检索被软删除的模型</strong></p>
+<p><code>onlyTrashed</code> 方法会从数据库中检索被软删除的模型记录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$flights = App\Flight::onlyTrashed()</div><div class="line">             -&gt;where(<span class="string">'airline_id'</span>, <span class="number">1</span>)</div><div class="line">             -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>还原被软删除的模型</strong></p>
+<p>有时候你可能会希望还原已经被软删除的模型，你可以使用 <code>restore</code> 方法来将模型从软删除中解除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$flight-&gt;restore();</div></pre></td></tr></table></figure>
+<p>你也可以在查询中使用 <code>restore</code> 方法来快速的重启多个模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">App\Flight::withTrashed()</div><div class="line">  -&gt;where(<span class="string">'airline_id'</span>, <span class="number">1</span>)</div><div class="line">  -&gt;restore();</div></pre></td></tr></table></figure>
+<p>就像 <code>withTrashed</code> 方法一样，<code>restore</code> 方法也可以在关联查询中使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$flight-&gt;history()-&gt;restore();</div></pre></td></tr></table></figure>
+<p><strong>永久的删除模型</strong></p>
+<p>有时候你可能希望从数据库中直接删除这个模型。你可以使用 <code>forceDelete</code> 方法来将模型从数据库中永久的删除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Force deleting a single model instance...</span></div><div class="line">$flight-&gt;forceDelete();</div><div class="line"></div><div class="line"><span class="comment">// Force deleting all related modls...</span></div><div class="line">$flight-&gt;history()-&gt;forceDelete();</div></pre></td></tr></table></figure>
+<h2 id="查询区间"><a href="#查询区间" class="headerlink" title="查询区间"></a>查询区间</h2><h3 id="全局区间"><a href="#全局区间" class="headerlink" title="全局区间"></a>全局区间</h3><p>全局区间允许你在给定的模型上的所有查询进行约束的添加。Laravel 自己的软删除功能就是利用了全局区间来从数据库中拉取未删除的数据。编写自己的全局区间可以方便的对给定模型的所有查询进行约束。</p>
+<p><strong>编写全局区间</strong></p>
+<p>编写一个全局区间非常简单，你只需要定义一个实现了 <code>Illuminate\Database\Eloquent\Scope</code> 接口的类。这个接口只要求你实现一个方法：<code>apply</code>。<code>apply</code> 方法可以在需要的时添加 <code>where</code> 约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?Php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Scopes</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Scope</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Builder</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AgeScope</span> <span class="keyword">implements</span> <span class="title">Scope</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Apply the scope to a given Eloquent query builder.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Database\Eloquent\Builder $builder</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Database\Eloquent\Model $model</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span><span class="params">(Builder $builder, Model $model)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> $builder-&gt;where(<span class="string">'age'</span>, <span class="string">'&gt;'</span>, <span class="number">200</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Laravel 没有为区间预置存放的目录，所以你可以自由的创建自己的 <code>Scopes</code> 目录来进行管理。</p>
+<p><strong>应用全局区间</strong></p>
+<p>你需要在给定的模型中复写 <code>boot</code> 方法并且使用 <code>addGlobalScope</code> 方法来分配全局区间：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Scopes</span>\<span class="title">AgeScope</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The "booting" method of the model</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     paraent::boot();</div><div class="line"></div><div class="line">     <span class="keyword">static</span>::addGlobalScope(<span class="keyword">new</span> AgeScope);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在添加完区间之后，调用 <code>User::all()</code> 的查询会产生下述的 SQL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from `users` where `age` &gt; <span class="number">200</span></div></pre></td></tr></table></figure>
+<p><strong>匿名全局区间</strong></p>
+<p>Eloquent 也允许你通过一个闭包来定义全局区间，这通常对于不需要分离到单独一个类文件中的简单区间尤其有用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Builder</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The "booting" method of the model.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">parent</span>::boot();</div><div class="line"></div><div class="line">     <span class="keyword">static</span>::addGlobalScope(<span class="string">'age'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Builder $builder)</span> </span>&#123;</div><div class="line">       $builder-&gt;where(<span class="string">'age'</span>, <span class="string">'&gt;'</span>, <span class="number">200</span>);</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>传递到 <code>addGlobalScope()</code> 方法的首个参数将作为区间的唯一标识，你可以通过标识将其排除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">User::withoutGlobalScope(<span class="string">'age'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>删除全局区间</strong></p>
+<p>如果你希望从给定的查询中移除全局区间，你可以使用 <code>withoutGlobalScope</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">User::withoutGlobalScope(AgeScope::class)-&gt;get();</div></pre></td></tr></table></figure>
+<p>如果你希望删除多个或者全部的全局区间，你可以使用这么使用 <code>withoutGlobalScopes</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User::withoutGlobalScopes()-&gt;get();</div><div class="line"></div><div class="line">User::withoutGlobalScopes([FirstScope::class, SecondScope::class])-&gt;get();</div></pre></td></tr></table></figure>
+<h3 id="当前区间"><a href="#当前区间" class="headerlink" title="当前区间"></a>当前区间</h3><p>当前区间允许你在模型中定义一些可以复用的常用的约束。比如，你可能经常需要检索一些受欢迎的用户。你可以简单的在模型方法中前置 <code>scope</code> 命名来定义一个区间.</p>
+<p>区间应该总是返回一个查询生成器的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Scope a query to only include popular users.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">scopePopular</span><span class="params">($query)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> $query-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Scope a query to only include active users.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">scopePopular</span><span class="params">($query)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="keyword">return</span> $query-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Scope a query to only include active users.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">scopeActive</span><span class="params">($query)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">       <span class="keyword">return</span> $query-&gt;where(<span class="string">'active'</span>, <span class="number">1</span>);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>利用区间查询</strong></p>
+<p>一旦区间进行了定义，你可以在模型进行查询时调用区间方法，事实上，你在调用区间方法时并不需要包含 <code>scope</code> 前缀。你甚至可以链式的调用其它的区间：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = App\User::popular()-&gt;active()-&gt;orderBy(<span class="string">'created_at'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>动态区间</strong></p>
+<p>有时候你可能希望定义一个可以接收参数的区间。在开始之前，你仅仅只需要在你的区间中添加一些额外的参数。区间参数应该在 <code>$query</code> 参数之后进行定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Scope a query to only include users of a given type.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">scopeOfType</span><span class="params">($query, $type)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> $query-&gt;where(<span class="string">'type'</span>, $type);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，你可以在调用区间时传递一些参数了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = App\User::ofType(<span class="string">'admin'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>Eloquent 模型可以触发多种事件，这允许你在模型的生命周期的各个关键点进行 hook 操作。你可以使用下面的方法进行 Hook：<code>creating</code>，<code>created</code>，<code>updating</code>，<code>updated</code>，<code>saving</code>，<code>saved</code>，<code>deleting</code>，<code>deleted</code>，<code>restoring</code>，<code>restored</code>。事件允许你轻松的在模型进行存储或更新操作时进行执行额外的操作。</p>
+<h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><p>当一个新的模型首次进行存储操作时，会触发 <code>creating</code> 和 <code>created</code> 事件。如果模型已经存在于数据库中，并且调用 <code>save</code> 方法，那么 <code>updating</code> / <code>updated</code> 事件将会被触发。事实上，在这两种情况下，<code>saving</code> 和 <code>saved</code> 事件都会被触发。</p>
+<p>举个示例，让我们在服务提供者中定义一个 Eloquent 事件监听器。在我们的事件监听器中，我们将在给定的模型中调用 <code>isValid</code> 方法，当模型并没有通过验证时将返回 <code>false</code>。如果从 Eloquent 事件监听器中返回 <code>false</code>，那么将取消 <code>save</code> / <code>update</code> 操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Bootstrap any application services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     User::creating(<span class="function"><span class="keyword">function</span> <span class="params">($user)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (! $user-&gt;isValid()) &#123;</div><div class="line">         <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">       &#125;</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register the service provider.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/24/laravel-from-scratch-seeding/" rel="next" title="laravel 基础教程 —— Seeding">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Seeding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/25/laravel-from-scratch-eloquent-relationships/" rel="prev" title="laravel 基础教程 —— 关联模型">
+                laravel 基础教程 —— 关联模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eloquent-起步"><span class="nav-number">1.</span> <span class="nav-text">Eloquent: 起步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义模型"><span class="nav-number">1.2.</span> <span class="nav-text">定义模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eloquent-模型约定"><span class="nav-number">1.2.1.</span> <span class="nav-text">Eloquent 模型约定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检索多个模型"><span class="nav-number">1.3.</span> <span class="nav-text">检索多个模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检索单个模型-统计"><span class="nav-number">1.4.</span> <span class="nav-text">检索单个模型 / 统计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检索统计"><span class="nav-number">1.4.1.</span> <span class="nav-text">检索统计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入-amp-更新模型"><span class="nav-number">1.5.</span> <span class="nav-text">插入 & 更新模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础插入"><span class="nav-number">1.5.1.</span> <span class="nav-text">基础插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基础的更新"><span class="nav-number">1.5.2.</span> <span class="nav-text">基础的更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量赋值"><span class="nav-number">1.5.3.</span> <span class="nav-text">批量赋值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除模型"><span class="nav-number">1.6.</span> <span class="nav-text">删除模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软删除"><span class="nav-number">1.6.1.</span> <span class="nav-text">软删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询软删除的模型"><span class="nav-number">1.6.2.</span> <span class="nav-text">查询软删除的模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询区间"><span class="nav-number">1.7.</span> <span class="nav-text">查询区间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局区间"><span class="nav-number">1.7.1.</span> <span class="nav-text">全局区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当前区间"><span class="nav-number">1.7.2.</span> <span class="nav-text">当前区间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件"><span class="nav-number">1.8.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础用法"><span class="nav-number">1.8.1.</span> <span class="nav-text">基础用法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

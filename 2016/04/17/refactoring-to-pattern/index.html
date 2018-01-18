@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,javascript," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="从重构到模式  当你意识到你需要理解并学会重构的时候，就是你即将进阶的时候。  专业的程序员都是从这里开始正式的职业之旅的。 重构 代码重构(code refactoring) 指对软件代码做任何改动以增加可读性或者简化结构而不影响输出结果。 在软件工程学里，重构代码一词通常是指在不改变代码的外部行为情况下而修改源代码，有时非正式的称为“清理干净”。在极限编程或者敏捷方法学中，重构常常是软件开发循">
+<meta name="keywords" content="php,javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式之谈：从重构到模式">
+<meta property="og:url" content="http://yoursite.com/2016/04/17/refactoring-to-pattern/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="从重构到模式  当你意识到你需要理解并学会重构的时候，就是你即将进阶的时候。  专业的程序员都是从这里开始正式的职业之旅的。 重构 代码重构(code refactoring) 指对软件代码做任何改动以增加可读性或者简化结构而不影响输出结果。 在软件工程学里，重构代码一词通常是指在不改变代码的外部行为情况下而修改源代码，有时非正式的称为“清理干净”。在极限编程或者敏捷方法学中，重构常常是软件开发循">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式之谈：从重构到模式">
+<meta name="twitter:description" content="从重构到模式  当你意识到你需要理解并学会重构的时候，就是你即将进阶的时候。  专业的程序员都是从这里开始正式的职业之旅的。 重构 代码重构(code refactoring) 指对软件代码做任何改动以增加可读性或者简化结构而不影响输出结果。 在软件工程学里，重构代码一词通常是指在不改变代码的外部行为情况下而修改源代码，有时非正式的称为“清理干净”。在极限编程或者敏捷方法学中，重构常常是软件开发循">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/17/refactoring-to-pattern/"/>
+
+
+
+
+
+  <title>设计模式之谈：从重构到模式 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/17/refactoring-to-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">设计模式之谈：从重构到模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-17T07:19:58+08:00">
+                2016-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="从重构到模式"><a href="#从重构到模式" class="headerlink" title="从重构到模式"></a>从重构到模式</h1><p>  当你意识到你需要理解并学会重构的时候，就是你即将进阶的时候。<br>  专业的程序员都是从这里开始正式的职业之旅的。</p>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><blockquote>
+<p>代码重构(code refactoring) 指对软件代码做任何改动以增加可读性或者简化结构而不影响输出结果。</p>
+<p>在软件工程学里，重构代码一词通常是指在不改变代码的外部行为情况下而修改源代码，有时非正式的称为“清理干净”。在极限编程或者敏捷方法学中，重构常常是软件开发循环中的一部分：开发者轮流增加新的测试和功能，并重构代码来增进内部的清晰性和一致性。自动化的单元测试保证了重构不至于让代码停止工作。</p>
+<p>重构既不修正错误，又不增加新的功能性。反而它是用来提高代码的可读性或者改变代码的内部结构和设计，并且移除死代码，使其将来更容易被维护。重构代码可以是结构层面抑或语义层面，不同的重构手段施行时，可能是结构的调整或语义的转换，但前提是不影响代码在转换前后的行为。特别是，在现有的程序结构下，给一个程序增加新的行为可能非常的困难，因此开发人员可能先重构这部分代码，使加入新行为变得容易。</p>
+</blockquote>
+<p>重构是为了更好的维护与扩展，它能使你快速的了解原有代码的设计，不至于你一个月后再回头看源代码时有种完全看不懂的感觉。</p>
+<p>频繁的重构之后，总会有一些通用的模式在里面，将这些通用的模式总结起来，构成了设计模式。</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><blockquote>
+<p>在软件工程中，设计模式是对软件设计中普遍存在（反复出现）的各种问题，所提出的解决方案。</p>
+<p>设计模式并不直接用来完成代码的编写，而是描述在各种不同情况下，要怎么解决问题的一种方案。面向对象设计模式通常以类或对象来描述其中的关系和相互作用，但不涉及用来完成应用程序的特定类或对象。设计模式能使不稳定依赖于相对稳定、具体依赖于相对抽象，避免会引起麻烦的紧耦合，以增强软件设计面对适应变化的能力。</p>
+</blockquote>
+<p>说到设计模式，我们不得不说到模式。</p>
+<h3 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h3><blockquote>
+<p>模式（pattern), 在物体或事件上，产生的一种规律变化与自我重复的样式与过程。在模式之中，某些固定的元素不断以可预测的方式周期性重现。最基本而常见的模式，称为密铺，具备重复性与周期性两大特征。找寻出固定模式是人类基本的认知功能之一。</p>
+</blockquote>
+<p>模式的存在，方便我们复用问题的解决方案。<br>如果我们需要去劈柴，我们很可能就会想到斧头。因为斧头是劈柴的常用解决方案。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>  当我们学习设计模式，发现并不能理解，或者觉得并不能很好的运用的时候，或许你需要好好学习一下重构，如果没有理解重构，而直接跳过它学习设计模式，这个过程将是事倍功半的。</p>
+<p>推荐书籍：</p>
+<ul>
+<li>《重构：改善既有代码的设计》</li>
+<li>《设计模式之禅》</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/15/for-php-beginner/" rel="next" title="写给想学 PHP 的朋友们">
+                <i class="fa fa-chevron-left"></i> 写给想学 PHP 的朋友们
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/18/laravel-from-scratch-initial-setup/" rel="prev" title="laravel 基础教程 —— 安装">
+                laravel 基础教程 —— 安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从重构到模式"><span class="nav-number">1.</span> <span class="nav-text">从重构到模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重构"><span class="nav-number">1.1.</span> <span class="nav-text">重构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-number">1.2.</span> <span class="nav-text">设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模式"><span class="nav-number">1.2.1.</span> <span class="nav-text">模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">1.3.</span> <span class="nav-text">结尾</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

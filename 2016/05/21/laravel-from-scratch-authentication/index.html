@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介laravel 使实施认证的变得非常简单，事实上，它提供了非常全面的配置项以适应应用的业务。认证的配置文件存放在 config/auth.php 目录，这里的每个选项都提供了完善的注释文档，你可以从这里调整认证服务的行为。 在 laravel 中，认证服务的核心是由 guards（守卫） 和 providers（供应商） 组成。守卫定义了从请求中验证用户的方式，比如说，laravel 自带了">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 认证">
+<meta property="og:url" content="http://yoursite.com/2016/05/21/laravel-from-scratch-authentication/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="简介laravel 使实施认证的变得非常简单，事实上，它提供了非常全面的配置项以适应应用的业务。认证的配置文件存放在 config/auth.php 目录，这里的每个选项都提供了完善的注释文档，你可以从这里调整认证服务的行为。 在 laravel 中，认证服务的核心是由 guards（守卫） 和 providers（供应商） 组成。守卫定义了从请求中验证用户的方式，比如说，laravel 自带了">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 认证">
+<meta name="twitter:description" content="简介laravel 使实施认证的变得非常简单，事实上，它提供了非常全面的配置项以适应应用的业务。认证的配置文件存放在 config/auth.php 目录，这里的每个选项都提供了完善的注释文档，你可以从这里调整认证服务的行为。 在 laravel 中，认证服务的核心是由 guards（守卫） 和 providers（供应商） 组成。守卫定义了从请求中验证用户的方式，比如说，laravel 自带了">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/21/laravel-from-scratch-authentication/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 认证 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/21/laravel-from-scratch-authentication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 认证</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-21T13:56:19+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>laravel 使实施认证的变得非常简单，事实上，它提供了非常全面的配置项以适应应用的业务。认证的配置文件存放在 <code>config/auth.php</code> 目录，这里的每个选项都提供了完善的注释文档，你可以从这里调整认证服务的行为。</p>
+<p>在 laravel 中，认证服务的核心是由 <code>guards（守卫）</code> 和 <code>providers（供应商）</code> 组成。守卫定义了从请求中验证用户的方式，比如说，laravel 自带了 <code>session</code> 守卫和 <code>token</code> 守卫，<code>session</code> 守卫是从所存储的会话及 cookies 中去认证请求中的用户的，而 <code>token</code> 守卫则是从请求中的 <code>API token</code> 进行用户认证的。</p>
+<p>供应商则定义了从持久化存储中获取用户的方式。laravel 自身提供了 <code>Eloquent</code> 和  <code>database</code> 查询构造器两种检索方式。当然，你也可以添加额外的供应商去做这些。</p>
+<p>如果这听起来有些混乱，请不要担心。大多数的应用程序是根本不需要修改认证服务的默认配置信息的。</p>
+<h2 id="数据库注意事项"><a href="#数据库注意事项" class="headerlink" title="数据库注意事项"></a>数据库注意事项</h2><p>默认的，laravel 在 <code>app</code> 目录下包含了 <code>App\User</code> Eloquent 模型。该模型使用了默认的 Eloquent 认证驱动。如果你的应用不是使用 Eloquent 驱动，你可以使用 <code>database</code> 认证驱动，<code>database</code> 认证驱动是基于 laravel 的查询构造器的。</p>
+<p>当你为 <code>App\User</code> 模型去构建数据库表结构时，你应该确认密码应该保持最少 60 个字符的长度，默认的 255 是一个比较好的选择。</p>
+<p>另外，你需要确保 <code>users</code> 表中包含了一个可以为 null 的字符串列 <code>remember_token</code>，它应该具有 100 个字符的长度。这个字段是用来存储用户保持长期登录的 token 值的。你可以在迁移中使用 <code>$table-&gt;rememberToken()</code> 来快速的添加该列。</p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>laravel 装载了两个用来进行认证的控制器，它们存储在 <code>App\Http\Controllers\Auth</code> 命名空间下。<code>AuthController</code> 用来处理用户注册及认证的逻辑，而 <code>PasswordController</code> 包含了用户找回密码的相关逻辑。它们每个控制器都是通过引入 trait 来包含他们所需要的方法。对于大多数应用来说，你是完全没有必要去修改这些控制器的。</p>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>laravel 提供了一个快速的方法来生成认证的路由和视图的脚手架，你可以使用 artisan 命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:auth</div></pre></td></tr></table></figure>
+<p>在一个新的应用中，这个命令会用来进行安装注册和登录的视图，也会注入所有的认证相关的路由。<code>HomeController</code> 也会被生成。这个控制器提供了 post 登录请求的处理方法。你也可以根据自己的需求删除或修改这个控制器。</p>
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>就如上面所提到的，<code>php artisan make:auth</code> 命令会创建所有认证相关的视图，并且保存在 <code>resources/views/auth</code> 目录下。</p>
+<p><code>make:auth</code> 命令也会创建 <code>resoucres/views/layouts</code> 目录，并在该目录下为应用创建了一个基本的布局。所有的这些视图都是使用了 Bootstrap CSS 框架，你可以根据自身的需求去定制化修改。</p>
+<h3 id="进行认证"><a href="#进行认证" class="headerlink" title="进行认证"></a>进行认证</h3><p>现在你已经具有了认证相关的控制器、路由和视图，你的应用已经具备了注册和认证的能力。你可以通过浏览器访问你的应用，认证控制器已经包含了所有的认证用户和存储用户到数据库的方法（通过 traits）。</p>
+<h4 id="自定义重定向地址"><a href="#自定义重定向地址" class="headerlink" title="自定义重定向地址"></a>自定义重定向地址</h4><p>当用户通过认证后会被重定向到 <code>/</code> URL。你可以通过在 <code>AuthController</code> 控制器中定义 <code>redirectTo</code> 属性来修改重定向地址：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $rediredtTo = <span class="string">'/home'</span>;</div></pre></td></tr></table></figure>
+<p>当用户没有认证成功，它会重定向回登录地址。</p>
+<h4 id="自定义守卫"><a href="#自定义守卫" class="headerlink" title="自定义守卫"></a>自定义守卫</h4><p>你也可以定制化 <code>guard</code> 用来验证用户。你需要在 <code>AuthController</code> 中定义 <code>guard</code> 属性。它的值应该是与你的 <code>auth.php</code> 配置中的某一个 <code>guards</code> 值相匹配的:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $guard = <span class="string">'admin'</span>;</div></pre></td></tr></table></figure>
+<h4 id="自定义-验证-存储"><a href="#自定义-验证-存储" class="headerlink" title="自定义 验证/存储"></a>自定义 验证/存储</h4><p>你可能会想要在用户注册时存储一些其他必要的表单字段，进而将新增用户的信息存储到数据库中，这个时候你就需要修改 <code>AuthController</code> 类了，这个类主管用户的创建和表单的验证。</p>
+<p>在 <code>AuthController</code> 类中使用 <code>validate</code> 方法来验证验证表单与验证规则的匹配程度。你可以根据自身的需要来修改这个方法。</p>
+<p>在 <code>AuthController</code> 类中使用 <code>create</code> 方法用来在数据库中新增一条用户的记录。这里使用了 Eloquent ORM。你可以根据自身的需求修改这个方法。</p>
+<h3 id="获取已认证的用户"><a href="#获取已认证的用户" class="headerlink" title="获取已认证的用户"></a>获取已认证的用户</h3><p>你可以通过 <code>Auth</code> 假面来访问已经认证的用户:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user = Auth::user();</div></pre></td></tr></table></figure>
+<p>另外，一旦用户经过验证，你可以通过 <code>Illuminate\Http\Request</code> 的实例来访问经过认证后的用户。你应该记得，类型提示的类会被自动的注入到你的控制器方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update the user's profile</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">updateProfile</span><span class="params">(Request $request)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">if</span> ($request-&gt;user()) &#123;</div><div class="line">       <span class="comment">// $request-&gt;user() returns an instance of the authenticated user...</span></div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="判断当前用户是否已被认证"><a href="#判断当前用户是否已被认证" class="headerlink" title="判断当前用户是否已被认证"></a>判断当前用户是否已被认证</h4><p>你可以通过 <code>Auth</code> 假面的 <code>check</code> 方法来判断当前用户是否已经被认证。如果该用户已经被认证则会返回 <code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auth::check()) &#123;</div><div class="line">  <span class="comment">// The user is logged in...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你应该使用中间件来过滤未被认证的用户访问某些路由或控制器。</p>
+<h3 id="保护路由"><a href="#保护路由" class="headerlink" title="保护路由"></a>保护路由</h3><p>路由中间件可以被用来限制只有已经被认证的用户才能访问所给定的路由。laravel 自带了 <code>auth</code> 中间件，该中间件被定义在 <code>app\Http\Middleware\Authenticate.php</code> 文件中。你只需要在定义路由时附加上该中间件就可以了:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Using A Route Closure...</span></div><div class="line"></div><div class="line">Route::get(<span class="string">'profile'</span>, [<span class="string">'middleware'</span> =&gt; <span class="string">'auth'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Only authenticated users may enter... </span></div><div class="line">&#125;]);</div><div class="line"></div><div class="line"><span class="comment">// Using A Controller...</span></div><div class="line"></div><div class="line">Route::get(<span class="string">'profile'</span>, [</div><div class="line">  <span class="string">'middleware'</span> =&gt; <span class="string">'auth'</span>,</div><div class="line">  <span class="string">'uses'</span> =&gt; <span class="string">'ProfileController@show'</span></div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>当然，如果你使用控制器来注册路由，你可以在控制器的构造函数中使用 <code>middleware</code> 方法来附加中间件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;middleware(<span class="string">'auth'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="指定守卫"><a href="#指定守卫" class="headerlink" title="指定守卫"></a>指定守卫</h4><p>当你附加 <code>auth</code> 中间件到路由时，你也可以指定选择哪个守卫去提供认证:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'profile'</span>, [</div><div class="line">  <span class="string">'middleware'</span> =&gt; <span class="string">'auth:api'</span>,</div><div class="line">  <span class="string">'uses'</span> =&gt; <span class="string">'ProfileController@show'</span></div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>所指定的守卫应该与配置文件 <code>auth.php</code> 中的 <code>guards</code> 数组键之一相匹配。</p>
+<h3 id="认证节流"><a href="#认证节流" class="headerlink" title="认证节流"></a>认证节流</h3><p>如果你使用了 laravel 內建的 <code>AuthController</code> 类，那么 <code>Illuminate\Foundation\Auth\ThrottlesLogins</code> trait 可以被用来限制用户尝试登陆的次数。默认的，当用户进行登陆数次失败时，其将会在一分钟内无法进行登陆。节流是根据用户的 username / e-mail 和 IP 地址来判定的:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Auth</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Validator</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Auth</span>\<span class="title">ThrottlesLogins</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Auth</span>\<span class="title">AuthenticatesAndRegistersUsers</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">AuthenticatesAndRegistersUsers</span>, <span class="title">ThrottlesLogins</span>;</div><div class="line"></div><div class="line">  <span class="comment">// Rest of AuthController class...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="手动进行用户认证"><a href="#手动进行用户认证" class="headerlink" title="手动进行用户认证"></a>手动进行用户认证</h2><p>当然，你没有必要一定使用 laravel 內建的认证控制器。如果你选择删除这些认证控制器，那么你需要直接的使用 laravel 认证类来管理用户的认证。别担心，这当然不在话下。</p>
+<p>我们将通过 <code>Auth</code> 假面来访问 laravel 的认证服务，所以，我们要确保在类文件的顶部引入 <code>Auth</code> 假面。接着，让我们查看一下 <code>attempt</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Auth</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Handle an authentication attempt.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">authenticate</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">if</span> (Auth::attempt([<span class="string">'email'</span> =&gt; $email, <span class="string">'password'</span> =&gt; $password])) &#123;</div><div class="line">       <span class="comment">// Authentication passed... </span></div><div class="line">       <span class="keyword">return</span> redirect()-&gt;intended(<span class="string">'dashboard'</span>);</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>attempt</code> 方法接收一个键值对数组来作为第一个参数。数组中的值用来在数据库中查找相匹配的用户。所以，在上面的例子中，会返回匹配到 <code>email</code> 列为 <code>$email</code> 的用户。如果用户被找到，存储在数据库中的哈希后的密码会和数组中经过哈希加密的 <code>password</code> 值进行匹配。如果两个哈希后的值匹配成功的话，就会开启一个该用户已经认证的会话。</p>
+<p>如果认证成功，则 <code>attempt</code> 方法会返回 <code>true</code>。否则返回 <code>false</code>。</p>
+<p><code>intended</code> 方法用来返回给重定向器用户在登录前所想要前往的 URL 地址，该方法也接收一个参数作为所请求地址不可用时的备用地址。</p>
+<h3 id="指定额外的认证信息"><a href="#指定额外的认证信息" class="headerlink" title="指定额外的认证信息"></a>指定额外的认证信息</h3><p>如果你需要，你也可以增加一些额外条件做认证查询，比如，你需要验证被标记为 ‘active’ 的用户：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auht::attempt([<span class="string">'email'</span> =&gt; $email, <span class="string">'password'</span> =&gt; $password, <span class="string">'active'</span> =&gt; <span class="number">1</span>])) &#123;</div><div class="line">  <span class="comment">// The user is active, not suspended, and exists.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，在上面的例子中 <code>email</code> 并不是必备的选项，这仅仅只是作为一个示例。你可以使用任何进行用户认证的凭证来映射数据库中的字段。</p>
+</blockquote>
+<h3 id="访问指定的守卫实例"><a href="#访问指定的守卫实例" class="headerlink" title="访问指定的守卫实例"></a>访问指定的守卫实例</h3><p>你可以使用 <code>Auth</code> 假面的 <code>guard</code> 方法来获取你所需要的守卫实例。这使你可以在同一个应用中管理多种认证模型或用户表，并实现独立的认证。</p>
+<p><code>guard</code> 方法中所传递的守卫名称应该与配置文件 <code>auth.php</code> 中 guards 之一相匹配:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auth::guard(<span class="string">'admin'</span>)-&gt;attempt($credentials)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="登出"><a href="#登出" class="headerlink" title="登出"></a>登出</h3><p>你可以使用 <code>Auth</code> 假面的 <code>logout</code> 方法来进行用户的退出，该方法将清除用户认证的会话信息:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Auth::logout();</div></pre></td></tr></table></figure>
+<h3 id="记住用户"><a href="#记住用户" class="headerlink" title="记住用户"></a>记住用户</h3><p>如果你想要在你的应用中提供 <code>记住我</code> 的功能，你只需要在 <code>attempt</code> 方法中传递一个布尔值作为第二个参数，这将保持用户的认证信息直到用户手动的退出登录。当然，这要求你的用户表中必须包含 <code>remember_token</code> 列:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auth::attempt([<span class="string">'email'</span> =&gt; $email, <span class="string">'password'</span> =&gt; $password], $remember)) &#123;</div><div class="line">  <span class="comment">// The user is being remembered...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你作为被记住的用户登录的，那么你可以使用 <code>viaRemember</code> 方法来判断用户的认证是不是通过 <code>记住我</code> 的 cookie:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auth::viaRemember()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="其它认证方法"><a href="#其它认证方法" class="headerlink" title="其它认证方法"></a>其它认证方法</h3><h4 id="通过用户实例进行认证"><a href="#通过用户实例进行认证" class="headerlink" title="通过用户实例进行认证"></a>通过用户实例进行认证</h4><p>如果你需要在应用中记录一个已经存在的用户实例，你可以使用 <code>login</code> 方法。所给定的参数必须是实现了 <code>Illuminate\Contracts\Auth\Authenticatable</code> 契约的一个实例。当然，在 laravel 中 <code>App\User</code> 模型已经实现了这个接口：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Auth::login($user);</div></pre></td></tr></table></figure>
+<p>当然，你也可以指定守卫实例:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Auth::guard(<span class="string">'admin'</span>)-&gt;login($user);</div></pre></td></tr></table></figure>
+<h4 id="通过用户ID直接认证"><a href="#通过用户ID直接认证" class="headerlink" title="通过用户ID直接认证"></a>通过用户ID直接认证</h4><p>你可以使用 <code>loginUseingId</code> 方法来通过 ID 记录用户的信息，该方法简单的接收一个需要进行认证的用户的主键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Auth::loginUsingId(<span class="number">1</span>);</div></pre></td></tr></table></figure>
+<h4 id="仅认证用户一次"><a href="#仅认证用户一次" class="headerlink" title="仅认证用户一次"></a>仅认证用户一次</h4><p><code>once</code> 方法只在当前请求中进行用户认证。不会存储会话或 cookies。这对构建无状态的 API 很有帮助。<code>once</code> 方法和 <code>attempt</code> 具有相同的签证方式:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Auth::once($credentials)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="基于-HTTP-的认证"><a href="#基于-HTTP-的认证" class="headerlink" title="基于 HTTP 的认证"></a>基于 HTTP 的认证</h2><p>基于 HTTP 的认证提供了快速的用户认证机制而不用设立专门的登录页面。为了开始，你应该附加 <code>auth.basic</code> 中间件到你的路由。laravel 中內建了 <code>auth.basic</code> 中间件，所以你不需要去定义它:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'profile'</span>, [<span class="string">'middleware'</span> =&gt; <span class="string">'auth.basic'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Only authenticated users may enter... </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<p>一旦该中间件被附加到路由中，你每次访问该路由时都会被提示要求认证信息。默认的，<code>auth.basic</code> 中间件使用 <code>email</code> 列作为用户记录的用户名。</p>
+<h3 id="FastCGI-提示"><a href="#FastCGI-提示" class="headerlink" title="FastCGI 提示"></a>FastCGI 提示</h3><p>如果你使用 PHP FastCGI，基于 HTTP 的认证可能无法正常工作。你可以尝试在 <code>.htaccess</code> 文件中添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RewriteCond %&#123;HTTP:Authorization&#125; ^(.+)$</div><div class="line">RewriteRule .* - [E=HTTP_AUTHORIZATION:%&#123;HTTP:Authorization&#125;]</div></pre></td></tr></table></figure>
+<h3 id="无状态的-HTTP-基本认证"><a href="#无状态的-HTTP-基本认证" class="headerlink" title="无状态的 HTTP 基本认证"></a>无状态的 HTTP 基本认证</h3><p>你也可以在使用 HTTP 基本认证时不使用 session 保存用户的身份到 cookie。这在基于 API 的认证尤其有效。为了做到这些，你可以定义一个中间件，然后调用 <code>onceBasic</code> 方法。如果 <code>onceBasic</code> 方法没有返回响应，那么请求将被进一步传递到应用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Auth</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Auth</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthenticateOnceWithBasicAuth</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Handle on incoming request.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Http\Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Closure $next</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">($request, Closure $next)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> Auth::onceBasic() ?: $next($request);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着，在路由中附加中间件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'api/user'</span>, [<span class="string">'middleware'</span> =&gt; <span class="string">'auth.basic.once'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Only authenticated users may enter... </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<p>当然，你还需要在 kernel.php 核心中注册该中间件。</p>
+<h2 id="密码重置"><a href="#密码重置" class="headerlink" title="密码重置"></a>密码重置</h2><h3 id="数据库注意事项-1"><a href="#数据库注意事项-1" class="headerlink" title="数据库注意事项"></a>数据库注意事项</h3><p>大多数的应用都提供了一种用户重置其忘记密码的方式。laravel 提供了一种便利的方式来发送密码提示和提供密码重置，这样你就不需要被迫在每个应用都实现一次这种机制。</p>
+<p>为了方便开始，请确定你的 <code>App\User</code> 模型实现了 <code>Illuminate\Contracts\Auth\CanResetPassword</code> 契约，laravel 中自带的 <code>App\User</code> 模型中已经实现了这个借口，并且使用了 <code>Illuminate\Auth\Passwords\CanResetPassword</code> trait。</p>
+<p><strong>通过迁移生成密码重置表</strong></p>
+<p>接着，必须要创建一个用来存储重置密码的 token 的表。laravel 已经提供了这种表的迁移，并且存放在 <code>database/migrations</code> 目录下，所以，你只需要执行迁移命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
+<h3 id="路由-1"><a href="#路由-1" class="headerlink" title="路由"></a>路由</h3><p>laravel 自带的 <code>Auth\PasswordController</code> 控制器包含了所有重置密码所需的逻辑。所有提供密码重置的路由都可以通过 <code>make:auth</code> Artisan 命令来生成:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:auth</div></pre></td></tr></table></figure>
+<h3 id="视图-1"><a href="#视图-1" class="headerlink" title="视图"></a>视图</h3><p>当 <code>make:auth</code> 命令被执行时，laravel 会生成所有密码重置所需要的视图。这些视图将被存放在 <code>resources/views/auth/passwords</code> 目录中，你可以根据自己的需求去修改。</p>
+<h3 id="重置密码之后"><a href="#重置密码之后" class="headerlink" title="重置密码之后"></a>重置密码之后</h3><p>一旦你生成了所有重置密码所需要的路由和视图之后，你就可以通过在浏览器访问 <code>/password/reset</code> 路由来进行密码重置。<code>PasswordController</code> 已经包含了发送重置密码的链接邮件及更新密码到数据库的功能。</p>
+<p>当密码被重置之后，用户会自动登录并且被重定向到 <code>/home</code>。你可以在 <code>PasswordController</code> 中定义 <code>redirectTo</code> 属性来定制化重定向地址:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $redirectTo = <span class="string">'/dashboard'</span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，默认的，密码重置的 token 有效期只有一个小时，你可以在 <code>config/auth.php</code> 配置文件中修改 <code>expire</code> 选项。</p>
+</blockquote>
+<h3 id="定制"><a href="#定制" class="headerlink" title="定制"></a>定制</h3><p><strong>定制化认证守卫</strong></p>
+<p>在 <code>auth.php</code> 配置文件中，你可以配置多种 “guards”，用于对各种用户表执行认证动作。你可以在 <code>PasswordController</code> 中使用 <code>$guard</code> 属性来选择守卫:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The authentication guard that should be used.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $guard = <span class="string">'admins'</span>;</div></pre></td></tr></table></figure>
+<p><strong>定制化密码经纪人</strong></p>
+<p>在 <code>auth.php</code> 配置文件中，你可以配置多种密码“brokers”，用于对多种用户表进行密码重置。你可以通过在 <code>PasswordController</code> 中添加 <code>$broker</code> 属性来选择:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The password broker that should be used.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $broker = <span class="string">'admins'</span>;</div></pre></td></tr></table></figure>
+<h2 id="添加自定义的守卫"><a href="#添加自定义的守卫" class="headerlink" title="添加自定义的守卫"></a>添加自定义的守卫</h2><p>你可以在服务容器中使用 <code>Auth</code> 假面的 <code>extend</code> 方法来定义自己的认证守卫:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Auth</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">Auth</span>\<span class="title">JwtGuard</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Perform post-registration booting of services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Auth::extend(<span class="string">'jwt'</span>, <span class="function"><span class="keyword">function</span><span class="params">($app, $name, array $config)</span> </span>&#123;</div><div class="line">       <span class="comment">// Return an instance of Illuminate\Contracts\Auth\Guard...</span></div><div class="line"></div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> JwtGuard(Auth::createUserProvider($config[<span class="string">'provider'</span>]));</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register bindings in the container.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你应该能从上面的示例中看到，你应该在 <code>extend</code> 方法中返回一个 <code>Illuminate\Contracts\Auth\Guard</code> 的实现。为了定制化守卫你需要实现这个接口所包含的方法。</p>
+<p>一旦你的守卫被定义，你就可以在 <code>auth.php</code> 配置文件的 <code>guards</code> 选项中进行配置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">'guards'</span> =&gt; [</div><div class="line">  <span class="string">'api'</span> =&gt; [</div><div class="line">    <span class="string">'driver'</span> =&gt; <span class="string">'jwt'</span>,</div><div class="line">    <span class="string">'provider'</span> =&gt; <span class="string">'users'</span></div><div class="line">  ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="添加自定义的用户提供者"><a href="#添加自定义的用户提供者" class="headerlink" title="添加自定义的用户提供者"></a>添加自定义的用户提供者</h2><p>如果你并没有使用传统的关系数据库来存储你的用户，那么你需要提供你自己的用户提供者来扩展 laravel。你可以通过使用 <code>Auth</code> 假面的 <code>provider</code> 方法来定义自己的用户提供者。你应该在服务提供者中调用该方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Auth</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Extensions</span>\<span class="title">RiakUserProvider</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Perform post-registration booting of services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    Auth::provider(<span class="string">'riak'</span>, <span class="function"><span class="keyword">function</span><span class="params">($app, array $config)</span> </span>&#123;</div><div class="line">      <span class="comment">// Return an instance of Illuminate\Contracts\Auth\UserProvider...</span></div><div class="line">      <span class="keyword">return</span> <span class="keyword">new</span> RiakUserProvider($app[<span class="string">'riak.connection'</span>]);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Rigster bindings in the container.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">//</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在你使用 <code>provider</code> 方法注册完成提供者之后，你需要在 <code>config/auth.php</code> 配置文件中切换你的用户提供者为新注册的提供者:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'providers'</span> =&gt; [</div><div class="line">  <span class="string">'users'</span> =&gt; [</div><div class="line">    <span class="string">'driver'</span> =&gt; <span class="string">'riak'</span>,</div><div class="line">  ],</div><div class="line">],</div></pre></td></tr></table></figure>
+<p>然后，你需要在 <code>guards</code> 选项中使用该提供者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">'guards'</span> =&gt; [</div><div class="line">  <span class="string">'web'</span> =&gt; [</div><div class="line">    <span class="string">'driver'</span> =&gt; <span class="string">'session'</span>,</div><div class="line">    <span class="string">'provider'</span> =&gt; <span class="string">'users'</span>,</div><div class="line">  ],</div><div class="line">],</div></pre></td></tr></table></figure>
+<h3 id="用户提供者契约"><a href="#用户提供者契约" class="headerlink" title="用户提供者契约"></a>用户提供者契约</h3><p><code>Illuminate\Contracts\Auth\UserProvider</code> 的实现仅仅只是管理如何从持续存储系统中获取一个 <code>Illuminate\Contracts\Auth\Authenticatable</code> 的实现。如 MySQL，Riak，等等。这个两个接口实现了 laravel 的持续认证机制而不需要考虑用户数据是存放在哪里了或者存放的是什么类型。</p>
+<p>让我们来看一下 <code>Illuminate\Contracts\Auth\UserProvider</code> 契约：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Auth</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserProvider</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">retrieveById</span><span class="params">($identifier)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">retrieveByToken</span><span class="params">($identifier, $token)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">updateRememberToken</span><span class="params">(Authenticatable $user, $token)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">retrieveByCredentials</span><span class="params">(array $credentials)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">validateCredentials</span><span class="params">(Authenticatable $user, array $credentials)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>retrieveById</code> 方法用来接收一个键来返回一个用户，如 MySQL 数据库中自增的主键 ID。被匹配的 ID 应该返回一个 <code>Authenticatable</code> 的实现。</p>
+<p><code>retrieveByToken</code> 方法接收用于识别用户身份的唯一标识 <code>$identifier</code> 和 <code>remember_token</code> 所存储“记住我”的 <code>$token</code>。就如上面的方法一样，该方法应该返回一个 <code>Authenticatable</code> 的实现。</p>
+<p><code>updateRememberToken</code> 方法使用新的 <code>$token</code> 来更新用户的 <code>remember_token</code> 字段。这个新的字段可以是用户登录成功并且设置了 <code>记住我</code> 而分配的，也可以是用户登出之后分配的 null。</p>
+<p><code>retrieveByCredentials</code> 方法接收一个数组凭证，它会在用户尝试登录时将凭证传递给 <code>Auth::attemp</code> 方法。该方法会询问底层持续存储设备凭证的匹配情况，一般该方法会使用 <code>where</code> 条件语句来进行查询 <code>$credentials[&#39;username&#39;]</code> 类似的匹配状况。这个方法应该返回一个 <code>UserInterface</code> 的实现。<strong>不要在这个方法里做密码验证或者认证</strong>。</p>
+<p><code>validateCredentials</code> 方法应该比较所给定的用户和凭证的匹配情况。比如，这个方法或许会比较 <code>$user-getAuthPassword()</code> 和 <code>Hash::make</code> 后的 <code>$credentials[&#39;password&#39;]</code>。这个方法应该只做用户和凭证间的效验和返回比较情况的布尔值。</p>
+<h3 id="可认证的（Authenticatable）契约"><a href="#可认证的（Authenticatable）契约" class="headerlink" title="可认证的（Authenticatable）契约"></a>可认证的（Authenticatable）契约</h3><p>刚才我们探讨了 <code>UserProvider</code> 中的所有方法，现在让我们来看一看 <code>Authenticatable</code> 契约，你应该记得，提供者应该从 <code>retrieveById</code> 和 <code>retrieveByCredentials</code> 方法中返回该契约接口的实现：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Auth</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Authenticatable</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAuthIdentifierName</span><span class="params">()</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAuthIdentifier</span><span class="params">()</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getAuthPassword</span><span class="params">()</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRememberToken</span><span class="params">()</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setRememberToken</span><span class="params">($value)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRememberTokenName</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个接口相对来说非常简单。<code>getAuthIdentifierName</code> 方法应该返回用户的主键字段的名称。<code>getAuthIdentifier</code> 方法应该返回用户的主键。在 MySQL 中，这个主键一般为自增长的主键值。<code>getAuthPassword</code> 应该返回用户的经哈希后的密码。这个接口使认证系统可以在任何用户类中运行而不用管你使用的是什么 ORM 或者其它存储抽象层。默认的，laravel 在 <code>app</code> 目录下包含了 <code>User</code> 类，该类就实现了这个契约。所以你可以参照这个类的实现方式。</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>laravel 在认证进程中提供了各种各样的事件。你可以在你的 <code>EventServiceProvider</code> 中附加监听这些事件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The event listener mappings for the application.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $listen = [</div><div class="line">  <span class="string">'Illuminate\Auth\Events\Attempting'</span> =&gt; [</div><div class="line">    <span class="string">'App\Listeners\LogAuthenticationAttempt'</span>,</div><div class="line">  ],</div><div class="line"></div><div class="line">  <span class="string">'Illuminate\Auth\Events\Login'</span> =&gt; [</div><div class="line">    <span class="string">'App\Listeners\LogSuccessfulLogin'</span>,</div><div class="line">  ],</div><div class="line"></div><div class="line">  <span class="string">'Illuminate\Auth\Events\logout'</span> =&gt; [</div><div class="line">    <span class="string">'App\Listeners\logSuccessfulLogout'</span>,</div><div class="line">  ],</div><div class="line"></div><div class="line">  <span class="string">'Illuminate\Auth\Events\Lockout'</span> =&gt; [</div><div class="line">    <span class="string">'App\Listeners\LogLockout'</span>,</div><div class="line">  ],</div><div class="line"> ];</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/18/laravel-from-scratch-facades/" rel="next" title="laravel 基础教程 —— 假面">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 假面
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/25/laravel-from-scratch-authorization/" rel="prev" title="laravel 基础教程 —— 授权">
+                laravel 基础教程 —— 授权 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库注意事项"><span class="nav-number">1.1.</span> <span class="nav-text">数据库注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速开始"><span class="nav-number">1.2.</span> <span class="nav-text">快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由"><span class="nav-number">1.2.1.</span> <span class="nav-text">路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-number">1.2.2.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进行认证"><span class="nav-number">1.2.3.</span> <span class="nav-text">进行认证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义重定向地址"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">自定义重定向地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义守卫"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">自定义守卫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义-验证-存储"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">自定义 验证/存储</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取已认证的用户"><span class="nav-number">1.2.4.</span> <span class="nav-text">获取已认证的用户</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#判断当前用户是否已被认证"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">判断当前用户是否已被认证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保护路由"><span class="nav-number">1.2.5.</span> <span class="nav-text">保护路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定守卫"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">指定守卫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认证节流"><span class="nav-number">1.2.6.</span> <span class="nav-text">认证节流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动进行用户认证"><span class="nav-number">1.3.</span> <span class="nav-text">手动进行用户认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指定额外的认证信息"><span class="nav-number">1.3.1.</span> <span class="nav-text">指定额外的认证信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问指定的守卫实例"><span class="nav-number">1.3.2.</span> <span class="nav-text">访问指定的守卫实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登出"><span class="nav-number">1.3.3.</span> <span class="nav-text">登出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记住用户"><span class="nav-number">1.3.4.</span> <span class="nav-text">记住用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它认证方法"><span class="nav-number">1.3.5.</span> <span class="nav-text">其它认证方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过用户实例进行认证"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">通过用户实例进行认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过用户ID直接认证"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">通过用户ID直接认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#仅认证用户一次"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">仅认证用户一次</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于-HTTP-的认证"><span class="nav-number">1.4.</span> <span class="nav-text">基于 HTTP 的认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FastCGI-提示"><span class="nav-number">1.4.1.</span> <span class="nav-text">FastCGI 提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无状态的-HTTP-基本认证"><span class="nav-number">1.4.2.</span> <span class="nav-text">无状态的 HTTP 基本认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码重置"><span class="nav-number">1.5.</span> <span class="nav-text">密码重置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库注意事项-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">数据库注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由-1"><span class="nav-number">1.5.2.</span> <span class="nav-text">路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重置密码之后"><span class="nav-number">1.5.4.</span> <span class="nav-text">重置密码之后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制"><span class="nav-number">1.5.5.</span> <span class="nav-text">定制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加自定义的守卫"><span class="nav-number">1.6.</span> <span class="nav-text">添加自定义的守卫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加自定义的用户提供者"><span class="nav-number">1.7.</span> <span class="nav-text">添加自定义的用户提供者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户提供者契约"><span class="nav-number">1.7.1.</span> <span class="nav-text">用户提供者契约</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可认证的（Authenticatable）契约"><span class="nav-number">1.7.2.</span> <span class="nav-text">可认证的（Authenticatable）契约</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件"><span class="nav-number">1.8.</span> <span class="nav-text">事件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

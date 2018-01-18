@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="中间件简介HTTP 中间件为你的应用提供了一种便利的机制去过滤客户端的请求,比如说laravel中自带的用来验证用户是否已经认证的中间件，如果用户的认证没有通过，那么他将被重定向到登录视图。而如果用户已经通过认证，那么他的请求就会被认证中间件通过，并将请求传递给应用。 中间件可以处理多种任务，不仅仅只是用于验证用户认证。比如你可以创建一个跨同源策略的中间件，用来处理每个请求在被响应前添加正确的响应">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 中间件">
+<meta property="og:url" content="http://yoursite.com/2016/04/30/laravel-from-scratch-middleware/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="中间件简介HTTP 中间件为你的应用提供了一种便利的机制去过滤客户端的请求,比如说laravel中自带的用来验证用户是否已经认证的中间件，如果用户的认证没有通过，那么他将被重定向到登录视图。而如果用户已经通过认证，那么他的请求就会被认证中间件通过，并将请求传递给应用。 中间件可以处理多种任务，不仅仅只是用于验证用户认证。比如你可以创建一个跨同源策略的中间件，用来处理每个请求在被响应前添加正确的响应">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 中间件">
+<meta name="twitter:description" content="中间件简介HTTP 中间件为你的应用提供了一种便利的机制去过滤客户端的请求,比如说laravel中自带的用来验证用户是否已经认证的中间件，如果用户的认证没有通过，那么他将被重定向到登录视图。而如果用户已经通过认证，那么他的请求就会被认证中间件通过，并将请求传递给应用。 中间件可以处理多种任务，不仅仅只是用于验证用户认证。比如你可以创建一个跨同源策略的中间件，用来处理每个请求在被响应前添加正确的响应">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/30/laravel-from-scratch-middleware/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 中间件 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/30/laravel-from-scratch-middleware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 中间件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-30T09:36:38+08:00">
+                2016-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>HTTP 中间件为你的应用提供了一种便利的机制去过滤客户端的请求,比如说laravel中自带的用来验证用户是否已经认证的中间件，如果用户的认证没有通过，那么他将被重定向到登录视图。而如果用户已经通过认证，那么他的请求就会被认证中间件通过，并将请求传递给应用。</p>
+<p>中间件可以处理多种任务，不仅仅只是用于验证用户认证。比如你可以创建一个跨同源策略的中间件，用来处理每个请求在被响应前添加正确的响应头，你还可以创造一个日志中间件，在应用被请求时优先记录下请求信息。</p>
+<p>Laravel框架本身提供了一些中间件，它们包括维护、认证、csrf保护、session等中间件，这些中间件都被定义在<code>app\Http\Middleware</code>目录中。</p>
+<h2 id="定义中间件"><a href="#定义中间件" class="headerlink" title="定义中间件"></a>定义中间件</h2><p>为了创建一个新的中间件，你可以直接使用laravel提供的 <code>make:middleware</code> artisan命令:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">php</span> <span class="selector-tag">artisan</span> <span class="selector-tag">make</span><span class="selector-pseudo">:middleware</span> <span class="selector-tag">AgeMiddleware</span></div></pre></td></tr></table></figure>
+<p>这条命令会在<code>app\Http\Middleware</code>目录下创建一个<code>AgeMiddleware.php</code>文件。我们创造这么一个中间件，让只有年龄大于200的路由通过:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AgeMiddleware</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span> <span class="params">($request, Closure $next)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> ($request-&gt;get(<span class="string">'age'</span>) &gt; <span class="number">200</span>) &#123;</div><div class="line">      <span class="keyword">return</span> $next($request);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> redirect(<span class="string">'home'</span>); </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以看到，如果请求中所提供的年龄小于等于200,请求将被直接返回一个重定向信息到客户端，而如果年龄大于200，请求将被中间件继续传递给应用。为了在中间件中将请求转交给应用，你可以使用<code>$next</code>回调函数，并将<code>$request</code>传递进去。</p>
+<p>你可以建立一系列的中间件来过滤客户端的请求，这样每一层中间件都可以检查请求，如果通过，则将请求转交到下一层，如果不通过则直接被驳回。</p>
+<h3 id="前行-后行-中间件"><a href="#前行-后行-中间件" class="headerlink" title="前行/后行 中间件"></a>前行/后行 中间件</h3><p>其实，在中间件中不仅仅可以定义前行中间件，即在请求被转交到应用之前进行处理的中间件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> </div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BeforeMiddleware</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span> <span class="params">($request, Closure $next)</span> </span>&#123;</div><div class="line">    <span class="comment">// Perform action</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> $next($request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也可以定义优先转交请求给应用的后执行中间件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?</span> php</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AfterMiddleware</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span> <span class="params">($request, Closure $next)</span> </span>&#123;</div><div class="line">    $response = $next($request);</div><div class="line">    <span class="comment">// Perform action</span></div><div class="line">    <span class="keyword">return</span> $response;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="注册中间件"><a href="#注册中间件" class="headerlink" title="注册中间件"></a>注册中间件</h2><h3 id="全局中间件"><a href="#全局中间件" class="headerlink" title="全局中间件"></a>全局中间件</h3><p>如果你需要一个可以过滤所有请求的中间件，那么你可以注册一个全局中间件。你需要先定义好中间件，然后在<code>app/Http/kernel.php</code>中的<code>$middleware</code>数组属性中进行追加注册。</p>
+<h3 id="分配中间件到路由"><a href="#分配中间件到路由" class="headerlink" title="分配中间件到路由"></a>分配中间件到路由</h3><p>如果你想要分配中间件到特定的路由，那么你需要在<code>app/Http/kernel.php</code>文件中<code>$routeMiddleware</code>属性中进行追加注册，在这里你应该定义一个短字符的别名，以便于你在路由分配时快速指定。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Within App\Http\Kernel Class...</span></div><div class="line"></div><div class="line"><span class="keyword">protected</span> $routeMiddleware = [</div><div class="line">  <span class="string">'auth'</span> =&gt; \App\Http\Middleware\Authenticate::class,</div><div class="line">  <span class="string">'auth.basic'</span> =&gt; \App\Http\Middleware\AuthenticateBasicAuth::class,</div><div class="line">  <span class="string">'gust'</span> =&gt; \App\Http\Middleware\RedirectIfAuthenticated::class,</div><div class="line">  <span class="string">'throttle'</span> =&gt; \App\Http\Middleware\ThrottleRequest::class,</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>一旦你的中间件被注册在了<code>kernel</code>文件中，那么你就可以在定义路由时使用<code>middleware</code>选项进行中间件分配：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'admin/profile'</span>, [<span class="string">'middleware'</span> =&gt; <span class="string">'auth'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<p>你可以通过这么做来分配多个中间件:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/'</span>, [<span class="string">'middleware'</span> =&gt; [<span class="string">'first'</span>, <span class="string">'second'</span>], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<p>当然laravel也允许你通过链式方法<code>middleware</code>去进行中间件分配:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line"> <span class="comment">// </span></div><div class="line">&#125;)-&gt;middleware([<span class="string">'first'</span>, <span class="string">'second'</span>]);</div></pre></td></tr></table></figure>
+<p>事实上，你也可以使用完全类名来进行中间件分配：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Middleware</span>\<span class="title">FooMiddleware</span>;</div><div class="line"></div><div class="line">Route::get(<span class="string">'admin/profile'</span>, [<span class="string">'middleware'</span> =&gt; FooMiddleware::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure></p>
+<h3 id="中间件组"><a href="#中间件组" class="headerlink" title="中间件组"></a>中间件组</h3><p>有时候你可能希望在分配路由时，可以通过一个别名来分配一系列的中间件到路由。你可以在<code>kernel</code>文件中使用<code>$middlewareGroups</code>属性来进行注册.</p>
+<p>laravel自带了<code>web</code>和<code>api</code>中间件组:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $middlewareGroups = [</div><div class="line">  <span class="string">'web'</span> =&gt; [</div><div class="line">        \App\Http\Middleware\EncryptCookies::class,</div><div class="line">        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,</div><div class="line">        \Illuminate\Session\Middleware\StartSession::class,</div><div class="line">        \Illuminate\View\Middleware\ShareErrorsFromSession::class,</div><div class="line">        \App\Http\Middleware\VerifyCsrfToken::class,</div><div class="line">    ],</div><div class="line"></div><div class="line">    <span class="string">'api'</span> =&gt; [</div><div class="line">        <span class="string">'throttle:60,1'</span>,</div><div class="line">        <span class="string">'auth:api'</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>一旦注册了中间件组，你可以使用相同语法去分配中间件组到路由:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/'</span>, [<span class="string">'middleware'</span> =&gt; [<span class="string">'web'</span>], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure></p>
+<p>事实上，laravel自带的web中间件组已经被默认启用，所有在<code>routes.php</code>中被定义的路由都被分配了此中间件。你可以在<code>RouteServiceProvider.php</code>文件中进行修改.</p>
+<h2 id="带参数的中间件"><a href="#带参数的中间件" class="headerlink" title="带参数的中间件"></a>带参数的中间件</h2><p>中间件也可以接收额外的自定义参数。比如说你可能需要一个中间件来验证已认证的用户的权限问题。你可能需要传递一个角色名称参数来执行相应的行为.那么你需要创建一个<code>RoleMiddleware</code>来接收一个角色名称作为额外的参数.<br>额外的参数将会被传递在<code>$next</code>参数之后:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">namesapce App\Http\Middleware;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoleMiddleware</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span> <span class="params">($request, Closure $next, $role)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!$request-&gt;user()-&gt;hasRole($role)) &#123;</div><div class="line">      <span class="comment">// Redirect...</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> $next($request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>带参数的中间件在分配给路由时需要在中间件别名之后跟<code>:</code>来分割别名和参数，多个参数需要使用<code>,</code>分隔:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::post(<span class="string">'post/&#123;id&#125;'</span>, [<span class="string">'middleware'</span> =&gt; <span class="string">'role:editor'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($id)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<h2 id="末端中间件"><a href="#末端中间件" class="headerlink" title="末端中间件"></a>末端中间件</h2><p>有时候你可能需要在响应被发送到客户端之后继续处理一些任务，比如说 <code>session</code>中间件在laravel中就是响应被发送出去之后才将session信息进行存储操作。这时候你可以通过在中间件中添加<code>terminate</code>方法来定义一个末端中间件:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Session</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StartSession</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">hanlde</span> <span class="params">($request, Closure $next)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> $next($request);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">terminate</span><span class="params">($request, $response)</span> </span>&#123;</div><div class="line">    <span class="comment">// Store the sessin data...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>terminate</code>方法会接收请求和响应，一旦你定义了一个末端中间件，你应该在<code>kernel</code>文件中将其添加到全局中间件中.</p>
+<p>每当中间件中的<code>terminate</code>方法被调用，laravel都会从服务容器中返回一个新的中间件实例，如果你想使用同一个实例，你应该将其注册在服务容器中并使用<code>singleton</code>方法注册.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/21/what-is-jwt/" rel="next" title="什么是 JWT -- JSON WEB TOKEN">
+                <i class="fa fa-chevron-left"></i> 什么是 JWT -- JSON WEB TOKEN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/02/laravel-from-scratch-controllers/" rel="prev" title="laravel 基础教程 —— 控制器">
+                laravel 基础教程 —— 控制器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中间件"><span class="nav-number">1.</span> <span class="nav-text">中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义中间件"><span class="nav-number">1.2.</span> <span class="nav-text">定义中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前行-后行-中间件"><span class="nav-number">1.2.1.</span> <span class="nav-text">前行/后行 中间件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册中间件"><span class="nav-number">1.3.</span> <span class="nav-text">注册中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局中间件"><span class="nav-number">1.3.1.</span> <span class="nav-text">全局中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分配中间件到路由"><span class="nav-number">1.3.2.</span> <span class="nav-text">分配中间件到路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间件组"><span class="nav-number">1.3.3.</span> <span class="nav-text">中间件组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带参数的中间件"><span class="nav-number">1.4.</span> <span class="nav-text">带参数的中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#末端中间件"><span class="nav-number">1.5.</span> <span class="nav-text">末端中间件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

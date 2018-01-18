@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="laravel-boilerplate读laravel-boilerplate源码，分析各模块编码方式，分析代码整理方式，分析目录结构，以提高自我编码水平，提高代码整理能力。提高模块化架构能力，提高面向对象分析能力。 目录结构分析路由 路由分组 结构化目录 独立路由以require的形式注入 保持组命名空间与目录一致 命名路由  路由分组所有路由入口在 app\Http\routes.php文件中">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel-boilerplate 源码学习 (一)">
+<meta property="og:url" content="http://yoursite.com/2016/04/09/learn-boilerplate-source/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="laravel-boilerplate读laravel-boilerplate源码，分析各模块编码方式，分析代码整理方式，分析目录结构，以提高自我编码水平，提高代码整理能力。提高模块化架构能力，提高面向对象分析能力。 目录结构分析路由 路由分组 结构化目录 独立路由以require的形式注入 保持组命名空间与目录一致 命名路由  路由分组所有路由入口在 app\Http\routes.php文件中">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel-boilerplate 源码学习 (一)">
+<meta name="twitter:description" content="laravel-boilerplate读laravel-boilerplate源码，分析各模块编码方式，分析代码整理方式，分析目录结构，以提高自我编码水平，提高代码整理能力。提高模块化架构能力，提高面向对象分析能力。 目录结构分析路由 路由分组 结构化目录 独立路由以require的形式注入 保持组命名空间与目录一致 命名路由  路由分组所有路由入口在 app\Http\routes.php文件中">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/09/learn-boilerplate-source/"/>
+
+
+
+
+
+  <title>laravel-boilerplate 源码学习 (一) | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/09/learn-boilerplate-source/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel-boilerplate 源码学习 (一)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-09T09:15:58+08:00">
+                2016-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="laravel-boilerplate"><a href="#laravel-boilerplate" class="headerlink" title="laravel-boilerplate"></a>laravel-boilerplate</h1><p>读laravel-boilerplate源码，分析各模块编码方式，分析代码整理方式，分析目录结构，以提高自我编码水平，提高代码整理能力。提高模块化架构能力，提高面向对象分析能力。</p>
+<h2 id="目录结构分析"><a href="#目录结构分析" class="headerlink" title="目录结构分析"></a>目录结构分析</h2><h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><ul>
+<li>路由分组</li>
+<li>结构化目录</li>
+<li>独立路由以require的形式注入</li>
+<li>保持组命名空间与目录一致</li>
+<li>命名路由</li>
+</ul>
+<h4 id="路由分组"><a href="#路由分组" class="headerlink" title="路由分组"></a>路由分组</h4><p>所有路由入口在 <code>app\Http\routes.php</code>文件中，在该文件中定义分组路由:</p>
+<ul>
+<li>web端路由组 （包含 前端路由组 及 语言选择路由组）</li>
+<li>后端路由组</li>
+</ul>
+<h4 id="结构化目录"><a href="#结构化目录" class="headerlink" title="结构化目录"></a>结构化目录</h4><p>建立<code>app\Http\Routes\</code>文件目录，用于存放各模块组路由并建立相应的文件目录：</p>
+<ul>
+<li>Backend</li>
+<li>Frontend</li>
+<li>Language</li>
+</ul>
+<p>在模块组目录下细化模块路由</p>
+<h4 id="独立路由以require的形式注入"><a href="#独立路由以require的形式注入" class="headerlink" title="独立路由以require的形式注入"></a>独立路由以require的形式注入</h4><p>相应的模块组目录下的细化模块路由文件 在<code>app\Http\routes.php</code> 文件中相应路由组中以require的形式注入:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Backend Routes</span></div><div class="line"><span class="comment"> * Namespaces indicate folder structure</span></div><div class="line"><span class="comment"> * Admin middleware groups web, auth, and routeNeedsPermission</span></div><div class="line"><span class="comment"> */</span></div><div class="line">Route::group([<span class="string">'namespace'</span> =&gt; <span class="string">'Backend'</span>, <span class="string">'prefix'</span> =&gt; <span class="string">'admin'</span>, <span class="string">'middleware'</span> =&gt; <span class="string">'admin'</span>], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * These routes need view-backend permission</span></div><div class="line"><span class="comment">     * (good if you want to allow more than one group in the backend,</span></div><div class="line"><span class="comment">     * then limit the backend features by different roles or permissions)</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">Note:</span> Administrator has all permissions so you do not have to specify the administrator role everywhere.</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">require</span> (<span class="keyword">__DIR__</span> . <span class="string">'/Routes/Backend/Dashboard.php'</span>);</div><div class="line">    <span class="keyword">require</span> (<span class="keyword">__DIR__</span> . <span class="string">'/Routes/Backend/Access.php'</span>);</div><div class="line">    <span class="keyword">require</span> (<span class="keyword">__DIR__</span> . <span class="string">'/Routes/Backend/LogViewer.php'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="保持组命名空间与目录一致"><a href="#保持组命名空间与目录一致" class="headerlink" title="保持组命名空间与目录一致"></a>保持组命名空间与目录一致</h4><p>因为组模块下的相应路由文件中会使用到<code>控制器</code>来指定路由，并且在 <code>boilerplate</code>中控制器也是以模块组的目录结构来建立的,<br>而该模块组中的命名空间是以<code>composer.json</code>文件中的 <code>autoload</code> <code>psr-4</code> 的规范来定义的,<br>比如 <code>app/Http/Controllers/Backend/DashboardController.php</code> 的命名空间就是<code>App\Http\Controllers\Backend</code>,<br>为了在子路由下不必重复的编写命名空间引入控制器，可以在路由组中加入<code>namespace</code>来指定当前组所在的命名空间.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 模块组路由中</span></div><div class="line">Route::group([<span class="string">'namespace'</span> =&gt; <span class="string">'Frontend'</span>], <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// 当前组的命名空间为 /App/Http/Controllers/Frontend</span></div><div class="line">      <span class="keyword">require</span> (<span class="keyword">__DIR__</span> . <span class="string">'/Routes/Frontend/Frontend.php'</span>);</div><div class="line">      <span class="keyword">require</span> (<span class="keyword">__DIR__</span> . <span class="string">'/Routes/Frontend/Access.php'</span>);</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Routes/frontend/frontend.php</span></div><div class="line"><span class="comment">// 引入FrontendController控制器 该控制器对应的命名空间为 /App/Http/Controllers/Frontend</span></div><div class="line"><span class="comment">// 如果模块组中未定义命名空间 则自动检索 /App/Http/Controllers 命名空间 会提示找不到，因为该文件并不在这个命名空间下</span></div><div class="line">Route::get(<span class="string">'macros'</span>, <span class="string">'FrontendController@macros'</span>)-&gt;name(<span class="string">'frontend.macros'</span>);</div></pre></td></tr></table></figure>
+<h4 id="命名路由"><a href="#命名路由" class="headerlink" title="命名路由"></a>命名路由</h4><p>对详细路由进行命名，方便在视图中进行跳转</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// router</span></div><div class="line">Route::get(<span class="string">'/'</span>, <span class="string">'FrontendController@index'</span>)-&gt;name(<span class="string">'frontend.index'</span>);</div><div class="line"></div><div class="line"><span class="comment">// view</span></div><div class="line">&lt;a href="&#123;!! route('frontend.index') !!&#125;" class="logo"&gt;&#123;!! app_name() !!&#125;&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p><strong>控制器</strong>的主要作用是便于管理路由，对相应路由的业务逻辑的实现集中在这里处理或传递。</p>
+<p><code>boilerplate</code>在控制器的目录结构上也进行了整理，在<code>app\Http\Controllers</code>目录下建立的三个目录对控制器进行了归类整理：</p>
+<ul>
+<li>Backend</li>
+<li>Frontend</li>
+<li>Language</li>
+</ul>
+<p>在这些目录下根据业务需求建立另外一些归类目录，便于控制器的集中化管理。<br>例如目录<code>app\Http\Controllers\Frontend\User</code>目录集中管理前端的用户相关的路由的实现:</p>
+<ul>
+<li>DashboardController.php  用户中心仪表盘控制器</li>
+<li>ProfileController.php 用户文件控制器 （实现用户个人文档操作路由的相关业务逻辑）</li>
+</ul>
+<p>在控制器中一般我们只根据路由做业务的接入和结果的输出，而不是仅仅将业务的处理逻辑全扔进控制器控制的函数中，</p>
+<p>如果是这样的话，控制器会非常的臃肿，而且相关业务功能不能做到很好的复用。</p>
+<p>如果需求变更的话，我们不得不删除原先的业务逻辑重新编写新的业务逻辑。</p>
+<p><code>boilerplate</code>中使用<code>contracts（契约接口）</code>的形式来管理这些逻辑的复用， 并且这种做法，提供了很好的可扩展性，如果业务变更，我们只需要提供一个实现了<code>contracts（契约接口）</code>的类文件就可以了，而不需要去修改之前业务的类文件。</p>
+<p>让我们来看一下 <code>boilerplate</code>中的控制器：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">EditUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">MarkUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">StoreUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">CreateUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">UpdateUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">DeleteUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">RestoreUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">UserRepositoryContract</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">Role</span>\<span class="title">RoleRepositoryContract</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">ChangeUserPasswordRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">UpdateUserPasswordRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">PermanentlyDeleteUserRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Requests</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">ResendConfirmationEmailRequest</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Backend</span>\<span class="title">Access</span>\<span class="title">Permission</span>\<span class="title">PermissionRepositoryContract</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Frontend</span>\<span class="title">Access</span>\<span class="title">User</span>\<span class="title">UserRepositoryContract</span> <span class="title">as</span> <span class="title">FrontendUserRepositoryContract</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Class UserController</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@var</span> UserRepositoryContract</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">protected</span> $users;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@var</span> RoleRepositoryContract</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">protected</span> $roles;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@var</span> PermissionRepositoryContract</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">protected</span> $permissions;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> UserRepositoryContract       $users</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> RoleRepositoryContract       $roles</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> PermissionRepositoryContract $permissions</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">        UserRepositoryContract $users,</span></span></div><div class="line"><span class="function"><span class="params">        RoleRepositoryContract $roles,</span></span></div><div class="line"><span class="function"><span class="params">        PermissionRepositoryContract $permissions</span></span></div><div class="line"><span class="function"><span class="params">    )</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users       = $users;</div><div class="line">        <span class="keyword">$this</span>-&gt;roles       = $roles;</div><div class="line">        <span class="keyword">$this</span>-&gt;permissions = $permissions;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.index'</span>)</div><div class="line">            -&gt;withUsers(<span class="keyword">$this</span>-&gt;users-&gt;getUsersPaginated(config(<span class="string">'access.users.default_per_page'</span>), <span class="number">1</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  CreateUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(CreateUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.create'</span>)</div><div class="line">            -&gt;withRoles(<span class="keyword">$this</span>-&gt;roles-&gt;getAllRoles(<span class="string">'sort'</span>, <span class="string">'asc'</span>, <span class="keyword">true</span>))</div><div class="line">            -&gt;withPermissions(<span class="keyword">$this</span>-&gt;permissions-&gt;getAllPermissions());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  StoreUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(StoreUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;create(</div><div class="line">            $request-&gt;except(<span class="string">'assignees_roles'</span>, <span class="string">'permission_user'</span>),</div><div class="line">            $request-&gt;only(<span class="string">'assignees_roles'</span>),</div><div class="line">            $request-&gt;only(<span class="string">'permission_user'</span>)</div><div class="line">        );</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'admin.access.users.index'</span>)-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.created'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  EditUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">edit</span><span class="params">($id, EditUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $user = <span class="keyword">$this</span>-&gt;users-&gt;findOrThrowException($id, <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.edit'</span>)</div><div class="line">            -&gt;withUser($user)</div><div class="line">            -&gt;withUserRoles($user-&gt;roles-&gt;lists(<span class="string">'id'</span>)-&gt;all())</div><div class="line">            -&gt;withRoles(<span class="keyword">$this</span>-&gt;roles-&gt;getAllRoles(<span class="string">'sort'</span>, <span class="string">'asc'</span>, <span class="keyword">true</span>))</div><div class="line">            -&gt;withUserPermissions($user-&gt;permissions-&gt;lists(<span class="string">'id'</span>)-&gt;all())</div><div class="line">            -&gt;withPermissions(<span class="keyword">$this</span>-&gt;permissions-&gt;getAllPermissions());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  UpdateUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">($id, UpdateUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;update($id,</div><div class="line">            $request-&gt;except(<span class="string">'assignees_roles'</span>, <span class="string">'permission_user'</span>),</div><div class="line">            $request-&gt;only(<span class="string">'assignees_roles'</span>),</div><div class="line">            $request-&gt;only(<span class="string">'permission_user'</span>)</div><div class="line">        );</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'admin.access.users.index'</span>)-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.updated'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  DeleteUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">destroy</span><span class="params">($id, DeleteUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;destroy($id);</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;back()-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.deleted'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  PermanentlyDeleteUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">delete</span><span class="params">($id, PermanentlyDeleteUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;delete($id);</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;back()-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.deleted_permanently'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  RestoreUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">restore</span><span class="params">($id, RestoreUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;restore($id);</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;back()-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.restored'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $status</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  MarkUserRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">mark</span><span class="params">($id, $status, MarkUserRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;mark($id, $status);</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;back()-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.updated'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">deactivated</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.deactivated'</span>)</div><div class="line">            -&gt;withUsers(<span class="keyword">$this</span>-&gt;users-&gt;getUsersPaginated(<span class="number">25</span>, <span class="number">0</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">deleted</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.deleted'</span>)</div><div class="line">            -&gt;withUsers(<span class="keyword">$this</span>-&gt;users-&gt;getDeletedUsersPaginated(<span class="number">25</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  ChangeUserPasswordRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">changePassword</span><span class="params">($id, ChangeUserPasswordRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> view(<span class="string">'backend.access.change-password'</span>)</div><div class="line">            -&gt;withUser(<span class="keyword">$this</span>-&gt;users-&gt;findOrThrowException($id));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  UpdateUserPasswordRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">updatePassword</span><span class="params">($id, UpdateUserPasswordRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;users-&gt;updatePassword($id, $request-&gt;all());</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;route(<span class="string">'admin.access.users.index'</span>)-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.updated_password'</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  $user_id</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  FrontendUserRepositoryContract $user</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  ResendConfirmationEmailRequest $request</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">resendConfirmationEmail</span><span class="params">($user_id, FrontendUserRepositoryContract $user, ResendConfirmationEmailRequest $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        $user-&gt;sendConfirmationEmail($user_id);</div><div class="line">        <span class="keyword">return</span> redirect()-&gt;back()-&gt;withFlashSuccess(trans(<span class="string">'alerts.backend.users.confirmation_email'</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们会发现<code>UserController</code>中的路由控制函数都非常的精简，每个控制函数都只有仅仅数行代码。<br>我们以<code>store</code>新增用户函数来追踪一下代码到底是怎么运行的。<br>该方法会在路由提交新增用户请求时进行处理，先经过依赖注入<code>StoreUserRequest</code>（文件地址<code>app\Http\Requests\Backend\Access\User\StoreUserRequest.php</code>）实例来判断Post过来的数据是不是经得起验证，如果数据是合法的，就执行该控制函数下的代码。<br>我们看下<code>store</code>函数会发现主要实现的业务逻辑都集中在<code>$this-&gt;user</code>实例的<code>create</code>方法中，<br>而<code>$this-&gt;user</code>是<code>Usercontroller</code>初始化时直接通过依赖注入构造的<code>UserRepositoryContract</code>类的实例，<br>该实例在 <code>AccessServiceProvider</code>中的<code>registerBindings</code>方法注册，实际上是从容器中提取的<code>EloquentUserRepository</code>的实例。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// app/Providers/AccessServiceProvider.php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">   * Register service provider bindings</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">registerBindings</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Frontend\Access\User\UserRepositoryContract::class,</div><div class="line">          \App\Repositories\Frontend\Access\User\EloquentUserRepository::class</div><div class="line">      );</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Backend\Access\User\UserRepositoryContract::class,</div><div class="line">          \App\Repositories\Backend\Access\User\EloquentUserRepository::class</div><div class="line">      );</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Backend\Access\Role\RoleRepositoryContract::class,</div><div class="line">          \App\Repositories\Backend\Access\Role\EloquentRoleRepository::class</div><div class="line">      );</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Backend\Access\Permission\PermissionRepositoryContract::class,</div><div class="line">          \App\Repositories\Backend\Access\Permission\EloquentPermissionRepository::class</div><div class="line">      );</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Backend\Access\Permission\Group\PermissionGroupRepositoryContract::class,</div><div class="line">          \App\Repositories\Backend\Access\Permission\Group\EloquentPermissionGroupRepository::class</div><div class="line">      );</div><div class="line"></div><div class="line">      <span class="keyword">$this</span>-&gt;app-&gt;bind(</div><div class="line">          \App\Repositories\Backend\Access\Permission\Dependency\PermissionDependencyRepositoryContract::class,</div><div class="line">          \App\Repositories\Backend\Access\Permission\Dependency\EloquentPermissionDependencyRepository::class</div><div class="line">      );</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>我们看下<code>EloquentUserRepository</code>这个类，这个类才是真正的实现业务逻辑的类，它实现了<code>create</code>业务方法生成一个新的用户。<br>如果我们业务变更，需求用另一种实现来生成另外一种用户,这时候我们只需建立一个<code>SomeOtherUserRepository</code>并实现<code>UserRepositoryContracts</code>，然后再修改在容器中的注册就可以了，而完全不需要去修改<code>EloquentUserRepository</code>中的实现了。</p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p><strong>boilerplate</strong>将模型都集中在了<code>app\Models</code>目录下进行统一管理。</p>
+<p>这里我们主要分析一下用户模型，而用户相关的文件存放在 <code>app\Models\Access\User\</code>目录下，在该目录下<code>User.php</code>就是用户模型，该模型继承了<code>Illuminate\Database\Eloquent\Model</code>。</p>
+<p>我们发现<code>User.php</code>文件下内容非常的清爽，而<code>User</code>目录下建立了<code>Traits</code>目录用来存放, 而<code>User.php</code>里也使用了trait来引用不同的文件。 </p>
+<p><strong>trait</strong>是自php 5.4.0 起实现代码复用的一个方法，它和类相似，但自身不能实例化，类似于前端语言里的<code>[mixin]</code>方式复用方法。</p>
+<p><strong>boilerplate</strong>将用户模型中不同职责的方法分别独立出了一个trait文件，方便了功能方法的复用，文件的职责更加明确.</p>
+<h3 id="helpers"><a href="#helpers" class="headerlink" title="helpers"></a>helpers</h3><p><code>app/helpers.php</code>文件中封装了一些全局方法，该文件在<code>composer.json</code>文件中定义了<code>autoload</code>, 在由composer解析生成依赖文件后，会在程序启动中进行自动加载. 一些常用的方法可以在这里定义简便形式。</p>
+<h2 id="技能get"><a href="#技能get" class="headerlink" title="技能get"></a>技能get</h2><h3 id="Seed"><a href="#Seed" class="headerlink" title="Seed"></a>Seed</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Model::unguard();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (env(<span class="string">'DB_CONNECTION'</span>) == <span class="string">'mysql'</span>) &#123;</div><div class="line">      <span class="comment">// 取消外键约束</span></div><div class="line">        DB::statement(<span class="string">'SET FOREIGN_KEY_CHECKS=0;'</span>); </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;call(AccessTableSeeder::class);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (env(<span class="string">'DB_CONNECTION'</span>) == <span class="string">'mysql'</span>) &#123;</div><div class="line">      <span class="comment">// 使外键约束生效</span></div><div class="line">        DB::statement(<span class="string">'SET FOREIGN_KEY_CHECKS=1;'</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"> Model::reguard();</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>优秀的目录结构使代码结构更清晰，模块职责明确，这样在未来新增功能或维护功能时，可以非常迅速的定位到相应的的位置，提高了扩展的效率，提高了可维护性。</p>
+<h3 id="业务实现"><a href="#业务实现" class="headerlink" title="业务实现"></a>业务实现</h3><p>考虑需求变更的可能性，提高业务的复用性，可扩展性。使用 <code>contracts</code>的形式去规划业务，可能刚开始编写代码的时候会多做很多事情，但是后期的维护上却会节省很大的效率。</p>
+<h3 id="研究开源项目源码的好处"><a href="#研究开源项目源码的好处" class="headerlink" title="研究开源项目源码的好处"></a>研究开源项目源码的好处</h3><p>记得以前玩游戏的时候，玩不过了怎么办？我们经常做的就是研究攻略找秘籍，编程也是一样的，读一些优秀的开源项目的源码，可以让我们学习到非常多的东西，提高我们的编程视角，往往能够收获颇多。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/31/wechat-not-support-promise-on-android/" rel="next" title="安卓端微信浏览器不支持 promise">
+                <i class="fa fa-chevron-left"></i> 安卓端微信浏览器不支持 promise
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/13/dependency-injection-and-inversion-of-control/" rel="prev" title="理解依赖注入与控制反转">
+                理解依赖注入与控制反转 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#laravel-boilerplate"><span class="nav-number">1.</span> <span class="nav-text">laravel-boilerplate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构分析"><span class="nav-number">1.1.</span> <span class="nav-text">目录结构分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由"><span class="nav-number">1.1.1.</span> <span class="nav-text">路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#路由分组"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">路由分组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构化目录"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">结构化目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#独立路由以require的形式注入"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">独立路由以require的形式注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保持组命名空间与目录一致"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">保持组命名空间与目录一致</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命名路由"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">命名路由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制器"><span class="nav-number">1.1.2.</span> <span class="nav-text">控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">1.1.3.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#helpers"><span class="nav-number">1.1.4.</span> <span class="nav-text">helpers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技能get"><span class="nav-number">1.2.</span> <span class="nav-text">技能get</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Seed"><span class="nav-number">1.2.1.</span> <span class="nav-text">Seed</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务实现"><span class="nav-number">1.3.2.</span> <span class="nav-text">业务实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#研究开源项目源码的好处"><span class="nav-number">1.3.3.</span> <span class="nav-text">研究开源项目源码的好处</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

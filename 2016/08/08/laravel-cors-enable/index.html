@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="跨域的请求出于安全性的原因，浏览器会限制 Script 中的跨域请求。由于 XMLHttpRequest 遵循同源策略，所有使用 XMLHttpRequest 构造 HTTP 请求的应用只能访问自己的域名，如果需要构造跨域的请求，那么开发者需要配合浏览器做出一些允许跨域的配置。 W3C 应用工作组推荐了一种跨资源共享的机制，这种机制让 Web 应用服务器能支持跨站访问控制，从而使得安全的进行跨站数">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 开启跨域功能">
+<meta property="og:url" content="http://yoursite.com/2016/08/08/laravel-cors-enable/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="跨域的请求出于安全性的原因，浏览器会限制 Script 中的跨域请求。由于 XMLHttpRequest 遵循同源策略，所有使用 XMLHttpRequest 构造 HTTP 请求的应用只能访问自己的域名，如果需要构造跨域的请求，那么开发者需要配合浏览器做出一些允许跨域的配置。 W3C 应用工作组推荐了一种跨资源共享的机制，这种机制让 Web 应用服务器能支持跨站访问控制，从而使得安全的进行跨站数">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 开启跨域功能">
+<meta name="twitter:description" content="跨域的请求出于安全性的原因，浏览器会限制 Script 中的跨域请求。由于 XMLHttpRequest 遵循同源策略，所有使用 XMLHttpRequest 构造 HTTP 请求的应用只能访问自己的域名，如果需要构造跨域的请求，那么开发者需要配合浏览器做出一些允许跨域的配置。 W3C 应用工作组推荐了一种跨资源共享的机制，这种机制让 Web 应用服务器能支持跨站访问控制，从而使得安全的进行跨站数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/08/laravel-cors-enable/"/>
+
+
+
+
+
+  <title>laravel 开启跨域功能 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/08/laravel-cors-enable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 开启跨域功能</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-08T10:09:58+08:00">
+                2016-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="跨域的请求"><a href="#跨域的请求" class="headerlink" title="跨域的请求"></a>跨域的请求</h1><p>出于安全性的原因，浏览器会限制 Script 中的跨域请求。由于 XMLHttpRequest 遵循同源策略，所有使用 XMLHttpRequest 构造 HTTP 请求的应用只能访问自己的域名，如果需要构造跨域的请求，那么开发者需要配合浏览器做出一些允许跨域的配置。</p>
+<p>W3C 应用工作组推荐了一种跨资源共享的机制，这种机制让 Web 应用服务器能支持跨站访问控制，从而使得安全的进行跨站数据传输成为可能，该机制通过几种方式来对原有模式进行了扩展：</p>
+<ul>
+<li>响应的头部应该追加 <code>Access-Control-Allow-Orign</code>，用来表明哪些请求源被允许访问资源内容</li>
+<li>浏览器会对请求源和响应中的值进行匹配验证</li>
+<li>对于跨域的请求，浏览器会预发送一个非简单方式的请求，来判断给定资源是否准备接受跨域资源访问</li>
+<li>服务端应用通过检查请求头部的 <code>Orign</code> 来判定请求是否跨域。</li>
+</ul>
+<h2 id="跨源资源共享标准"><a href="#跨源资源共享标准" class="headerlink" title="跨源资源共享标准"></a>跨源资源共享标准</h2><blockquote>
+<p>跨源资源共享标准通过新增一系列 HTTP 头，让服务器能声明哪些来源可以通过浏览器访问该服务器上的资源。另外，对哪些会对服务器数据造成破坏性响应的 HTTP 请求方法（特别是 GET 以外的 HTTP 方法，或者搭配某些 MIME 类型的 POST 请求），标准强烈要求浏览器必须先以 OPTIONS 请求方式发送一个预请求（preflight request），从而获取知服务器端对跨源请求所支持 HTTP 方法。在确认服务器允许跨源请求的情况下，以实际的 HTTP 请求方法发送那个真正的请求。服务器端也可以通知客户端，是不是需要随同请求一起发送信用信息（包括 Cookies 和 HTTP 认证相关数据）。</p>
+</blockquote>
+<p>跨源共享标准需要浏览器和服务端共同配合才能完成，目前浏览器厂商已经可以将请求部分自动完成，所以跨源资源访问的重点还是在于服务器端。</p>
+<p>下面列出一些标准中可用的响应头和请求头。</p>
+<h2 id="Response-Header"><a href="#Response-Header" class="headerlink" title="Response Header"></a>Response Header</h2><ul>
+<li>Access-Control-Allow-Origin      : 指明哪些请求源被允许访问资源，值可以为 “*”，”null”，或者单个源地址。</li>
+<li>Access-Control-Allow-Credentials : 指明当请求中省略 creadentials 标识时响应是否暴露。对于预请求来说，它表明实际的请求中可以包含用户凭证。</li>
+<li>Access-Control-Expose-Headers    : 指明哪些头信息可以安全的暴露给 CORS API 规范的 API。</li>
+<li>Access-Control-Max-Age           : 指明预请求可以在预请求缓存中存放多久。</li>
+<li>Access-Control-Allow-Methods     : 对于预请求来说，哪些请求方式可以用于实际的请求。</li>
+<li>Access-Control-Allow-Headers     : 对于预请求来说，指明了哪些头信息可以用于实际的请求中。</li>
+<li>Origin                           : 指明预请求或者跨域请求的来源。</li>
+<li>Access-Control-Request-Method    : 对于预请求来说，指明哪些预请求中的请求方式可以被用在实际的请求中。</li>
+<li>Access-Control-Request-Headers   : 指明预请求中的哪些头信息可以用于实际的请求中。</li>
+</ul>
+<h2 id="Request-Header"><a href="#Request-Header" class="headerlink" title="Request Header"></a>Request Header</h2><ul>
+<li>Origin                         : 表明发送请求或预请求的来源。</li>
+<li>Access-Control-Request-Method  : 在发送预请求时带该请求头，表明实际的请求将使用的请求方式。</li>
+<li>Access-Control-Request-Headers : 在发送预请求时带有该请求头，表明实际的请求将携带的请求头。</li>
+</ul>
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><p>在 Laravel 中允许跨域请求，我们可以构建一个追加响应的中间件，用来添加专门处理跨域的请求的响应头:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Middleware</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Response</span>;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EnableCrossRequestMiddleware</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Handle an incoming request.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span>  \Illuminate\Http\Request  $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span>  \Closure  $next</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">($request, Closure $next)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line"></div><div class="line">    $response = $next($request);</div><div class="line">        $response-&gt;header(<span class="string">'Access-Control-Allow-Origin'</span>, config(<span class="string">'app.allow'</span>));</div><div class="line">        $response-&gt;header(<span class="string">'Access-Control-Allow-Headers'</span>, <span class="string">'Origin, Content-Type, Cookie, Accept'</span>);</div><div class="line">        $response-&gt;header(<span class="string">'Access-Control-Allow-Methods'</span>, <span class="string">'GET, POST, PATCH, PUT, OPTIONS'</span>);</div><div class="line">        $response-&gt;header(<span class="string">'Access-Control-Allow-Credentials'</span>, <span class="string">'true'</span>);</div><div class="line">        <span class="keyword">return</span> $response;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中有以下需要注意的地方：</p>
+<ul>
+<li>对于跨域访问并需要伴随认证信息的请求，需要在 XMLHttpRequest 实例中指定 <code>withCredentials</code> 为 <code>true</code>。</li>
+<li>这个中间件你可以根据自己的需求进行构建，如果需要在请求中伴随认证信息（包含 cookie，session）那么你就需要指定 <code>Access-Control-Allow-Credentials</code> 为 <code>true</code>, 因为对于预请求来说如果你未指定该响应头，那么浏览器会直接忽略该响应。</li>
+<li>在响应中指定 <code>Access-Control-Allow-Credentials</code> 为 <code>true</code> 时，<code>Access-Control-Allow-Origin</code> 不能指定为 <code>*</code> </li>
+<li>后置中间件只有在正常响应时才会被追加响应头，而如果出现异常，这时响应是不会经过中间件的。</li>
+</ul>
+<p>PS: 欢迎关注简书 <a href="http://www.jianshu.com/collection/3dff40fa5135" target="_blank" rel="external">Laravel</a> 专题，也欢迎 Laravel 相关文章的投稿 :)，作者知识技能水平有限，如果你有更好的设计方案欢迎讨论交流，如果有错误的地方也请批评指正，在此表示感谢 :)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/01/using-wechat-authentication-for-login-with-laravel-socialite/" rel="next" title="使用 Laravel Socialite 集成微信登录">
+                <i class="fa fa-chevron-left"></i> 使用 Laravel Socialite 集成微信登录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/08/real-time-laravel-with-socket-io-and-redis/" rel="prev" title="Laravel 即时应用的一种实现方式">
+                Laravel 即时应用的一种实现方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#跨域的请求"><span class="nav-number">1.</span> <span class="nav-text">跨域的请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨源资源共享标准"><span class="nav-number">1.1.</span> <span class="nav-text">跨源资源共享标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-Header"><span class="nav-number">1.2.</span> <span class="nav-text">Response Header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-Header"><span class="nav-number">1.3.</span> <span class="nav-text">Request Header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中间件"><span class="nav-number">1.4.</span> <span class="nav-text">中间件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

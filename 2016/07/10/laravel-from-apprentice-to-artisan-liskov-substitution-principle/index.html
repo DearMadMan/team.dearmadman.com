@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Introduction 介绍别担心，里氏替换原则读起来吓人学起来简单。该原则要求：一个抽象的任意一个实现，可以被用来任何需要该抽象的地方。读起来绕口，用普通人的话来解释一下。该原则规定：如果一个类使用了一个接口的一个实现类，那么该接口的任何其他实现类也可以被这个类直接使用，不用做出任何修改。  Liskov Substitution Principle 里氏替换原则 该原则规定对象应该可以被该对">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从百草园到三味书屋 —— 里氏替换原则">
+<meta property="og:url" content="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-liskov-substitution-principle/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Introduction 介绍别担心，里氏替换原则读起来吓人学起来简单。该原则要求：一个抽象的任意一个实现，可以被用来任何需要该抽象的地方。读起来绕口，用普通人的话来解释一下。该原则规定：如果一个类使用了一个接口的一个实现类，那么该接口的任何其他实现类也可以被这个类直接使用，不用做出任何修改。  Liskov Substitution Principle 里氏替换原则 该原则规定对象应该可以被该对">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从百草园到三味书屋 —— 里氏替换原则">
+<meta name="twitter:description" content="Introduction 介绍别担心，里氏替换原则读起来吓人学起来简单。该原则要求：一个抽象的任意一个实现，可以被用来任何需要该抽象的地方。读起来绕口，用普通人的话来解释一下。该原则规定：如果一个类使用了一个接口的一个实现类，那么该接口的任何其他实现类也可以被这个类直接使用，不用做出任何修改。  Liskov Substitution Principle 里氏替换原则 该原则规定对象应该可以被该对">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-liskov-substitution-principle/"/>
+
+
+
+
+
+  <title>从百草园到三味书屋 —— 里氏替换原则 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-liskov-substitution-principle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从百草园到三味书屋 —— 里氏替换原则</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T21:08:22+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Introduction-介绍"><a href="#Introduction-介绍" class="headerlink" title="Introduction 介绍"></a>Introduction 介绍</h1><p>别担心，里氏替换原则读起来吓人学起来简单。该原则要求：一个抽象的任意一个实现，可以被用来任何需要该抽象的地方。读起来绕口，用普通人的话来解释一下。该原则规定：如果一个类使用了一个接口的一个实现类，那么该接口的任何其他实现类也可以被这个类直接使用，不用做出任何修改。</p>
+<blockquote>
+<p><strong>Liskov Substitution Principle 里氏替换原则</strong></p>
+<p>该原则规定对象应该可以被该对象子类的实例所替换，并且不会影响到程序的正确性。</p>
+</blockquote>
+<h2 id="In-Action-实践"><a href="#In-Action-实践" class="headerlink" title="In Action 实践"></a>In Action 实践</h2><p>为了说明该原则，我们继续编写上一章节的 <code>OrderProcessor</code>。看下面的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">// Validate order...</span></div><div class="line">  <span class="keyword">$this</span>-&gt;orders-&gt;logOrder($order);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意当我们的 <code>Order</code> 通过了验证，就被 <code>OrderRepositoryInterface</code> 的实现对象存储起来了。假设当我们的业务刚起步时，我们将订单存储在 CSV 格式的文件系统中。我们的 <code>OrderRepositoryInterface</code> 的实现类是 <code>CsvOrderRepository</code>。现在，随着我们订单增多，我们想用一个关系数据库来存储订单。那么我们来看看新的订单资料库类该怎么编写吧：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DatabaseOrderRepository</span> <span class="keyword">implements</span> <span class="title">OrderRepositoryInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">protected</span> $connection;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">connect</span><span class="params">($username, $password)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;connection = <span class="keyword">new</span> DatabaseConnection($username, $password);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">logOrder</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;connection-&gt;run(<span class="string">'insert into orders values (?, ?)'</span>, <span class="keyword">array</span>($order-&gt;id, $order-&gt;amount));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在我们来研究如何使用这个实现类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">// validate order...</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;repository <span class="keyword">instanceof</span> DatabaseOrderRepository) &#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;repository-&gt;connect(<span class="string">'root'</span>, <span class="string">'password'</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">$this</span>-&gt;repository-&gt;logOrder($order);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意这段代码中，我们必须在资料库外部检查 <code>OrderRepositoryInterface</code> 的实例对象是不是用数据库实现的。如果是的话，则必须先连接数据库。在很小的应用中这可能不算什么问题，但如果 <code>OrderRepositoryInterface</code> 被几十个类调用呢？我们可能就要把这段“启动”代码在每一个调用的地方复制一遍又一遍。这让人非常头疼难以维护，非常容易出错误。一旦我们忘了将所有调用的地方进行同步修改，那程序恐怕就会出问题。</p>
+<p>很明显，上面的例子没有遵循里氏替换原则。如果不附加“启动”代码来调用 <code>connect</code> 方法，则这段代码就没法用。好了，我们已经找到问题所在，咱们修好它。下面就是新的 <code>DatabaseOrderRepository</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DatabaseOrderRepository</span> <span class="keyword">implements</span> <span class="title">OrderRepositoryInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">protected</span> $connector;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(DatabaseConnector $connector)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;connector = $connector;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">connect</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;connector-&gt;bootConnection();</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">logOrder</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $connection = <span class="keyword">$this</span>-&gt;connect();</div><div class="line">    $connection-&gt;run(<span class="string">'insert into orders values (?, ?)'</span>, <span class="keyword">array</span>($order-&gt;id, $order-&gt;amount));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在 <code>DatabaseOrderRepository</code> 掌管了数据库连接，我们可以把“启动”代码从 <code>OrderProcessor</code> 移除了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="comment">// Validate order...</span></div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;repository-&gt;logOrder($order);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样一改，我们就可以想用 <code>CsvOrderRepository</code> 也行，想用 <code>DatabaseOrderRepository</code> 也行，不用改 <code>OrderProcessor</code> 一行代码。我们的代码终于实现了里氏替换原则！要注意，我们讨论过的许多架构概念都和知识相关。具体讲，知识就是一个类和它所具有的周边领域，比如用来帮助类完成任务的外围代码和依赖。当你要制作一个容错性强大的应用架构时，限制类的知识是一种常用且重要的手段。</p>
+<p>还要注意如果不遵守里氏替换原则，那后果可能会影响到我们之前已经讨论过的其他原则。不遵守里氏替换原则，那么开放封闭原则也一定会被打破。因为，如果调用者必须检查实例属于哪一个子类的，那一旦有个新的子类，调用者就得做出改变。（译者注：这就违背了对修改封闭的原则。）</p>
+<blockquote>
+<p><strong>Watch For Leaks 小心遗漏</strong></p>
+<p>你可能注意到这个原则和上一章节提到的“抽象的漏洞”密切相关。我们的数据库资料库的抽象漏洞就是没有遵守里氏替换原则的第一迹象。要留意那些漏洞！</p>
+</blockquote>
+<p>译文地址：<a href="http://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">http://my.oschina.net/zgldh/blog/389246</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-open-closed-principle/" rel="next" title="从百草堂到三味书屋 —— 开放封闭原则">
+                <i class="fa fa-chevron-left"></i> 从百草堂到三味书屋 —— 开放封闭原则
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-interface-segregation-principle/" rel="prev" title="从百草园到三味书屋 —— 接口隔离原则">
+                从百草园到三味书屋 —— 接口隔离原则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction-介绍"><span class="nav-number">1.</span> <span class="nav-text">Introduction 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#In-Action-实践"><span class="nav-number">1.1.</span> <span class="nav-text">In Action 实践</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

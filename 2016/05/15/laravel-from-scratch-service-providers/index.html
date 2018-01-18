@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介服务提供者是 laravel 应用启动的中心。你自己的应用以及 laravel 的核心服务都是通过服务提供者来启动的。 但是，我们所指的启动是什么意思？通常情况下，这意味着注册，包含注册服务的绑定，事件监听，中间件，和路由。服务提供者是应用配置的中心。 如果你打开 config/app.php 文件，你会发现 providers 数组。这些都是你的应用将要加载的服务提供者类。当然，很多是延迟加">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 服务提供者">
+<meta property="og:url" content="http://yoursite.com/2016/05/15/laravel-from-scratch-service-providers/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="简介服务提供者是 laravel 应用启动的中心。你自己的应用以及 laravel 的核心服务都是通过服务提供者来启动的。 但是，我们所指的启动是什么意思？通常情况下，这意味着注册，包含注册服务的绑定，事件监听，中间件，和路由。服务提供者是应用配置的中心。 如果你打开 config/app.php 文件，你会发现 providers 数组。这些都是你的应用将要加载的服务提供者类。当然，很多是延迟加">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 服务提供者">
+<meta name="twitter:description" content="简介服务提供者是 laravel 应用启动的中心。你自己的应用以及 laravel 的核心服务都是通过服务提供者来启动的。 但是，我们所指的启动是什么意思？通常情况下，这意味着注册，包含注册服务的绑定，事件监听，中间件，和路由。服务提供者是应用配置的中心。 如果你打开 config/app.php 文件，你会发现 providers 数组。这些都是你的应用将要加载的服务提供者类。当然，很多是延迟加">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/15/laravel-from-scratch-service-providers/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 服务提供者 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/15/laravel-from-scratch-service-providers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 服务提供者</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-15T21:34:31+08:00">
+                2016-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>服务提供者是 laravel 应用启动的中心。你自己的应用以及 laravel 的核心服务都是通过服务提供者来启动的。</p>
+<p>但是，我们所指的启动是什么意思？通常情况下，这意味着注册，包含注册服务的绑定，事件监听，中间件，和路由。服务提供者是应用配置的中心。</p>
+<p>如果你打开 <code>config/app.php</code> 文件，你会发现 <code>providers</code> 数组。这些都是你的应用将要加载的服务提供者类。当然，很多是延迟加载的提供者，意思就是并不是所有的请求都会加载这些提供者，而是只有需要的时候才会加载。</p>
+<p>在此篇，你将学会如果去编写自己的服务提供者并且将其注册到应用中。</p>
+<h2 id="编写服务提供者"><a href="#编写服务提供者" class="headerlink" title="编写服务提供者"></a>编写服务提供者</h2><p>所有的服务提供者都继承自 <code>Illuminate\Support\ServiceProvider</code> 类。这个抽象类要求你的提供者必须最少定义一个 <code>register</code> 方法。在 <code>register</code> 方法中你应该只绑定内容到服务容器。你永远不要尝试在其中注册任何的事件监听，路由或者其它功能。</p>
+<p>Artisan CLI 可以通过 <code>make:provider</code> 命令来非常便捷的生成一个新的提供者:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:provider RiakServiceProvider</div></pre></td></tr></table></figure>
+<h3 id="注册方法"><a href="#注册方法" class="headerlink" title="注册方法"></a>注册方法</h3><p>就如前面所提到的，在 <code>register</code> 方法中，你应该只做一件事，那就是绑定事物到服务容器中。不要做其它的事情。否则，可能你所使用的提供者提供的服务还没有被注册。<br>现在，让我们来看一个最基础的服务提供者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Riak</span>\<span class="title">Connection</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RiakServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Register bindings in the container.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;app-&gt;singleton(Connection::class, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">         <span class="keyword">return</span> <span class="keyword">new</span> Connection(config(<span class="string">'riak'</span>));</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个服务提供者仅仅只定义了一个 <code>register</code> 方法，并且使用这个方法在服务容器中定义了一个 <code>Riak\Connection</code> 的实现。如果你并不理解服务容器是如何工作的，你可以看一下服务容器的文档。</p>
+<h3 id="启动方法"><a href="#启动方法" class="headerlink" title="启动方法"></a>启动方法</h3><p>如果我们想在服务提供者中注册一个视图 composer，那么我们应该在 <code>boot</code> 方法中做这些。<code>boot</code> 方法会在所有的服务提供者都注册完成之后才会被执行。这意味着你有访问所有服务的权限:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Events</span>\<span class="title">Dispatcher</span> <span class="title">as</span> <span class="title">DispatcherContract</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Support</span>\<span class="title">Providers</span>\<span class="title">EventServiceProvider</span> <span class="title">as</span> <span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">// Other Service Provider Properties...</span></div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Register any other events for your application.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Contracts\Events\Dispatcher $events</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">(DispatcherContract $events)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">parent</span>::boot($events);</div><div class="line"></div><div class="line">     view()-&gt;composer(<span class="string">'view'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">       <span class="comment">//</span></div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="启动方法的依赖注入"><a href="#启动方法的依赖注入" class="headerlink" title="启动方法的依赖注入"></a>启动方法的依赖注入</h3><p>你可以在服务提供者的 <code>boot</code> 方法中使用类型提示来标识依赖。服务容器将会自动的将所需要的依赖注入进去：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Routing</span>\<span class="title">ResponseFactory</span>;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">(ResponseFactory $factory)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  $factory-&gt;macro(<span class="string">'caps'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($value)</span>)</span>&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="注册提供者"><a href="#注册提供者" class="headerlink" title="注册提供者"></a>注册提供者</h2><p>所有的服务提供者都被注册在 <code>config/app.php</code> 配置文件中。这个文件包含了 <code>providers</code> 数组，这数组列出了所有服务提供者的名字。默认的，laravel 中的核心服务都被注册在这个数组里。这些提供者启动了 laravel 中的核心组件，如邮件，队列，缓存和其他。</p>
+<p>你可以在该数组中进行添加注册提供者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'providers'</span> =&gt; [</div><div class="line">  <span class="comment">// Other Service Providers</span></div><div class="line"></div><div class="line">  App\Providers\AppServiceProvider::class,</div><div class="line">],</div></pre></td></tr></table></figure>
+<h2 id="延迟加载提供者"><a href="#延迟加载提供者" class="headerlink" title="延迟加载提供者"></a>延迟加载提供者</h2><p>如果你的提供者只是在服务容器中注册一些绑定信息，那么你可以选择推迟注册，这样这些服务只有在真正被需要用到时才会进行注册。推迟注册能够提高你的应用的性能。因为它不会在所有请求到来时都通过文件系统来加载。</p>
+<p>为了推迟提供者的加载，你可以在提供者类中设置 <code>defer</code> 属性为 <code>true</code> 并且定义一个 <code>provides</code> 方法。<code>provides</code> 方法会返回提供者注册的服务容器的绑定:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Riak</span>\<span class="title">Connection</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RiakServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Indicates if loading of the provider is deferred.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> bool</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $defer = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register the service provider.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="keyword">$this</span>-&gt;app-singleton(Connection::class, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Connection($app[<span class="string">'config'</span>][<span class="string">'riak'</span>]);</div><div class="line">      &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Get the services provided by the provider.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">provides</span><span class="params">()</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">        <span class="keyword">return</span> [Connection::class];</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>laravel 会编译和存储所有延迟加载的服务提供者的服务列表及服务提供者的类名。然后，只有当你尝试解析其中的某个服务时，laravel 才会加载其服务提供者。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/15/laravel-from-scratch-application-structure/" rel="next" title="laravel 基础教程 —— 应用目录结构">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 应用目录结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/17/laravel-from-scratch-service-container/" rel="prev" title="laravel 基础教程 —— 服务容器">
+                laravel 基础教程 —— 服务容器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编写服务提供者"><span class="nav-number">1.1.</span> <span class="nav-text">编写服务提供者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册方法"><span class="nav-number">1.1.1.</span> <span class="nav-text">注册方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动方法"><span class="nav-number">1.1.2.</span> <span class="nav-text">启动方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动方法的依赖注入"><span class="nav-number">1.1.3.</span> <span class="nav-text">启动方法的依赖注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册提供者"><span class="nav-number">1.2.</span> <span class="nav-text">注册提供者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载提供者"><span class="nav-number">1.3.</span> <span class="nav-text">延迟加载提供者</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

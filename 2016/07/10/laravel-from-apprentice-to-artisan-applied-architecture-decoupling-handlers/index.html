@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数Introduction 介绍我们已经讨论了用 Laravel 4 制作优美的程序架构的各个方面，让我们再深入一些细节。在本章，我们将讨论如何解耦各种处理函数：队列处理函数、事件处理函数，甚至其他“事件型”的结构如路由过滤器。  Don’t Clog Your Transport Layer">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从百草园到三味书屋 —— 解耦处理函数">
+<meta property="og:url" content="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-applied-architecture-decoupling-handlers/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数Introduction 介绍我们已经讨论了用 Laravel 4 制作优美的程序架构的各个方面，让我们再深入一些细节。在本章，我们将讨论如何解耦各种处理函数：队列处理函数、事件处理函数，甚至其他“事件型”的结构如路由过滤器。  Don’t Clog Your Transport Layer">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从百草园到三味书屋 —— 解耦处理函数">
+<meta name="twitter:description" content="Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数Introduction 介绍我们已经讨论了用 Laravel 4 制作优美的程序架构的各个方面，让我们再深入一些细节。在本章，我们将讨论如何解耦各种处理函数：队列处理函数、事件处理函数，甚至其他“事件型”的结构如路由过滤器。  Don’t Clog Your Transport Layer">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-applied-architecture-decoupling-handlers/"/>
+
+
+
+
+
+  <title>从百草园到三味书屋 —— 解耦处理函数 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-applied-architecture-decoupling-handlers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从百草园到三味书屋 —— 解耦处理函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T16:46:49+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Applied-Architecture-Decoupling-Handlers-使用做法：解耦处理函数"><a href="#Applied-Architecture-Decoupling-Handlers-使用做法：解耦处理函数" class="headerlink" title="Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数"></a>Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数</h1><h2 id="Introduction-介绍"><a href="#Introduction-介绍" class="headerlink" title="Introduction 介绍"></a>Introduction 介绍</h2><p>我们已经讨论了用 Laravel 4 制作优美的程序架构的各个方面，让我们再深入一些细节。在本章，我们将讨论如何解耦各种处理函数：队列处理函数、事件处理函数，甚至其他“事件型”的结构如路由过滤器。</p>
+<blockquote>
+<p><strong>Don’t Clog Your Transport Layer 不要堵塞传输层</strong></p>
+<p>大部分的“处理函数”可以被当作传输层组件。也就是说，队列触发器、被触发的事件、或者外部发来的请求等都可能调用处理函数。可以把处理函数理解为控制器，避免在里面堆积太多具体业务逻辑实现。</p>
+</blockquote>
+<h2 id="Decoupling-Handlers-解耦处理函数"><a href="#Decoupling-Handlers-解耦处理函数" class="headerlink" title="Decoupling Handlers 解耦处理函数"></a>Decoupling Handlers 解耦处理函数</h2><p>接下来我们看一个例子。考虑有一个队列处理函数用来给用户发送手机短信。信息发送后，处理函数还要记录消息日志来保存给用户发送的消息历史。代码应该看起来是这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SendSMS</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">fire</span><span class="params">($job, $data)</span> </span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $twilio = <span class="keyword">new</span> Twilio_SMS($apiKey);</div><div class="line">    $twilio-&gt;sendTextMessage(<span class="keyword">array</span>(</div><div class="line">      <span class="string">'to'</span> =&gt; $data[<span class="string">'user'</span>][<span class="string">'phone_number'</span>],</div><div class="line">      <span class="string">'message'</span> =&gt; $data[<span class="string">'message'</span>],</div><div class="line">    ));</div><div class="line">    $user = User::find($data[<span class="string">'user'</span>][<span class="string">'id'</span>]);</div><div class="line">    $user-&gt;messages()-&gt;create(<span class="keyword">array</span>(</div><div class="line">      <span class="string">'to'</span> =&gt; $data[<span class="string">'user'</span>][<span class="string">'phone_number'</span>],</div><div class="line">      <span class="string">'message'</span> =&gt; $data[<span class="string">'message'</span>],</div><div class="line">    ));</div><div class="line">    $job-&gt;delete();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>简单审查下这个类，你可能会发现一些问题。首先，它难以测试。在 <code>fire</code> 方法里直接使用了 <code>Twillio_SMS</code> 类，意味着我们没法注入一个模拟的服务（译者注：即一旦测试则必须发送一条真实的短信）。第二，我们直接使用了 Eloquent，导致在测试时肯定会对数据库造成影响。第三，我们没法在队列外面发送短信，想在队列外面发还要重写一遍代码。也就是说我们的短信发送逻辑和 Laravel 的队列耦合太多了。</p>
+<p>将里面的逻辑抽出成为一个单独的“服务”类，我们即可将短信发送逻辑和 Laravel 的队列解耦。这样我们就可以在应用的任何位置发送短信了。我们将其解耦的过程，也令其变得更易于测试。</p>
+<p>那么我们来稍微改一改：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Eloquent</span> </span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Send the User an SMS message</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> SmsCourierInterface $courier</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> string $message</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> SmsMessage</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendSmsMessage</span><span class="params">(SmsCourierInterface $courier, $message)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $courier-&gt;sendMessage(<span class="keyword">$this</span>-&gt;phone_number, $message);</div><div class="line">     <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;sms()-&gt;create(<span class="keyword">array</span>(</div><div class="line">      <span class="string">'to'</span> =&gt; <span class="keyword">$this</span>-&gt;phone_number,</div><div class="line">      <span class="string">'message'</span> =&gt; $message,</div><div class="line">     ));</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在本重构的例子中，我们将短信发送逻辑抽出到 <code>User</code> 模型里。同时我们将 <code>SmsCourierInterface</code> 的实现注入到该方法里，这样我们可以更容易对该方法进行测试。现在我们已经重构了短信发送逻辑，让我们再重写队列处理函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SendSMS</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(UserRepository $users, SmsCourierInterface $courier)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;users = $users;</div><div class="line">    <span class="keyword">$this</span>-&gt;courier = $courier;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">fire</span><span class="params">($job, $data)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $user = <span class="keyword">$this</span>-&gt;users-&gt;find($data[<span class="string">'user'</span>][<span class="string">'id'</span>]);</div><div class="line">    $user-&gt;sendSmsMessage(<span class="keyword">$this</span>-&gt;courier, $data[<span class="string">'message'</span>]);</div><div class="line">    $job-&gt;delete();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以看到我们重构了代码，使得队列处理函数更轻量化了。它本质上变成了队列系统和你真正的业务逻辑之间的转换层。这可是很了不起！这意味着我们可以很轻松的脱离队列系统来发送短信息。最后，让我们为短信发送逻辑写一些测试代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmsTest</span> <span class="keyword">extends</span> <span class="title">PHPUnit_Framework_TestCase</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testUserCanBeSentSmsMessages</span> <span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Arrage ...</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     $user = Mockery::mock(<span class="string">'User[sms]'</span>);</div><div class="line">     $relation = Mockery::mock(<span class="string">'StdClass'</span>);</div><div class="line">     $courier = Mockery::mock(<span class="string">'SmsCourierInterface'</span>);</div><div class="line"></div><div class="line">     $user-&gt;shouldReceive(<span class="string">'sms'</span>)-&gt;once()-&gt;andReturn($relation);</div><div class="line"></div><div class="line">     $relation-&gt;shouldReceive(<span class="string">'create'</span>)-&gt;once()-&gt;with(<span class="keyword">array</span>(</div><div class="line">       <span class="string">'to'</span> =&gt; <span class="string">'555-555-555'</span>,</div><div class="line">       <span class="string">'message'</span> =&gt; <span class="string">'Test'</span>,</div><div class="line">     ));</div><div class="line"></div><div class="line">     $courier-&gt;shouldReceive(<span class="string">'sendMessage'</span>)-&gt;once()-&gt;with(</div><div class="line">       <span class="string">'555-555-555'</span>, <span class="string">'Test'</span></div><div class="line">     );</div><div class="line"></div><div class="line">     <span class="comment">/**</span></div><div class="line"><span class="comment">      * Act ...</span></div><div class="line"><span class="comment">      */</span></div><div class="line">     $user-&gt;sms_number = <span class="string">'555-555-555'</span>;</div><div class="line">     $user-&gt;sendMessage($courier, <span class="string">'Test'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Other-Handlers-其他处理函数"><a href="#Other-Handlers-其他处理函数" class="headerlink" title="Other Handlers 其他处理函数"></a>Other Handlers 其他处理函数</h2><p>使用类似的方式，我们可以改进和解耦很多其他类型的“处理函数”。将这些处理函数限制在转换层的状态，你可以将你庞大的业务逻辑和框架解耦，并保持整洁的代码结构。为了巩固这种思想，我们来看看一个路由过滤器。该过滤器用来验证当前用户是否是交过钱的高级用户套餐。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::filter(<span class="string">'premium'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> Auth::user() &amp;&amp; Auth::user()-&gt;plan == <span class="string">'premium'</span>; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>猛一看这路由过滤器没什么问题啊。这么简单的过滤器能有什么错误？然而就是这么小小的过滤器，我们却将我们应用实现的细节暴露了出来。要注意我们在该过滤器里写明了要检查 <code>plan</code> 变量。这使得将“套餐方案”在我们应用中的代表值（译者注：即 <code>plan</code> 变量的值）暴露在了路由/传输层里面。现在我们若想调整“高级套餐”在数据库或用户模型的代表值，我们竟然就需要改这个路由过滤器！</p>
+<p>让我们简单改一点儿：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::filter(<span class="string">'premium'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> Auth::uesr() &amp;&amp; Auth::user()-&gt;isPremium(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>小小的改变就带来巨大的效果，并且代价也很小。我们将判断用户是否使用高级套餐的逻辑放在了用户模型里，这样就从路由过滤器里去掉了对套餐判断的实现细节。我们的过滤器不再需要知道具体怎么判断用户是不是高级套餐了，它只要简单的把这个问题交给用户模型。现在如果我们想调整高级套餐在数据库里的细节，也不必再去改动路由过滤器了！</p>
+<blockquote>
+<p><strong>Who Is Responsible？谁负责？</strong></p>
+<p>在这里我们又一次讨论了责任的概念。记住，始终保持一个类应该有什么样的责任，应该知道什么。避免在处理函数这种传输层直接编写太多你应用的业务逻辑。</p>
+</blockquote>
+<p>译者注：本文多次出现 transport layer，translation layer，分别译作传输层和转换层。其实他们应当指代的同一种东西。</p>
+<p>译文地址：<a href="http://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">http://my.oschina.net/zgldh/blog/389246</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-application-structure/" rel="next" title="从百草园到三味书屋 —— 应用结构">
+                <i class="fa fa-chevron-left"></i> 从百草园到三味书屋 —— 应用结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-extending-the-framework/" rel="prev" title="从百草堂到三味书屋 —— 扩展框架">
+                从百草堂到三味书屋 —— 扩展框架 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Applied-Architecture-Decoupling-Handlers-使用做法：解耦处理函数"><span class="nav-number">1.</span> <span class="nav-text">Applied Architecture: Decoupling Handlers 使用做法：解耦处理函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-介绍"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decoupling-Handlers-解耦处理函数"><span class="nav-number">1.2.</span> <span class="nav-text">Decoupling Handlers 解耦处理函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Handlers-其他处理函数"><span class="nav-number">1.3.</span> <span class="nav-text">Other Handlers 其他处理函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

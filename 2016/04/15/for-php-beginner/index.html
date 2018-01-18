@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="写给想学php的朋友们  php是一门非常简单的语言，是一门很容易入门的语言，对于编程初学者来说是非常适合做为编程入门选择的一门语言，它，并不难。 我的经历  我的php是自学的，并没有去培训机构去接受培训，一是感觉性价比并不是很高，二是当时的我具备信息检索的能力，又非常巧合的检索到燕十八老师的课程，然后跟着课程苦学了一个半月，做了一个简易的商城，拿下了第一份Php的工作。   说这些只是想告诉那">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="写给想学 PHP 的朋友们">
+<meta property="og:url" content="http://yoursite.com/2016/04/15/for-php-beginner/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="写给想学php的朋友们  php是一门非常简单的语言，是一门很容易入门的语言，对于编程初学者来说是非常适合做为编程入门选择的一门语言，它，并不难。 我的经历  我的php是自学的，并没有去培训机构去接受培训，一是感觉性价比并不是很高，二是当时的我具备信息检索的能力，又非常巧合的检索到燕十八老师的课程，然后跟着课程苦学了一个半月，做了一个简易的商城，拿下了第一份Php的工作。   说这些只是想告诉那">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="写给想学 PHP 的朋友们">
+<meta name="twitter:description" content="写给想学php的朋友们  php是一门非常简单的语言，是一门很容易入门的语言，对于编程初学者来说是非常适合做为编程入门选择的一门语言，它，并不难。 我的经历  我的php是自学的，并没有去培训机构去接受培训，一是感觉性价比并不是很高，二是当时的我具备信息检索的能力，又非常巧合的检索到燕十八老师的课程，然后跟着课程苦学了一个半月，做了一个简易的商城，拿下了第一份Php的工作。   说这些只是想告诉那">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/15/for-php-beginner/"/>
+
+
+
+
+
+  <title>写给想学 PHP 的朋友们 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/15/for-php-beginner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">写给想学 PHP 的朋友们</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-15T10:21:48+08:00">
+                2016-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="写给想学php的朋友们"><a href="#写给想学php的朋友们" class="headerlink" title="写给想学php的朋友们"></a>写给想学php的朋友们</h1><p>  php是一门非常简单的语言，是一门很容易入门的语言，对于编程初学者来说是非常适合做为编程入门选择的一门语言，它，并不难。</p>
+<h2 id="我的经历"><a href="#我的经历" class="headerlink" title="我的经历"></a>我的经历</h2><p>  我的php是自学的，并没有去培训机构去接受培训，一是感觉性价比并不是很高，二是当时的我具备信息检索的能力，又非常巧合的检索到燕十八老师的课程，然后跟着课程苦学了一个半月，做了一个简易的商城，拿下了第一份Php的工作。</p>
+<p>  说这些只是想告诉那些想学php的朋友，学习php其实没有想象中的那么艰难，难得是你想要学习的态度和毅力。对未知的恐惧往往阻碍了人前进的道路。</p>
+<h2 id="我所推荐的学习路线"><a href="#我所推荐的学习路线" class="headerlink" title="我所推荐的学习路线"></a>我所推荐的学习路线</h2><p>  这里我只简单的描述一下成长路线的大概，我并不太推荐你入门的时候就了解的太多太多，这样会干扰了你继续学习的动力。你的精力是有限的，如果你想学好它，那么你就应该将你的精力集中在它本身之上。</p>
+<p>  学习的道路上会出现太多太多的干扰，特别是现在需要多种编程技能在身的我们，有时候，你需要适当的做做减法，思考一下自己当前的状态，我觉得我们应该成为专业的php工程师之后再去迷失在其它技能之上。</p>
+<h3 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h3><p>  书，是系统知识传递最好的路径。想要学一门技能首先要打好基础，这是必定要走过的路，忽略了它，你就会走弯路，最终还是要绕回来。基础扎实了，可以节省我们调试Bug的时间。不会遇到一个小小的问题就要浪费一个上午的时间去寻求帮助。</p>
+<p>  我推荐《php和mysql web开发》,这本书作为入门完全足够了，花几个月的时间根据内容边学边练，反复读个三遍，肯定会收获良多。</p>
+<p>  你也可以借助网络上丰富的资源去进行刻意的练习，比如说<code>慕课网</code>，是非常适合初学者学习的一个社区. </p>
+<p>  项目驱动应该是学习最快的路径， 因为学习技能就是为了解决问题的， 而在解决问题的时候往往我们的理解会变得更为深刻。</p>
+<p>  善于总结，对你的学习肯定是有所帮助的。</p>
+<h3 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h3><p>  这个时候你应该具备了使用php解决问题的能力。如果你做过几个项目，你可能会对php工程师有一个基本的理解。如果你想要在这个行业有一个很好的发展，那么你就需要正视你自己的职业。</p>
+<p>  你要正视自己的职业，你就需要考虑你为什么比别人专业，你就应该提高自身技能的专业性。</p>
+<p>  你可以学习一下一些开源的框架来提高自身的专业性，这里我推荐<code>laravel</code>, 虽然可能对于你来说它比较困难，但他确实是带你领略编程世界的敲门砖。门后的世界要么使你疯狂，要么使你迷失在疯狂的路上 ：）<br>  这时候你就要学习非常多的知识了，如果你具有修炼葵花宝典的勇气，那么你肯定能够得到它们 ：）</p>
+<h3 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h3><p>  作为一个高级工程师你就要具备非常多的技能了，你应该具备了学习的态度，太多的技能在身使你并不惧怕去学习额外的技能，有的时候你可能想体验舒适区之外的世界，那么就勇敢的去做吧。<br>  高级工程师具备了协作能力，自我学习的能力，自我提升的能力，及善于逃离舒适区的能力。 ：）</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>  本身是想写一些详细的学习路线的，详细的中级到高级的指南的，想想还是算了，因为我觉得向初学者去描述这些，他们不但不会理解，还会充满疑惑 ：）<br>  因为他们还没有经历过 ：）<br>  学习充满了趣味，共勉之 ：）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/13/dependency-injection-and-inversion-of-control/" rel="next" title="理解依赖注入与控制反转">
+                <i class="fa fa-chevron-left"></i> 理解依赖注入与控制反转
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/17/refactoring-to-pattern/" rel="prev" title="设计模式之谈：从重构到模式">
+                设计模式之谈：从重构到模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写给想学php的朋友们"><span class="nav-number">1.</span> <span class="nav-text">写给想学php的朋友们</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#我的经历"><span class="nav-number">1.1.</span> <span class="nav-text">我的经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我所推荐的学习路线"><span class="nav-number">1.2.</span> <span class="nav-text">我所推荐的学习路线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初级"><span class="nav-number">1.2.1.</span> <span class="nav-text">初级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中级"><span class="nav-number">1.2.2.</span> <span class="nav-text">中级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高级"><span class="nav-number">1.2.3.</span> <span class="nav-text">高级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">1.3.</span> <span class="nav-text">结尾</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

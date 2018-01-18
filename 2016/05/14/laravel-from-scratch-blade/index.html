@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Blade 模板引擎简介Blade 是 laravel 提供的一个简单强大的模板引擎。它不像其他流行的 PHP 模板引擎那样限制你在视图中使用原生的 PHP 代码，事实上它就是把 Blade 视图编译成原生的 PHP 代码并缓存起来。缓存会在 Blade 视图改变时而改变，这意味着 Blade 并没有给你的应用添加编译的负担。Blade 视图文件使用 .blade.php 后缀，一般情况下都被存储">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— Blade 模板引擎">
+<meta property="og:url" content="http://yoursite.com/2016/05/14/laravel-from-scratch-blade/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Blade 模板引擎简介Blade 是 laravel 提供的一个简单强大的模板引擎。它不像其他流行的 PHP 模板引擎那样限制你在视图中使用原生的 PHP 代码，事实上它就是把 Blade 视图编译成原生的 PHP 代码并缓存起来。缓存会在 Blade 视图改变时而改变，这意味着 Blade 并没有给你的应用添加编译的负担。Blade 视图文件使用 .blade.php 后缀，一般情况下都被存储">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— Blade 模板引擎">
+<meta name="twitter:description" content="Blade 模板引擎简介Blade 是 laravel 提供的一个简单强大的模板引擎。它不像其他流行的 PHP 模板引擎那样限制你在视图中使用原生的 PHP 代码，事实上它就是把 Blade 视图编译成原生的 PHP 代码并缓存起来。缓存会在 Blade 视图改变时而改变，这意味着 Blade 并没有给你的应用添加编译的负担。Blade 视图文件使用 .blade.php 后缀，一般情况下都被存储">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/14/laravel-from-scratch-blade/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— Blade 模板引擎 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/14/laravel-from-scratch-blade/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— Blade 模板引擎</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-14T20:46:27+08:00">
+                2016-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Blade-模板引擎"><a href="#Blade-模板引擎" class="headerlink" title="Blade 模板引擎"></a>Blade 模板引擎</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Blade 是 laravel 提供的一个简单强大的模板引擎。它不像其他流行的 PHP 模板引擎那样限制你在视图中使用原生的 PHP 代码，事实上它就是把 Blade 视图编译成原生的 PHP 代码并缓存起来。缓存会在 Blade 视图改变时而改变，这意味着 Blade 并没有给你的应用添加编译的负担。Blade 视图文件使用 <code>.blade.php</code> 后缀，一般情况下都被存储在 <code>resources/views</code> 目录。</p>
+<h2 id="模板继承"><a href="#模板继承" class="headerlink" title="模板继承"></a>模板继承</h2><h3 id="定义布局"><a href="#定义布局" class="headerlink" title="定义布局"></a>定义布局</h3><p>Blade 带来的两个主要的福利就是模板继承和挂件。为了方便开始，我们来看一个简单的例子。首先，我们建立一个主页面布局。因为多数 web 应用是在不同的页面中使用相同的总体布局，我们可以方便的定义这个布局为单独的 Blade 视图：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Stored in resources/views/layouts/master.blade.php--&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>App Name - @yield('title')<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    @section('sidebar')</div><div class="line">      This is the master sidebar.</div><div class="line">    @show</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">      @yield('content')</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>从上面的例子你可以看到，Blade 模板文件包含了典型的 HTML 标记。你肯定注意到了 <code>@section</code> 和 <code>@yield</code> 指令。<code>@section</code> 指令就如它的名字所暗示的那样定义了一个内容区块，而 <code>@yield</code> 指令是用来显示所提供的挂件区块所包含的内容。</p>
+<p>现在我们已经定义好了一个基本的布局，接下来我们来构建一个子页面去继承这个布局。</p>
+<h3 id="扩展布局"><a href="#扩展布局" class="headerlink" title="扩展布局"></a>扩展布局</h3><p>我们可以使用 Blade 的 <code>@extends</code> 指令来明确的指定继承某个布局。然后使用 <code>@section</code> 指令将挂件中的内容挂载到布局中，在上面的例子中，挂件的内容将被挂载到布局中的 <code>@yield</code> 部分：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;!-- Stored in resoures/views/child.blade.php --&gt;</div><div class="line"></div><div class="line">@extends(<span class="string">'layouts.master'</span>)</div><div class="line"></div><div class="line">@section(<span class="string">'title'</span>, <span class="string">'Page Title'</span>)</div><div class="line"></div><div class="line">@section(<span class="string">'sidebar'</span>)</div><div class="line">  @<span class="keyword">parent</span></div><div class="line"></div><div class="line">  &lt;p&gt;This is appended to the master sidebar.&lt;/p&gt;</div><div class="line">@endsection</div><div class="line"></div><div class="line">@section(<span class="string">'content'</span>)</div><div class="line">  &lt;p&gt;This is my body content.&lt;/p&gt;</div><div class="line">@endsection</div></pre></td></tr></table></figure>
+<p>在上面的例子作用 <code>sidebar</code> 挂件利用 <code>@parent</code> 指令来追加布局中的 sidebar 部分的内容，如果不使用则会覆盖掉布局中的这部分。<code>@parent</code> 指令会在视图被渲染时替换为布局中的内容。<br>Blade 视图可以像原生 PHP 视图一样使用全局帮助函数 <code>view</code> 来返回渲染后的内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'blade'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> view(<span class="string">'child'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="显示数据"><a href="#显示数据" class="headerlink" title="显示数据"></a>显示数据</h2><p>你可以使用花括号 <code>{</code> 来在视图中显示传递到视图中的变量，例如，你定义了下面的路由：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'greeting'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> view(<span class="string">'welcome'</span>, [<span class="string">'name'</span> =&gt; <span class="string">'Samantha'</span>]);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>你可以在视图中这样来输出 <code>name</code> 变量的内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hello, &#123;&#123; $name &#125;&#125;</div></pre></td></tr></table></figure>
+<p>当然，你并没有被限制只允许显示传递到视图中的变量的内容。你也可以从原生 PHP 方法中返回内容。事实上，你可以在 Blade echo 声明中使用任意的 PHP 代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The current UNIX timestamp is &#123;&#123; time() &#125;&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：Blade <code>{{}}</code> 声明中的内容是自动通过 PHP 的 <code>htmlentities</code> 方法过滤的，用来防止 XSS 攻击。</p>
+</blockquote>
+<h3 id="Blade-amp-JavaScript-Frameworks"><a href="#Blade-amp-JavaScript-Frameworks" class="headerlink" title="Blade &amp; JavaScript Frameworks"></a>Blade &amp; JavaScript Frameworks</h3><p>由于很多 JavaScript 框架都使用花括号来表明所提供的表达式应该被显示在浏览器中。所以你可以使用 <code>@</code> 符号来告诉 Blade 渲染引擎你需要这个表达式原样保留：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;h1&gt;Laravel&lt;/h1&gt;</div><div class="line"></div><div class="line">Hello, @&#123;&#123; name &#125;&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子中，<code>@</code> 符号会在 Blade 渲染时被移除，并且 <code></code> 表达式会被原样保留下来。</p>
+<h3 id="输出数据假如它存在"><a href="#输出数据假如它存在" class="headerlink" title="输出数据假如它存在"></a>输出数据假如它存在</h3><p>有时候你可能希望输出一个变量，但是你并不确定它是否已经被设置，你可以使用这个表达式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; <span class="keyword">isset</span>($name) ? $name : <span class="string">'Default'</span> &#125;&#125;</div></pre></td></tr></table></figure>
+<p>Blade 提供了一个便捷的方式来替换这个三元声明：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; $name <span class="keyword">or</span> <span class="string">'Default'</span> &#125;&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子中，如果变量 <code>$name</code> 存在，它将被输入，如果不存在，<code>Default</code> 会被输出。</p>
+<h3 id="显示未转义的数据"><a href="#显示未转义的数据" class="headerlink" title="显示未转义的数据"></a>显示未转义的数据</h3><p>默认的，Blade <code>{{}}</code> 声明会自动的使用 PHP 的 <code>htmlentities</code> 方法来避免 XSS 攻击。如果你不想你的数据被转义，你可以使用下面的语法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hello, &#123;!! $name !!&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：当你在应用中输出用户输入的数据时应该非常的谨慎，你应该总是使用 <code>{{}}</code> 来转义内容中任意的 HTML 实体。</p>
+</blockquote>
+<h2 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h2><p>除了模板继承和数据显示，Blade 为通用的 PHP 控制结构提供了便利的简写方式，比如条件声明和循环。这些简写提供了一个干净简洁的方式来处理 PHP 的控制结构，而且还保持与 PHP 语句的相似性。</p>
+<h3 id="if-声明"><a href="#if-声明" class="headerlink" title="if 声明"></a>if 声明</h3><p>你可以通过 <code>@if</code>,<code>@elseif</code>,<code>@else</code>和 <code>@endif</code> 指令来使用 <code>if</code> 控制结构，这些指令和 PHP 方法保持一致:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">if</span> (count($records) === <span class="number">1</span>)</div><div class="line">  I have one record!</div><div class="line">@<span class="keyword">elseif</span> (count($records) &gt; <span class="number">1</span>)</div><div class="line">  I have multiple records!</div><div class="line">@<span class="keyword">else</span></div><div class="line">  I don<span class="string">'t have any records!</span></div><div class="line"><span class="string">@endif</span></div></pre></td></tr></table></figure>
+<p>为了方便，Blade 也提供了 <code>@unless</code> 指令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@unless (Auth::check())</div><div class="line">  You are not signed in.</div><div class="line">@endunless</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>@hasSection</code> 指令来判断提供给布局的挂件是否包含了内容:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;title&gt;</div><div class="line">  @hasSection(<span class="string">'title'</span>)</div><div class="line">    @<span class="keyword">yield</span>(<span class="string">'title'</span>) - App Name</div><div class="line">  @<span class="keyword">else</span></div><div class="line">    App Name</div><div class="line">  @<span class="keyword">endif</span></div><div class="line">&lt;/title&gt;</div></pre></td></tr></table></figure>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>除了条件声明，Blade 也提供了一些简单指令来支持 PHP 的循环结构。这些指令方法和 PHP 语法相同：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">10</span>; $i++)</div><div class="line">  The current value is &#123;&#123; $i &#125;&#125;</div><div class="line">@<span class="keyword">endfor</span></div><div class="line"></div><div class="line">@<span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user)</div><div class="line">  &lt;p&gt;This is user &#123;&#123; $user-&gt;id &#125;&#125;&lt;/p&gt;</div><div class="line">@<span class="keyword">endforeach</span></div><div class="line"></div><div class="line">@forelse ($users <span class="keyword">as</span> $user)</div><div class="line">  &lt;li&gt;&#123;&#123; $user-&gt;name &#125;&#125;&lt;/li&gt;</div><div class="line">@<span class="keyword">empty</span></div><div class="line">  &lt;p&gt;No users&lt;/p&gt;</div><div class="line">@endforelse</div><div class="line"></div><div class="line">@<span class="keyword">while</span> (<span class="keyword">true</span>)</div><div class="line">  &lt;p&gt;I<span class="string">'m looping forever.&lt;/p&gt;</span></div><div class="line"><span class="string">@endwhile</span></div></pre></td></tr></table></figure>
+<p>Blade 也提供了终止迭代或取消当前迭代的指令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user)</div><div class="line">  @<span class="keyword">if</span>($user-&gt;type == <span class="number">1</span>)</div><div class="line">    @<span class="keyword">continue</span></div><div class="line">  @<span class="keyword">endif</span></div><div class="line"></div><div class="line">  &lt;li&gt;&#123;&#123; $user-&gt;name &#125;&#125;&lt;/li&gt;</div><div class="line"></div><div class="line">  @<span class="keyword">if</span>($user-&gt;number == <span class="number">5</span>)</div><div class="line">    @<span class="keyword">break</span></div><div class="line">  @<span class="keyword">endif</span></div><div class="line">@<span class="keyword">endforeach</span></div></pre></td></tr></table></figure>
+<p>你也可以使用指令声明包含条件的方式来达到中断:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user)</div><div class="line">  @<span class="keyword">continue</span>($user-&gt;type == <span class="number">1</span>)</div><div class="line"></div><div class="line">  &lt;li&gt;&#123;&#123; $user-&gt;name &#125;&#125;&lt;/li&gt;</div><div class="line"></div><div class="line">  @<span class="keyword">break</span>($user-&gt;number == <span class="number">5</span>)</div><div class="line">@<span class="keyword">endforeach</span></div></pre></td></tr></table></figure>
+<h3 id="包含子视图"><a href="#包含子视图" class="headerlink" title="包含子视图"></a>包含子视图</h3><p>你可以使用 <code>@include</code> 指令来包含一个视图的内容，当前视图中的变量也会被共享给子视图：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;div&gt;</div><div class="line">  @<span class="keyword">include</span>(<span class="string">'shared.errors'</span>)</div><div class="line"></div><div class="line">  &lt;form&gt;</div><div class="line">  &lt;!-- Form Contents --&gt;</div><div class="line">  &lt;/form&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>尽管子视图会自动继承父视图中的所有数据变量，你也可以直接传递一个数组变量来添加额外的变量到子视图：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">include</span>(<span class="string">'view.name'</span>, [<span class="string">'some'</span> =&gt; <span class="string">'data'</span>])</div></pre></td></tr></table></figure>
+<blockquote>
+<p>主要：你应该在 Blade 视图中避免使用 <code>__DIR__</code> 和 <code>__FILE__</code> 常量，因为它们会解析为视图缓存所在的位置。</p>
+</blockquote>
+<h3 id="为集合渲染视图"><a href="#为集合渲染视图" class="headerlink" title="为集合渲染视图"></a>为集合渲染视图</h3><p>你可以使用 Blade 的 <code>@each</code> 指令来在一行中合并引入多个视图:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@each(<span class="string">'view.name'</span>, $jobs, <span class="string">'job'</span>)</div></pre></td></tr></table></figure>
+<p>第一个参数是数组或集合中每个元素需要被渲染的视图名称。第二个参数是一个数组或集合，被用来提供迭代。而第三个参数是要分配给当前视图的变量名。举个例子，如果你需要遍历一个数组 <code>jobs</code>，通常你想要在局部渲染的视图中使用 <code>job</code> 作为变量来访问 job 信息。</p>
+<p>你也可以传递第四个参数到 <code>@each</code> 指令。如果所提供的数组是空数组的话，该参数所提供的视图将会被引入。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@each(<span class="string">'view.name'</span>, $jobs, <span class="string">'job'</span>, <span class="string">'view.empty'</span>)</div></pre></td></tr></table></figure>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>Blade 也允许你在视图中定义注释，但是它不会在渲染时生成 HTML 注释：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123;-- This comment will not be present in the rendered HTML --&#125;&#125;</div></pre></td></tr></table></figure>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>Blade 允许你在已命名的堆中压入内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@push(<span class="string">'scripts'</span>)</div><div class="line">  &lt;script src=<span class="string">"/example.js"</span>&gt;&lt;/script&gt;</div><div class="line">@endpush</div></pre></td></tr></table></figure>
+<p>你可以在你需要的时候压入相同的堆任意的次数,你需要在布局中使用 <code>@stack</code> 来渲染堆:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;head&gt;</div><div class="line">  &lt;!-- Head Contents --&gt;</div><div class="line"></div><div class="line">  @stack(<span class="string">'scripts'</span>)</div><div class="line">&lt;/head&gt;</div></pre></td></tr></table></figure>
+<h2 id="服务注入"><a href="#服务注入" class="headerlink" title="服务注入"></a>服务注入</h2><p>你可以使用 <code>@inject</code> 指令来从服务容器中取回服务，该指令的第一个参数将作为所取回服务存放的变量名，而第二个参数是你想要在服务容器中取回的类或接口名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@inject(<span class="string">'metrics'</span>, <span class="string">'App\Services\MetricsService'</span>)</div><div class="line"></div><div class="line">&lt;div&gt;</div><div class="line">  Monthly Revenue: &#123;&#123; $metrice-&gt;monthlyRevenue() &#125;&#125;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<h2 id="扩展-Blade"><a href="#扩展-Blade" class="headerlink" title="扩展 Blade"></a>扩展 Blade</h2><p>Blade 允许你自定义一些指令，你可以使用 <code>directvie</code> 方法来注册指令。当 Blade 编译器遇到该指令时，它会自动的调用该指令注册时提供的回调函数并传递它的参数。</p>
+<p>下面的例子创建了 <code>@datetime($val)</code> 指令来格式化 <code>$val</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Blade</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Perform post-registration booting of services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Blade::directive(<span class="string">'datetime'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($expression)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> <span class="string">"&lt;?php echo with&#123;$express&#125;-&gt;format('m/d/Y H:i'); ?&gt;"</span>;</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register bindings in the container</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子中使用了 Laravel 的 <code>with</code> 帮助方法，它只是简单的返回一个所提供的对象或值，并提供方便的链式调用。最终该指令生成的 PHP 代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> with($var)-&gt;format(<span class="string">'m/d/Y H:i'</span>); <span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<p>在你更新 Blade 指令的逻辑之后，你应该删除所有已缓存的 Blade 视图，你可以使用 <code>view:clear</code> Artisan 命令来清除。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/14/laravel-from-scratch-view/" rel="next" title="laravel 基础教程 —— 视图">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 视图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/15/laravel-from-scratch-request-lifecycle/" rel="prev" title="laravel 基础教程 —— 请求生命周期">
+                laravel 基础教程 —— 请求生命周期 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Blade-模板引擎"><span class="nav-number">1.</span> <span class="nav-text">Blade 模板引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板继承"><span class="nav-number">1.2.</span> <span class="nav-text">模板继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义布局"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展布局"><span class="nav-number">1.2.2.</span> <span class="nav-text">扩展布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示数据"><span class="nav-number">1.3.</span> <span class="nav-text">显示数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Blade-amp-JavaScript-Frameworks"><span class="nav-number">1.3.1.</span> <span class="nav-text">Blade & JavaScript Frameworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出数据假如它存在"><span class="nav-number">1.3.2.</span> <span class="nav-text">输出数据假如它存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示未转义的数据"><span class="nav-number">1.3.3.</span> <span class="nav-text">显示未转义的数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制结构"><span class="nav-number">1.4.</span> <span class="nav-text">控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if-声明"><span class="nav-number">1.4.1.</span> <span class="nav-text">if 声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-number">1.4.2.</span> <span class="nav-text">循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包含子视图"><span class="nav-number">1.4.3.</span> <span class="nav-text">包含子视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为集合渲染视图"><span class="nav-number">1.4.4.</span> <span class="nav-text">为集合渲染视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释"><span class="nav-number">1.4.5.</span> <span class="nav-text">注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆"><span class="nav-number">1.5.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务注入"><span class="nav-number">1.6.</span> <span class="nav-text">服务注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-Blade"><span class="nav-number">1.7.</span> <span class="nav-text">扩展 Blade</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

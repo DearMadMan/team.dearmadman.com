@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="验证简介Laravel 对验证应用的输入数据提供了多中途径的实现。默认的，Laravel 的基础控制器类使用了 ValidatesRequests trait，该性状允许使用各种强大的验证约束来验证 HTTP 的输入请求。 快速入门要了解 Laravel 强大的验证功能，我们需要一个完整的示例来描述表单的验证，和将表单验证的错误信息显示给用户。 定义路由首先，让我们假定我们在 app/Http/r">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 验证">
+<meta property="og:url" content="http://yoursite.com/2016/06/22/laravel-from-scratch-validation/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="验证简介Laravel 对验证应用的输入数据提供了多中途径的实现。默认的，Laravel 的基础控制器类使用了 ValidatesRequests trait，该性状允许使用各种强大的验证约束来验证 HTTP 的输入请求。 快速入门要了解 Laravel 强大的验证功能，我们需要一个完整的示例来描述表单的验证，和将表单验证的错误信息显示给用户。 定义路由首先，让我们假定我们在 app/Http/r">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 验证">
+<meta name="twitter:description" content="验证简介Laravel 对验证应用的输入数据提供了多中途径的实现。默认的，Laravel 的基础控制器类使用了 ValidatesRequests trait，该性状允许使用各种强大的验证约束来验证 HTTP 的输入请求。 快速入门要了解 Laravel 强大的验证功能，我们需要一个完整的示例来描述表单的验证，和将表单验证的错误信息显示给用户。 定义路由首先，让我们假定我们在 app/Http/r">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/22/laravel-from-scratch-validation/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 验证 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/22/laravel-from-scratch-validation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 验证</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-22T13:48:50+08:00">
+                2016-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel 对验证应用的输入数据提供了多中途径的实现。默认的，Laravel 的基础控制器类使用了 <code>ValidatesRequests</code> trait，该性状允许使用各种强大的验证约束来验证 HTTP 的输入请求。</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>要了解 Laravel 强大的验证功能，我们需要一个完整的示例来描述表单的验证，和将表单验证的错误信息显示给用户。</p>
+<h3 id="定义路由"><a href="#定义路由" class="headerlink" title="定义路由"></a>定义路由</h3><p>首先，让我们假定我们在 <code>app/Http/routes.php</code> 文件中拥有下述的路由：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Display a form to create a blog post...</span></div><div class="line">Route::get(<span class="string">'post/create'</span>, <span class="string">'PostController@create'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Store a new blog post...</span></div><div class="line">Route::post(<span class="string">'post'</span>, <span class="string">'PostController@store'</span>);</div></pre></td></tr></table></figure>
+<p>当然， <code>GET</code> 路由会为用户创建一个新的博客文章时提供一个表单，而 <code>POST</code> 路由会存储新的博客文章到数据库。</p>
+<h3 id="创建控制器"><a href="#创建控制器" class="headerlink" title="创建控制器"></a>创建控制器</h3><p>接着，我们需要一个控制器来处理这些路由，目前，我们先不在 <code>store</code> 方法里放任何的逻辑：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show the form to create a new blog post.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> view(<span class="string">'post.create'</span>);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Store a new blog post.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(Request $request)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">// Validate and store the blog post...</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="编写验证逻辑"><a href="#编写验证逻辑" class="headerlink" title="编写验证逻辑"></a>编写验证逻辑</h3><p>现在我们准备好了在 <code>store</code> 方法中进行博客文章的验证逻辑。如果你检查应用的基础控制器（<code>App\Http\Controllers\Controller</code>) 类，你会发现该类使用了 <code>ValidatesRequests</code> trait。这个性状为所有的控制器提供了方便的 <code>validate</code> 方法。</p>
+<p><code>validate</code> 方法接收 HTTP 输入请求，并设置验证约束。如果验证约束通过，那么后续的代码将会正常的执行。如果验证失败，那么将会抛出一个恰当的异常响应返回给用户。对于传统的 HTTP 请求，验证器会自动生成一个重定向响应，而 AJAX 请求，则会返回 JSON 响应。</p>
+<p>为了能够更好的理解 <code>validate</code> 方法，让我们继续回到 <code>store</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Store a new blog post.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(Request $request)</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">$this</span>-&gt;validate($request, [</div><div class="line">     <span class="string">'title'</span> =&gt; <span class="string">'required|unique:posts|max:255'</span>,</div><div class="line">     <span class="string">'body'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">   ]);</div><div class="line"></div><div class="line">   <span class="comment">// The blog post is valid, store in database...</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>就如你所看到的，我们简单的传递了一个 HTTP 输入请求，并且在 <code>validate</code> 方法中设置了预期的验证约束。而这次，如果验证失败，那么相应的响应会被自动的生成并且被返回给请求用户。如果验证通过，那么我们的控制器会继续执行之后的业务。</p>
+<p><strong>在初次验证失败时停止</strong></p>
+<p>有时候你希望在获取首个验证约束失败时停止当前属性其余约束的验证。你可以在属性中加入 <code>bail</code> 约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;validate($request, [</div><div class="line">  <span class="string">'title'</span> =&gt; <span class="string">'bail|required|unique:posts|max:255'</span>,</div><div class="line">  <span class="string">'body'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>在这个例子中，如果 <code>title</code> 属性中的 <code>required</code> 约束验证失败，那么 <code>unique</code> 约束就不会再被验证。约束是按照其被分配的顺序来进行验证的。</p>
+<p><strong>嵌套的属性</strong></p>
+<p>如果你的 HTTP 请求包含了嵌套的参数，你可以使用 <code>.</code> 语法来为其指定约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;validate($request, [</div><div class="line">  <span class="string">'title'</span> =&gt; <span class="string">'required|unique:posts|max:255'</span>,</div><div class="line">  <span class="string">'author.name'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">  <span class="string">'author.description'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<h3 id="显示验证错误"><a href="#显示验证错误" class="headerlink" title="显示验证错误"></a>显示验证错误</h3><p>那么，假如传入的请求参数并没有通过给定约束的验证怎么办？就如前面所提到的，Laravel 会自动的重定向用户到之前的位置。另外，所有的验证错误信息都会被自动的闪存到 session 中。</p>
+<p>你需要注意到我们并没有明确的绑定错误信息到 <code>GET</code> 路由的响应视图里。这是因为 laravel 会检查闪存 seesion 里的错误数据，并且会自动的在其可用时注入到视图中。你可以在视图中使用 <code>$errors</code> 变量，它是一个 <code>Illuminate\Support\MessageBag</code> 实例。如果需要了解更多这个实例对象，请参考其 <a href="https://laravel.com/docs/5.2/validation#working-with-error-messages" target="_blank" rel="external">文档</a>。</p>
+<blockquote>
+<p>注意：<code>$errors</code> 变量是通过 <code>Illuminate\View\Middleware\ShareErrorsFromSession</code> 中间件来绑定到视图中的。这个中间件已经被提供到了 <code>web</code> 中间件组中。这个中间件被应用时会自主的在你的视图中注入 <code>$errors</code> 变量，这允许你方便的假定 <code>$errors</code> 变量总是已经被定义且可以安全的使用。</p>
+</blockquote>
+<p>所以，在我们的例子中，当验证失败是，用户将会被重定向到控制器的 <code>create</code> 方法中，这允许你在视图中展示错误信息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;!-- /resources/views/post/create.blade.php --&gt;</div><div class="line"></div><div class="line">&lt;h1&gt;Create Post&lt;/h1&gt;</div><div class="line"></div><div class="line">@<span class="keyword">if</span> (count($errors) &gt; <span class="number">0</span>)</div><div class="line">  &lt;div class="alert alert-danger"&gt;</div><div class="line">    &lt;ul&gt;</div><div class="line">      @<span class="keyword">foreach</span> ($errors-&gt;all() <span class="keyword">as</span> $error)</div><div class="line">        &lt;li&gt;&#123;&#123; $error &#125;&#125;&lt;/li&gt;</div><div class="line">      @<span class="keyword">endforeach</span></div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">@<span class="keyword">endif</span></div><div class="line"></div><div class="line">&lt;!-- Create Post Form --&gt;</div></pre></td></tr></table></figure>
+<p><strong>自定义闪存错误格式</strong></p>
+<p>如果你希望在验证失败时可以自定义闪存进 session 中的错误消息的格式，你需要在你的基础控制器中复写 <code>formatValidationErrors</code> 方法。不要忘记在顶部引入 <code>Illuminate\Contracts\Validation\Validator</code> 类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Bus</span>\<span class="title">DispatchesJobs</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Validation</span>\<span class="title">Validator</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Routing</span>\<span class="title">Controller</span> <span class="title">as</span> <span class="title">BaseController</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Validation</span>\<span class="title">ValidatesRequests</span>;</div><div class="line"></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">DispatchesJobs</span>, <span class="title">ValidatesRequests</span>;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * &#123;<span class="doctag">@inheritdoc</span>&#125;</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">formatValidationErrors</span><span class="params">(Validator $validator)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> $validator-&gt;errors()-&gt;all();</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="AJAX-请求-amp-验证"><a href="#AJAX-请求-amp-验证" class="headerlink" title="AJAX 请求 &amp; 验证"></a>AJAX 请求 &amp; 验证</h3><p>在上面的示例中，我们使用传统的表单来发送数据到应用，事实上，如今很多应用都使用 AJAX 请求，当通过 AJAX 请求来使用 <code>validate</code> 方法时，laravel 并不会自动生成重定向的响应，相反的，laravel 会生成一个包含了验证错误消息的 JSON 响应。并且该响应会伴随 422 HTTP 状态码。</p>
+<h3 id="验证数组"><a href="#验证数组" class="headerlink" title="验证数组"></a>验证数组</h3><p>验证数组形式的输入并不是一件痛苦的事情。比如，去验证给定的输入数组中所有的邮件都应该是唯一的，你可以参照如下做法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$validator = Validator::make($request-&gt;all(), [</div><div class="line">  <span class="string">'person.*.email'</span> =&gt; <span class="string">'email|unique:users'</span>,</div><div class="line">  <span class="string">'person.*.first_name'</span> =&gt; <span class="string">'required_with:person.*.last_name'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>同样的，你也可以在使用语言文件来指定特定的验证消息时使用 <code>*</code> 通配符。这可以轻而易举的使用单条验证消息提供给基于数组的输入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'custom'</span> =&gt; [</div><div class="line">  <span class="string">'person.*.email'</span> =&gt; [</div><div class="line">    <span class="string">'unique'</span> =&gt; <span class="string">'Each person must have a unique e-mail address'</span>,</div><div class="line">  ]</div><div class="line">]</div></pre></td></tr></table></figure>
+<h2 id="其它验证途径"><a href="#其它验证途径" class="headerlink" title="其它验证途径"></a>其它验证途径</h2><h3 id="手动的创建-Validators"><a href="#手动的创建-Validators" class="headerlink" title="手动的创建 Validators"></a>手动的创建 Validators</h3><p>如果你不喜欢使用 <code>ValidatesRequests</code> trait 的 <code>validator</code> 方法，你也可以通过使用 <code>Validator</code> 假面来创建一个 validator 实例。<code>Validator</code> 假面的 <code>make</code> 方法就可以生成一个新的 validator 实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Validator</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Store a new blog post.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(Request $request)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $validator = Validator::make($request-&gt;all(), [</div><div class="line">       <span class="string">'title'</span> =&gt; <span class="string">'required|unique:posts|max:255'</span>,</div><div class="line">       <span class="string">'body'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">     ]);</div><div class="line"></div><div class="line">     <span class="keyword">if</span> ($validator-&gt;fails()) &#123;</div><div class="line">       <span class="keyword">return</span> redirect(<span class="string">'post/create'</span>)</div><div class="line">                -&gt;withErrors($validator)</div><div class="line">                -&gt;withInput();</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// Store the blog post...</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>make</code> 方法所接受的第一个参数是需要被验证的数据，第二个参数则是应该施加到数据的验证约束。</p>
+<p>如果请求的验证失败，那么你需要使用 <code>withErrors</code> 方法来讲错误消息存放到 session 中。当使用该方法时，<code>$errors</code> 变量会在重定向之后被自动的共享到你的视图中，这使你可以轻松的将错误信息展示给用户。<code>withErrors</code> 方法可以接收 validator 实例，或者 <code>MessageBag</code> 实例，又或者原生的 PHP <code>array</code>。</p>
+<p><strong>被命名的错误袋</strong></p>
+<p>如果你在一个独立页面中包含了多个表单。那么你可能会希望能对 <code>MessageBag</code> 进行命名以展示相应的表单错误。你可以直接在 <code>withErrors</code> 方法中传递第二个参数对其进行命名:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect(<span class="string">'register'</span>)</div><div class="line">         -&gt;withErrors($validator, <span class="string">'login'</span>);</div></pre></td></tr></table></figure>
+<p>你之后可以通过 <code>$errors</code> 变量来访问被命名的 <code>MessageBag</code> 实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; $errors-&gt;login-&gt;first(<span class="string">'email'</span>) &#125;&#125;</div></pre></td></tr></table></figure>
+<p><strong>验证之后的 Hook</strong></p>
+<p>验证器也允许你在验证完成之后执行特定的操作。这允许你轻松的进行进一步的验证，你也可以在消息集合里添加更多的错误消息。在验证器的实例上使用 <code>after</code> 方法来进行 hook:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$validator = Validator::make(...);</div><div class="line"></div><div class="line">$validator-&gt;after(<span class="function"><span class="keyword">function</span> <span class="params">($validator)</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;somethingElseIsInvalid()) &#123;</div><div class="line">    $validator-&gt;errors()-&gt;ad(<span class="string">'field'</span>, <span class="string">'Something is wrong with this field!'</span>);</div><div class="line">  &#125; </div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($validator-&gt;fails()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="表单请求验证"><a href="#表单请求验证" class="headerlink" title="表单请求验证"></a>表单请求验证</h3><p>对于更为复杂的验证场景，你或许希望构建一个“表单请求”。表单请求是一个自定义的请求类，并且它包含了所有的验证逻辑。你可以使用 <code>make:request</code> Artisan CLI 命令来创建一个表单请求类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:request StoreBlogPostRequest</div></pre></td></tr></table></figure>
+<p>被生成的类会被存储在 <code>app/Http/Requests</code> 目录。让我们在 <code>rules</code> 方法中来添加一些验证约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the validation rules that apply to the request.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> array</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">rules</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">return</span> [</div><div class="line">     <span class="string">'title'</span> =&gt; <span class="string">'required|unique:posts|max:255'</span>,</div><div class="line">     <span class="string">'body'</span> =&gt; <span class="string">'required'</span>,</div><div class="line">   ];</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>那么，这些验证约束是如何被评定的？你所要做的所有的事情就是在你的控制器方法中添加该请求类的类型提示。传入进来的表单请求会在控制器方法调用之前被自动的进行约束验证，这意味着你完全不需要再你的控制器方法中添加任何的验证逻辑：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Store the incoming blog post.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> StoreBlogPostRequest $request</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span><span class="params">(StoreBlogPostRequest $request)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">// The incoming request is valid...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果验证失败，用户会被自动的重定向到他们之前的位置。那么验证错误消息也会自动的闪存进 session 数据中被用于显示。如果你使用的是 AJAX 请求，那么会自动的返回一个包含所有验证错误消息的 JSON 格式的响应，它的 HTTP 状态码会被设置为 422。</p>
+<p><strong>授权表单请求</strong></p>
+<p>表单请求类也包含了 <code>authorize</code> 方法。在这个方法中，你可以检查已认证的用户是否真的拥有修改所给定资源的权利。比如，如果用户尝试修改博客文章中的评论消息，我们需要考虑一下这个评论是属于他的吗：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Determine if the user is authorized to make this request.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> bool</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">authorize</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   $commentId = <span class="keyword">$this</span>-&gt;route(<span class="string">'comment'</span>);</div><div class="line"></div><div class="line">   <span class="keyword">return</span> Comment::where(<span class="string">'id'</span>, $commentId)</div><div class="line">            -&gt;where(<span class="string">'user_id'</span>, Auth::id())-&gt;exists();</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>你应该注意到了上述实例中的 <code>route</code> 方法的调用。这个方法用来在路由被访问时发放所定义的 URL 参数，比如下面路由的 <code>{comment}</code> 参数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::post(<span class="string">'comment/&#123;comment&#125;'</span>);</div></pre></td></tr></table></figure>
+<p>如果 <code>authorize</code> 方法返回 <code>false</code>，那么会响应一个 403 的状态码，并且控制器的方法不会被执行。</p>
+<p>如果你计划在应用的其它部分来处理授权逻辑，你可以简单的在 <code>authorize</code> 方法中返回 <code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Determine if the user is authorized to make this request.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> bool</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">authorize</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><strong>自定义闪存的错误格式</strong></p>
+<p>如果你希望在验证失败时自定义闪存到 session 数据中验证错误消息的格式，那么你需要复写（<code>App\Http\Requests\Request</code>）基础请求类中的 <code>formatErros</code> 方法。不要忘记引入 <code>Illuminate\Contracts\Validation\Validator</code> 类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * &#123;<span class="doctag">@inheritdoc</span>&#125;</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">formatErrors</span><span class="params">(Validator $validator)</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">return</span> $validator-&gt;errors()-&gt;all();</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><strong>自定义错误消息</strong></p>
+<p>你也可以通过在请求类中复写 <code>messages</code> 方法来自定义错误消息。该方法应该返回一个包含相应错误消息的键值对数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the error messages for the defined validation rules.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> array</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">message</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">return</span> [</div><div class="line">     <span class="string">'title.required'</span> =&gt; <span class="string">'A title is required'</span>,</div><div class="line">     <span class="string">'body.required'</span> =&gt; <span class="string">'A message is required'</span>,</div><div class="line">   ];</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h2 id="与错误消息协作"><a href="#与错误消息协作" class="headerlink" title="与错误消息协作"></a>与错误消息协作</h2><p>在调用 <code>Validator</code> 实例的 <code>errors</code> 方法之后，你可以检索到一个 <code>Illuminate\Support\MessageBag</code> 的实例，这实例拥有多种便捷的方法来与错误消息进行交互。</p>
+<p><strong>检索给定字段中的首个错误消息</strong></p>
+<p>你可以使用 <code>first</code> 方法来检索给定字段的首个错误消息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$message = $validator-&gt;errors();</div><div class="line"></div><div class="line"><span class="keyword">echo</span> $message-&gt;first(<span class="string">'email'</span>);</div></pre></td></tr></table></figure>
+<p><strong>检索给定字段的所有错误消息</strong></p>
+<p>如果你需要检索给定字段的所有消息所组成的数组，那么你应该使用 <code>get</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($messages-&gt;get(<span class="string">'email'</span>) <span class="keyword">as</span> $message) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>检索所有字段的所有错误消息</strong></p>
+<p>你可以使用 <code>all</code> 方法来检索所有字段的所有错误消息所组成的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($message-&gt;all() <span class="keyword">as</span> $message) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>判断所给定的字段中是否存在消息</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($messages-&gt;has(<span class="string">'email'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>使用给定的格式来检索获取错误消息</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> $message-&gt;first(<span class="string">'email'</span>, <span class="string">'&lt;p&gt;:message&lt;/p&gt;'</span>);</div></pre></td></tr></table></figure>
+<p><strong>使用给定的格式来检索所有的错误消息</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($messages-&gt;all(<span class="string">'&lt;li&gt;:message&lt;/li&gt;'</span>) <span class="keyword">as</span> $message) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="自定义错误消息"><a href="#自定义错误消息" class="headerlink" title="自定义错误消息"></a>自定义错误消息</h3><p>如果你需要，你可以使用自定义的错误消息来取代默认的验证消息。这里有几种方式来指定自定义的消息。首先，你可以传递自定的消息作为 <code>Validator::make</code> 方法的第三个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$messages = [</div><div class="line">  <span class="string">'required'</span> =&gt; <span class="string">'The :attribute field is required.'</span>,</div><div class="line">];</div><div class="line"></div><div class="line">$validator = Validator::make($input, $rules, $messages);</div></pre></td></tr></table></figure>
+<p>在这个例子中，<code>:attribute</code> 占位符会被验证数据中真实的名称所替换。你还可以利用其它的占位符到验证消息中，比如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$message = [</div><div class="line">  <span class="string">'same'</span> =&gt; <span class="string">'The :attribute and :other must match.'</span>,</div><div class="line">  <span class="string">'size'</span> =&gt; <span class="string">'The :attribute must be exactly :size.'</span>,</div><div class="line">  <span class="string">'between'</span> =&gt; <span class="string">'The :attribute must be between :min - :max.'</span>,</div><div class="line">  <span class="string">'in'</span> =&gt; <span class="string">'The :attribute must be one of the following types: :values'</span>,</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><strong>为给定的属性指定错误消息</strong></p>
+<p>有时候，你可能希望指定自定义的错误消息到特定的字段。你可以使用 <code>.</code> 符号来进行分割，属性名应该在前，约束应该在后：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$message = [</div><div class="line">  <span class="string">'email.required'</span> =&gt; <span class="string">'We need to know your e-mail address!'</span>,</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><strong>在语言文件中指定自定义消息</strong></p>
+<p>在多数情况下，你可能希望使用一个语言文件中的自定义消息属性直接传递到 <code>Validator</code>。你可以在 <code>resources/lang/xx/validation.php</code> 语言文件中添加 <code>custom</code> 数组来存储你的消息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'custom'</span> =&gt; [</div><div class="line">  <span class="string">'email'</span> =&gt; [</div><div class="line">    <span class="string">'required'</span> =&gt; <span class="string">'We need to know your e-mail address!'</span>,</div><div class="line">  ],</div><div class="line">],</div></pre></td></tr></table></figure>
+<h2 id="可用的验证约束"><a href="#可用的验证约束" class="headerlink" title="可用的验证约束"></a>可用的验证约束</h2><p>下面是所有的可用的验证约束和它们的功能的列表：</p>
+<p><strong>accepted</strong></p>
+<p>验证的字段必须为 <em>yes</em>，<em>on</em>，1，或者 <em>true</em>。这通常用来验证服务条款的承诺。</p>
+<p><strong>active_url</strong></p>
+<p>验证的字段必须可以通过 <code>checkdnsrr</code> PHP 方法的验证。</p>
+<p><strong>after:date</strong></p>
+<p>验证的字段必须是给定日期之后的值。日期会被传递到 <code>strtotime</code> PHP 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">`start_date<span class="string">' =&gt; '</span>required|date|after:tomorrow<span class="string">'</span></div></pre></td></tr></table></figure>
+<p>你也可以指定使用其它字段的日期来进行评估：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'finish_date'</span> =&gt; <span class="string">'required|date|after:start_date'</span></div></pre></td></tr></table></figure>
+<p><strong>alpha</strong></p>
+<p>验证的字段必须全部是由字母字符组成的字符串。</p>
+<p><strong>alpha_dash</strong></p>
+<p>验证的字段可以是字母，数字，-，_ 所组成的字符串。</p>
+<p><strong>alpha_num</strong></p>
+<p>验证的字段必须全部由字母或数字所组成。</p>
+<p><strong>array</strong></p>
+<p>验证的字段必须是一个 PHP <code>array</code>。</p>
+<p><strong>before:date</strong></p>
+<p>验证的字段的值必须比指定的日期要早。指定的日期会被传递到 PHP 的 <code>strtotime</code> 方法。</p>
+<p><strong>between:min,max</strong></p>
+<p>验证的字段的大小必须在给定的 <em>min</em> 和 <em>max</em> 之间。字符串，数字和文件都会使用和 <code>size</code> 约束的相同的评估方式。</p>
+<p><strong>boolean</strong></p>
+<p>验证的字段必须能够转换为布尔值。所接受的输入可以是 <code>true</code>，<code>false</code>，<code>1</code>，<code>0</code>，<code>&quot;1&quot;</code>，<code>&quot;0&quot;</code>。</p>
+<p><strong>confirmed</strong></p>
+<p>验证的字段必须能够和 <code>foo_confirmation</code> 字段相匹配。比如，如果验证的字段是 <code>password</code>，相应的 <code>password_confirmation</code> 字段必须在输入中被提供且与 <code>password</code> 相匹配。</p>
+<p><strong>date</strong></p>
+<p>验证的字段必须是一个有效的日期，它应该能被 <code>strtotime</code> PHP 方法通过。</p>
+<p><strong>date_format:format</strong></p>
+<p>验证的字段必须匹配给定的格式。该格式会被 PHP <code>date_parse_from_format</code> 方法评定，你应该只使用 <code>date</code> 或者 <code>date_format</code> 其中之一来进行验证字段，不要全部都使用。</p>
+<p><strong>different:field</strong></p>
+<p>验证的字段必须与给定的字段不同。</p>
+<p><strong>digits:value</strong></p>
+<p>验证的字段必须是数字类型并且具有指定的长度。</p>
+<p><strong>digits_between:min,max</strong></p>
+<p>验证的字段必须具有指定区间的长度。</p>
+<p><strong>dimensions</strong></p>
+<p>验证的字段必须是一个图片类型的，并且要求符合指定的参数约束:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'avatar'</span> =&gt; <span class="string">'dimensions:min_with=100,min_height=200'</span></div></pre></td></tr></table></figure>
+<p>可用的参数有：<em>min_width</em>，<em>max_width</em>，<em>min_height</em>，<em>max_height</em>，<em>width</em>，<em>height</em>，<em>ratio</em>。</p>
+<p><strong>distinct</strong></p>
+<p>当与数组协作时，验证的字段中必须不能含有重复的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'foo.*.id'</span> =&gt; <span class="string">'distinct'</span></div></pre></td></tr></table></figure>
+<p><strong>email</strong></p>
+<p>验证的字段必须是一个邮件地址的格式。</p>
+<p><strong>exists:table,column</strong></p>
+<p>验证的字段必须能在指定数据库表中检索的到。</p>
+<p><strong>Exists 基础约束用法</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'state'</span> =&gt; <span class="string">'exists:states'</span></div></pre></td></tr></table></figure>
+<p><strong>指定自定义列名称</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'state'</span> =&gt; <span class="string">'exists:states,abbreviation'</span></div></pre></td></tr></table></figure>
+<p>你也可以像使用 <code>where</code> 语句一样指定添加更多的查询条件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'exists:staff,email,account_id,1'</span></div></pre></td></tr></table></figure>
+<p>查询条件也可以使用 <code>!</code> 来表明否定值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'eamil'</span> =&gt; <span class="string">'exists:staff,email,role,!admin'</span></div></pre></td></tr></table></figure>
+<p>你也可以传递 <code>NULL</code> 或者 <code>NOT_NULL</code> 到查询语句中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'eamil'</span> =&gt; <span class="string">'exists:staff,email,deleted_at,NULL'</span></div><div class="line"></div><div class="line"><span class="string">'eamil'</span> =&gt; <span class="string">'exists:staff,email,deleted_at,NOT_NULL'</span></div></pre></td></tr></table></figure>
+<p>极个别的情况下，你可能需要在 <code>exists</code> 查询下指定特定的数据库连接。你可以使用 <code>.</code> 语法将数据库连接名前置来进行指定：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'exists:connection.staff,email'</span></div></pre></td></tr></table></figure>
+<p><strong>filled</strong></p>
+<p>验证的字段如果出现，那么它一定不能为空值。</p>
+<p><strong>image</strong></p>
+<p>被验证的文件必须是一个图片类型（jpeg，png，bmp，gif，svg）</p>
+<p><strong>in:foo,bar,…</strong></p>
+<p>验证的字段必须是给定值列中的一个。</p>
+<p><strong>in_array:anotherfield</strong></p>
+<p>验证的字段必须是指定的字段中值列之一。</p>
+<p><strong>integer</strong></p>
+<p>验证的字段必须是一个整数。</p>
+<p><strong>ip</strong></p>
+<p>验证的字段必须是一个 IP 地址。</p>
+<p><strong>json</strong></p>
+<p>验证的字段必须是合法的 JSON 字符串</p>
+<p><strong>max:value</strong></p>
+<p>验证的字段必须小于等于指定值。字符串，数字，和文件类型会与 <code>size</code> 约束使用相同的评估方法。</p>
+<p><strong>mimetypes:text/plain,…</strong></p>
+<p>验证的字段必须匹配给定的 MIME 类型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'video'</span> =&gt; <span class="string">'mimetypes:video/avi,video/mpeg,video/quicktime'</span></div></pre></td></tr></table></figure>
+<p>为了判断所上传文件的 MIME 类型，laravel 会读取文件的内容并且会尝试猜测文件的 MIME 类型，这可能会与客户端提供的文件 MIME 类型有所区别。</p>
+<p><strong>mimes:foo,bar,…</strong></p>
+<p>验证的文件的 MIME 类型相应的后缀必须是所列的值之一。</p>
+<p><strong>基础用法</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'photo'</span> =&gt; <span class="string">'mimes:jpeg,bmp,png'</span></div></pre></td></tr></table></figure>
+<p>你只需要指定文件的扩展，这个约束会针对文件的内容进行猜测文件的 MIME 类型，然后进行扩展验证。</p>
+<p>完整的 MIME 类型和其相应的扩展后缀，你可以从 <a href="http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types" target="_blank" rel="external">这里</a> 找到。</p>
+<p><strong>min:value</strong></p>
+<p>验证的字段必须比指定的值要小。字符串，数字和文件类型会使用 <code>size</code> 约束相同的评估方法。</p>
+<p><strong>not_in:foo,bar,…</strong></p>
+<p>验证的字段不应该包含在给定的值列中。</p>
+<p><strong>numeric</strong></p>
+<p>验证的字段必须是一个数值类型。</p>
+<p><strong>present</strong></p>
+<p>验证的字段必须要求被提供，但是可以为空。</p>
+<p><strong>regex:pattern</strong></p>
+<p>验证的字段必须与给定的正则表达式相匹配。</p>
+<blockquote>
+<p>注意：当使用 <code>regex</code> 模式时，你必须将约束放进数组里来取代管道符分隔，特别是在正则表达式中包含管道符时。</p>
+</blockquote>
+<p><strong>required</strong></p>
+<p>验证的字段必须被提供并且不能为空值。判断空值的依据：</p>
+<ul>
+<li>值是 <code>null</code></li>
+<li>值是空字符串</li>
+<li>值是一个空数组或者空的 <code>Countable</code> 对象</li>
+<li>值是一个没有传递路径的上传的文件</li>
+</ul>
+<p><strong>required_if:anotherfield,value,…</strong></p>
+<p>验证的字段必须在以下情况下被提供：指定的字段等于任意列出的值。</p>
+<p><strong>required_unless:anotherfield,value,…</strong></p>
+<p>验证的字段必须在以下情况下被提供: 所指定的字段和所提供的值都不相等。</p>
+<p><strong>required_with:foo,bar,…</strong></p>
+<p>验证的字段只有在其它所指定字段之一被提供时才会被要求提供。</p>
+<p><strong>required_with_all:foo,bar,…</strong></p>
+<p>验证的字段只有在其它所指定字段全部被提供时才会被要求提供。</p>
+<p><strong>required_without:foo,bar,…</strong></p>
+<p>验证的字段只有在其它所指定字段之一没有被提供时被要求提供。</p>
+<p><strong>required_without_all:foo,bar,…</strong></p>
+<p>验证的字段只有在所指定字段全部没有被提供时才会被要求提供。</p>
+<p><strong>same:field</strong></p>
+<p>所验证的字段必须与指定的字段相匹配。</p>
+<p><strong>size:value</strong></p>
+<p>验证的字段必须具有给定值的大小。对于字符串数据，值应该是字符串的字符长度。对于数值数据，值应该是相应的整数值。对于数组，大小匹配数组的 <code>count</code> 大小。对于文件，应该匹配文件的字节大小。</p>
+<p><strong>string</strong></p>
+<p>验证的字段必须是一个字符串。</p>
+<p><strong>timezone</strong></p>
+<p>验证的字段必须是经过 PHP <code>timezone_identifiers_list</code> 方法验证的合法的 timezone 标识。</p>
+<p><strong>unique:table,column,except,idColumn</strong></p>
+<p>验证的字段必须在给定的数据表中唯一，如果 <code>column</code> 选型没有被指定，那么会直接使用字段的名字。</p>
+<p><strong>指定自定义的列名</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'unique:users,email_address'</span></div></pre></td></tr></table></figure>
+<p><strong>自定义数据库连接</strong></p>
+<p>极少数情况下，你可能需要指定自定义的数据库连接来进行验证。就如上面所看到的，设置 <code>unique:users</code> 会使用默认的数据库连接来进行约束验证。如果想指定其他数据库连接，你可以使用 <code>.</code> 语法并前置指定数据库连接：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'unique:connection.users,email_address'</span></div></pre></td></tr></table></figure>
+<p><strong>强迫 Unique 约束 忽略给定的 ID</strong></p>
+<p>有时候，你可能会希望 unique 检查忽略给定的 ID。比如，考虑一下一个更新个人信息的场景，它应该提供用户的名称，邮箱地址，和位置。你可能会想要验证邮箱的唯一性。但是你只想验证与用户的当前邮箱不一致的邮箱的唯一性。也就是说你只想验证这个邮箱有没有被其他用户所使用。你需要传递 ID 作为第三个参数来通知 unique 约束来忽略当前用户的 ID：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'unique:users,email_address,'</span>.$user-&gt;id</div></pre></td></tr></table></figure>
+<p>如果表名使用的主键列名不是 <code>id</code> ，那么你还需要指定主键的列名到第四个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'unique:users,email_address,'</span>.$user-&gt;id.<span class="string">',user_id'</span></div></pre></td></tr></table></figure>
+<p><strong>添加额外的条件查询</strong></p>
+<p>你也可以指定更多的条件查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'email'</span> =&gt; <span class="string">'unique:users,email_address,null,id,account_id,1'</span></div></pre></td></tr></table></figure>
+<p>在上面的约束中，只有 <code>account_id</code> 为 <code>1</code> 的行会被约束进行检查。</p>
+<p><strong>url</strong></p>
+<p>验证的字段必须符合 PHP <code>filter_var</code> 方法验证的有效 URL。</p>
+<h2 id="添加约束条件"><a href="#添加约束条件" class="headerlink" title="添加约束条件"></a>添加约束条件</h2><p>在一些场景中，你会希望只有字段出现在了输入数组中时才会对其进行验证。你可以在约束列中添加 <code>sometimes</code> 约束来快速的完成指定：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$v = Validator::make($data, [</div><div class="line">  <span class="string">'email'</span> =&gt; <span class="string">'sometimes|required|email'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>这上面的例子中，只有 <code>$data</code> 中提供了 <code>email</code> 字段，<code>email</code> 的约束才会对其进行验证。</p>
+<p><strong>复杂的验证条件</strong></p>
+<p>有时候，你可能会希望基于更复杂的条件逻辑去进行约束的验证。比如，你希望只有另外一个字段拥有比 100 更大的值时才会验证给定的字段是否被提供。又或者你想要在只有另外一个字段被提供时才会需要其他两个字段的值。添加这些条件判定并非是痛苦的一件事。首先，你还是需要创建一个 <code>Validator</code> 实例和一些静态的约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$v = Validator::make($data, [</div><div class="line">  <span class="string">'email'</span> =&gt; <span class="string">'required|email'</span>,</div><div class="line">  <span class="string">'games'</span> =&gt; <span class="string">'required|numeric'</span></div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>让我们假定我们的应用是服务于一些游戏收藏家的。如果一个游戏收藏家注册了我们的应用，并且它们添加了超过 100 个游戏时。我们需要它们解释一下为什么他会拥有那么多的游戏。比如，或许他开了一个游戏贩卖超市，又或者他仅仅就是喜欢收藏。我们可以使用 <code>Validator</code> 实例上的 <code>sometimes</code> 方法来添加这个必要的条件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$v-&gt;sometimes(<span class="string">'reason'</span>, <span class="string">'required|max:500'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($input)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $input-&gt;games &gt;= <span class="number">100</span>;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>传递到 <code>sometimes</code> 方法的第一个参数是我们需要考虑验证的字段的名字。第二个参数是我们想要添加的约束。如果第三个参数传递的 <code>Closure</code> 返回的结果是 <code>true</code>，那么这个约束就会被添加进去。这就可以轻松的对复杂的验证场景进行条件的构建。你甚至可以一次性的添加多个字段的条件验证：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$v-&gt;sometimes([<span class="string">'reson'</span>, <span class="string">'cost'</span>], <span class="string">'required'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($input)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $input-&gt;games &gt;= <span class="number">100</span>; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：传递到 <code>Closure</code> 中的 <code>$input</code> 是一个 <code>Illuminate\Support\Flument</code> 实例，并且它可以被用来访问你的输入和文件。</p>
+</blockquote>
+<h2 id="自定义验证约束"><a href="#自定义验证约束" class="headerlink" title="自定义验证约束"></a>自定义验证约束</h2><p>Laravel 提供了各种有用的验证约束。但是，你可能希望添加你自己的特定的约束。你可以使用 <code>Validator</code> 假面的 <code>extend</code> 方法来注册自己的验证约束。让我们在服务提供者里注册一个自定义的验证约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Validator</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Bootstrap any application services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Validator::extend(<span class="string">'foo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($attribute, $value, $parameters, $validator)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> $value == <span class="string">'foo'</span>;</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register the service provider.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>自定义的验证闭包中接收四个参数：需要被验证的属性名称，属性的值，一个需要被传递到约束的 <code>$paramters</code> 数组，和 <code>Validator</code> 实例。</p>
+<p>你也可以传递一个类名和方法到 <code>extend</code> 方法中来代替闭包：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Validator::extend(<span class="string">'foo'</span>, <span class="string">'FooValidator@validate'</span>);</div></pre></td></tr></table></figure>
+<p><strong>定义错误消息</strong></p>
+<p>你也需要为你的自定义约束添加一个错误消息。你可以使用行内自定义错误消息或者将其添加到独立的验证语言文件中。这个消息应该被存放在数组的一维中，而不是包含在 <code>custom</code> 数组里:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">"foo"</span> =&gt; <span class="string">'Your input was invalid!'</span>,</div><div class="line"></div><div class="line"><span class="string">'accepted'</span> =&gt; <span class="string">'The :attribute must be accepted.'</span>,</div><div class="line"></div><div class="line"><span class="comment">// The rest of the validation error messages...</span></div></pre></td></tr></table></figure>
+<p>当构建自定义的验证约束时，你或许有时候也想为错误消息定义一些占位符。你可以使用 <code>Validator</code> 假面的 <code>replacer</code> 方法来进行占位替换。你可以在服务提供者的 <code>boot</code> 方法中来做这些：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Bootstrap any application services.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   Validator::extend(...);</div><div class="line"></div><div class="line">   Validator::replacer(<span class="string">'foo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($message, $attribute, $rule, $parameters)</span> </span>&#123;</div><div class="line">     <span class="keyword">return</span> str_replace(...);</div><div class="line">   &#125;);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p><strong>隐式的扩展</strong></p>
+<p>默认的，当属性被验证时，如果在输入数组中没有被提供，或者验证约束为 <code>required</code> 却是一个空值。那么普通的验证约束，包括自定义的约束扩展，都不会再执行。比如，<code>unique</code> 约束就不会在出现 <code>null</code> 值进行执行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$rules = [<span class="string">'name'</span> =&gt; <span class="string">'unique'</span>];</div><div class="line"></div><div class="line">$input = [<span class="string">'name'</span> =&gt; <span class="keyword">null</span>];</div><div class="line"></div><div class="line">Validator:make($input, $rules)-&gt;passes(); <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>如果需要约束即使是属性值为空时也继续执行，那么约束需要暗示属性是必须的。你可以使用 <code>Validator::extendImplicit()</code> 方法来构建一个 “隐式的” 扩展：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Validator::extendImplicit(<span class="string">'foo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($attribute, $value, $parameters, $validator)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $value == <span class="string">'foo'</span>; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 隐式的扩展仅仅是暗示属性是必须的，不论它实际上是缺失的值或者是空的属性，这都取决于你。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/19/laravel-from-scratch-testing/" rel="next" title="laravel 基础教程 —— 测试">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/23/laravel-from-scratch-database/" rel="prev" title="laravel 基础教程 —— 数据库">
+                laravel 基础教程 —— 数据库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#验证"><span class="nav-number">1.</span> <span class="nav-text">验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速入门"><span class="nav-number">1.2.</span> <span class="nav-text">快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义路由"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建控制器"><span class="nav-number">1.2.2.</span> <span class="nav-text">创建控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写验证逻辑"><span class="nav-number">1.2.3.</span> <span class="nav-text">编写验证逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示验证错误"><span class="nav-number">1.2.4.</span> <span class="nav-text">显示验证错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AJAX-请求-amp-验证"><span class="nav-number">1.2.5.</span> <span class="nav-text">AJAX 请求 & 验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证数组"><span class="nav-number">1.2.6.</span> <span class="nav-text">验证数组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它验证途径"><span class="nav-number">1.3.</span> <span class="nav-text">其它验证途径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手动的创建-Validators"><span class="nav-number">1.3.1.</span> <span class="nav-text">手动的创建 Validators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表单请求验证"><span class="nav-number">1.3.2.</span> <span class="nav-text">表单请求验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与错误消息协作"><span class="nav-number">1.4.</span> <span class="nav-text">与错误消息协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义错误消息"><span class="nav-number">1.4.1.</span> <span class="nav-text">自定义错误消息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可用的验证约束"><span class="nav-number">1.5.</span> <span class="nav-text">可用的验证约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加约束条件"><span class="nav-number">1.6.</span> <span class="nav-text">添加约束条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义验证约束"><span class="nav-number">1.7.</span> <span class="nav-text">自定义验证约束</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是JWT Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是 JWT -- JSON WEB TOKEN">
+<meta property="og:url" content="http://yoursite.com/2016/04/21/what-is-jwt/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="什么是JWT Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/jwt-diagram.png">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是 JWT -- JSON WEB TOKEN">
+<meta name="twitter:description" content="什么是JWT Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被">
+<meta name="twitter:image" content="http://yoursite.com/jwt-diagram.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/21/what-is-jwt/"/>
+
+
+
+
+
+  <title>什么是 JWT -- JSON WEB TOKEN | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/21/what-is-jwt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">什么是 JWT -- JSON WEB TOKEN</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-21T17:16:54+08:00">
+                2016-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="什么是JWT"><a href="#什么是JWT" class="headerlink" title="什么是JWT"></a>什么是JWT</h1><blockquote>
+<p>Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（<a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="external">(RFC 7519</a>).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。</p>
+</blockquote>
+<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>说起JWT，我们应该来谈一谈基于token的认证和传统的session认证的区别。</p>
+<h3 id="传统的session认证"><a href="#传统的session认证" class="headerlink" title="传统的session认证"></a>传统的session认证</h3><p>我们知道，http协议本身是一种无状态的协议，而这就意味着如果用户向我们的应用提供了用户名和密码来进行用户认证，那么下一次请求时，用户还要再一次进行用户认证才行，因为根据http协议，我们并不能知道是哪个用户发出的请求，所以为了让我们的应用能识别是哪个用户发出的请求，我们只能在服务器存储一份用户登录的信息，这份登录信息会在响应时传递给浏览器，告诉其保存为cookie,以便下次请求时发送给我们的应用，这样我们的应用就能识别请求来自哪个用户了,这就是传统的基于session认证。</p>
+<p>但是这种基于session的认证使应用本身很难得到扩展，随着不同客户端用户的增加，独立的服务器已无法承载更多的用户，而这时候基于session认证应用的问题就会暴露出来.</p>
+<h4 id="基于session认证所显露的问题"><a href="#基于session认证所显露的问题" class="headerlink" title="基于session认证所显露的问题"></a>基于session认证所显露的问题</h4><p><strong>Session</strong>: 每个用户经过我们的应用认证之后，我们的应用都要在服务端做一次记录，以方便用户下次请求的鉴别，通常而言session都是保存在内存中，而随着认证用户的增多，服务端的开销会明显增大。</p>
+<p><strong>扩展性</strong>: 用户认证之后，服务端做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须要请求在这台服务器上,这样才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力。这也意味着限制了应用的扩展能力。</p>
+<p><strong>CSRF</strong>: 因为是基于cookie来进行用户识别的, cookie如果被截获，用户就会很容易受到跨站请求伪造的攻击。</p>
+<h2 id="基于token的鉴权机制"><a href="#基于token的鉴权机制" class="headerlink" title="基于token的鉴权机制"></a>基于token的鉴权机制</h2><p>基于token的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。</p>
+<p>流程上是这样的：</p>
+<ul>
+<li>用户使用用户名密码来请求服务器</li>
+<li>服务器进行验证用户的信息</li>
+<li>服务器通过验证发送给用户一个token</li>
+<li>客户端存储token，并在每次请求时附送上这个token值</li>
+<li>服务端验证token值，并返回数据</li>
+</ul>
+<p>这个token必须要在每次请求时传递给服务端，它应该保存在请求头里， 另外，服务端要支持<code>CORS(跨来源资源共享)</code>策略，一般我们在服务端这么做就可以了<code>Access-Control-Allow-Origin: *</code>。</p>
+<p>那么我们现在回到JWT的主题上。</p>
+<h2 id="JWT长什么样？"><a href="#JWT长什么样？" class="headerlink" title="JWT长什么样？"></a>JWT长什么样？</h2><p>JWT是由三段信息文本构成的, 这三段信息文本用<code>.</code>链接一起就构成了Jwt字符串。就像这样:</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJhbGciOiJIUzI<span class="number">1</span><span class="symbol">NiIsInR5</span>cCI<span class="number">6</span>IkpX<span class="attr">VCJ9</span>.eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span>.TJVA<span class="number">95</span><span class="keyword">Or</span><span class="name">M7</span>E<span class="number">2</span>cBab<span class="number">30</span>RMHrHDcEfxjoYZgeFO<span class="symbol">NFh7</span>HgQ</div></pre></td></tr></table></figure>
+<h2 id="JWT的构成"><a href="#JWT的构成" class="headerlink" title="JWT的构成"></a>JWT的构成</h2><p>第一部分我们称它为头部（header),第二部分我们称其为载荷（payload, 类似于飞机上承载的物品)，第三部分是签证（signature).</p>
+<h3 id="header"><a href="#header" class="headerlink" title="header"></a>header</h3><p>jwt的头部承载两部分信息：</p>
+<ul>
+<li>声明类型，这里是jwt</li>
+<li>声明加密的算法 通常直接使用 HMAC SHA256</li>
+</ul>
+<p>完整的头部就像下面这样的JSON：<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">'typ'</span>: <span class="string">'JWT'</span>,</div><div class="line">  <span class="string">'alg'</span>: <span class="string">'HS256'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后将头部进行base64加密（该加密是可以对称解密的),构成了第一部分. </p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJ<span class="number">0</span>eXAiOiJKV<span class="number">1</span>QiLCJhbGciOiJIUzI<span class="number">1</span><span class="symbol">NiJ9</span></div></pre></td></tr></table></figure>
+<h3 id="playload"><a href="#playload" class="headerlink" title="playload"></a>playload</h3><p>载荷就是存放有效信息的地方。这个名字像是特指飞机上承载的货品，这些有效信息包含三个部分</p>
+<ul>
+<li>标准中注册的声明</li>
+<li>公共的声明</li>
+<li>私有的声明</li>
+</ul>
+<p><strong>标准中注册的声明</strong> (建议但不强制使用) ：</p>
+<ul>
+<li><strong>iss</strong>: jwt签发者</li>
+<li><strong>sub</strong>: jwt所面向的用户</li>
+<li><strong>aud</strong>: 接收jwt的一方</li>
+<li><strong>exp</strong>: jwt的过期时间，这个过期时间必须要大于签发时间</li>
+<li><strong>nbf</strong>: 定义在什么时间之前，该jwt都是不可用的.</li>
+<li><strong>iat</strong>: jwt的签发时间</li>
+<li><strong>jti</strong>: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。</li>
+</ul>
+<p><strong>公共的声明</strong> ：<br>公共的声明可以添加任何的信息，一般添加用户的相关信息或其他业务需要的必要信息.但不建议添加敏感信息，因为该部分在客户端可解密.</p>
+<p><strong>私有的声明</strong> ：<br>私有声明是提供者和消费者所共同定义的声明，一般不建议存放敏感信息，因为base64是对称解密的，意味着该部分信息可以归类为明文信息。</p>
+<p>定义一个payload:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"sub"</span>: <span class="string">"1234567890"</span>,</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"John Doe"</span>,</div><div class="line">  <span class="attr">"admin"</span>: <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后将其进行base64加密，得到Jwt的第二部分。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span></div></pre></td></tr></table></figure>
+<h3 id="signature"><a href="#signature" class="headerlink" title="signature"></a>signature</h3><p>jwt的第三部分是一个签证信息，这个签证信息由三部分组成：</p>
+<ul>
+<li>header (base64后的)</li>
+<li>payload (base64后的)</li>
+<li>secret</li>
+</ul>
+<p>这个部分需要base64加密后的header和base64加密后的payload使用<code>.</code>连接组成的字符串，然后通过header中声明的加密方式进行加盐<code>secret</code>组合加密，然后就构成了jwt的第三部分。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// javascript</span></div><div class="line"><span class="built_in">var</span> encodedString = base64UrlEncode(<span class="keyword">header</span>) + <span class="string">'.'</span> + base64UrlEncode(payload);</div><div class="line"></div><div class="line"><span class="built_in">var</span> signature = HMACSHA256(encodedString, <span class="string">'secret'</span>); <span class="comment">// TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span></div></pre></td></tr></table></figure>
+<p>将这三部分用<code>.</code>连接成一个完整的字符串,构成了最终的jwt:<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eyJhbGciOiJIUzI<span class="number">1</span><span class="symbol">NiIsInR5</span>cCI<span class="number">6</span>IkpX<span class="attr">VCJ9</span>.eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span>.TJVA<span class="number">95</span><span class="keyword">Or</span><span class="name">M7</span>E<span class="number">2</span>cBab<span class="number">30</span>RMHrHDcEfxjoYZgeFO<span class="symbol">NFh7</span>HgQ</div></pre></td></tr></table></figure></p>
+<p><strong>注意：secret是保存在服务器端的，jwt的签发生成也是在服务器端的，secret就是用来进行jwt的签发和jwt的验证，所以，它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret, 那就意味着客户端是可以自我签发jwt了。</strong></p>
+<h3 id="如何应用"><a href="#如何应用" class="headerlink" title="如何应用"></a>如何应用</h3><p>一般是在请求头里加入<code>Authorization</code>，并加上<code>Bearer</code>标注：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">fetch</span>(<span class="string">'api/user/1'</span>, &#123;</div><div class="line">  <span class="attribute">headers</span>: &#123;</div><div class="line">    <span class="string">'Authorization'</span>: <span class="string">'Bearer '</span> + token</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>服务端会验证token，如果验证通过就会返回相应的资源。整个流程就是这样的:</p>
+<p><img src="/jwt-diagram.png" alt="jwt-diagram"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>因为json的通用性，所以JWT是可以进行跨语言支持的，像JAVA,JavaScript,NodeJS,PHP等很多语言都可以使用。</li>
+<li>因为有了payload部分，所以JWT可以在自身存储一些其他业务逻辑所必要的非敏感信息。</li>
+<li>便于传输，jwt的构成非常简单，字节占用很小，所以它是非常便于传输的。</li>
+<li>它不需要在服务端保存会话信息, 所以它易于应用的扩展</li>
+</ul>
+<h3 id="安全相关"><a href="#安全相关" class="headerlink" title="安全相关"></a>安全相关</h3><ul>
+<li>不应该在jwt的payload部分存放敏感信息，因为该部分是客户端可解密的部分。</li>
+<li>保护好secret私钥，该私钥非常重要。</li>
+<li>如果可以，请使用https协议</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/19/laravel-from-scratch-routing/" rel="next" title="laravel 基础教程 —— 路由">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 路由
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/30/laravel-from-scratch-middleware/" rel="prev" title="laravel 基础教程 —— 中间件">
+                laravel 基础教程 —— 中间件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是JWT"><span class="nav-number">1.</span> <span class="nav-text">什么是JWT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#起源"><span class="nav-number">1.1.</span> <span class="nav-text">起源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的session认证"><span class="nav-number">1.1.1.</span> <span class="nav-text">传统的session认证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于session认证所显露的问题"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">基于session认证所显露的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于token的鉴权机制"><span class="nav-number">1.2.</span> <span class="nav-text">基于token的鉴权机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JWT长什么样？"><span class="nav-number">1.3.</span> <span class="nav-text">JWT长什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JWT的构成"><span class="nav-number">1.4.</span> <span class="nav-text">JWT的构成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">1.4.1.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#playload"><span class="nav-number">1.4.2.</span> <span class="nav-text">playload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">1.4.3.</span> <span class="nav-text">signature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何应用"><span class="nav-number">1.4.4.</span> <span class="nav-text">如何应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.5.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全相关"><span class="nav-number">1.5.2.</span> <span class="nav-text">安全相关</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

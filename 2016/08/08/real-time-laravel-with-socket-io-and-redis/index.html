@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="即时交互的应用在现代的 Web 应用中很多场景都需要运用到即时通讯，比如说最常见的支付回调，与三方登录。这些业务场景都基本需要遵循以下流程：  客户端触发相关业务，并产生第三方应用的操作（比如支付） 客户端等待服务端响应结果（用户完成第三方应用的操作） 第三方应用通知服务端处理结果（支付完成） 服务端通知客户端处理结果 客户端依据结果做出反馈 （跳转到支付成功页面）  在过去，为了实现这种即时通讯">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 即时应用的一种实现方式">
+<meta property="og:url" content="http://yoursite.com/2016/08/08/real-time-laravel-with-socket-io-and-redis/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="即时交互的应用在现代的 Web 应用中很多场景都需要运用到即时通讯，比如说最常见的支付回调，与三方登录。这些业务场景都基本需要遵循以下流程：  客户端触发相关业务，并产生第三方应用的操作（比如支付） 客户端等待服务端响应结果（用户完成第三方应用的操作） 第三方应用通知服务端处理结果（支付完成） 服务端通知客户端处理结果 客户端依据结果做出反馈 （跳转到支付成功页面）  在过去，为了实现这种即时通讯">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel 即时应用的一种实现方式">
+<meta name="twitter:description" content="即时交互的应用在现代的 Web 应用中很多场景都需要运用到即时通讯，比如说最常见的支付回调，与三方登录。这些业务场景都基本需要遵循以下流程：  客户端触发相关业务，并产生第三方应用的操作（比如支付） 客户端等待服务端响应结果（用户完成第三方应用的操作） 第三方应用通知服务端处理结果（支付完成） 服务端通知客户端处理结果 客户端依据结果做出反馈 （跳转到支付成功页面）  在过去，为了实现这种即时通讯">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/08/real-time-laravel-with-socket-io-and-redis/"/>
+
+
+
+
+
+  <title>Laravel 即时应用的一种实现方式 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/08/real-time-laravel-with-socket-io-and-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Laravel 即时应用的一种实现方式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-08T10:17:43+08:00">
+                2016-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="即时交互的应用"><a href="#即时交互的应用" class="headerlink" title="即时交互的应用"></a>即时交互的应用</h2><p>在现代的 Web 应用中很多场景都需要运用到即时通讯，比如说最常见的支付回调，与三方登录。这些业务场景都基本需要遵循以下流程：</p>
+<ul>
+<li>客户端触发相关业务，并产生第三方应用的操作（比如支付）</li>
+<li>客户端等待服务端响应结果（用户完成第三方应用的操作）</li>
+<li>第三方应用通知服务端处理结果（支付完成）</li>
+<li>服务端通知客户端处理结果</li>
+<li>客户端依据结果做出反馈 （跳转到支付成功页面）</li>
+</ul>
+<p>在过去，为了实现这种即时通讯，能让客户端正确响应处理结果，最为常用的技术就是轮询，因为 HTTP 协议的单向性，客户端只能一遍一遍的主动询问服务端的处理结果。这种方式有显见的缺陷，占用服务端资源不说，还不能实时获得服务端处理结果。</p>
+<p>现在，我们可以使用 WebSocket 协议来处理实时交互，它是一种双向协议，允许服务端主动推送信息到客户端。本篇我们将借助 Laravel 强大的事件系统来构建实时的交互。你将需要用到以下知识：</p>
+<ul>
+<li>Laravel Event</li>
+<li>Redis</li>
+<li>Socket.io</li>
+<li>Node.js</li>
+</ul>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p>在开始之前，我们需要开启一个 redis 服务，并在 Laravel 应用中进行配置启用，因为在整个流程中，我们需要借助 redis 的订阅和发布机制来实现即时通讯。</p>
+<p>Redis 是一个开源高效的键值对存储系统。它通常作为一个数据结构服务器来存储键值对，它可以支持字符串，散列，列表，集合和有序结合。在 Laravel 中使用 Redis 你需用通过 Composer 来安装 <code>predis/predis</code> 包文件。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>Redis 在应用中的配置文件存储在 <code>config/database.php</code>，在这个文件中，你可以看到一个包含了 Redis 服务信息的 <code>redis</code> 数组:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="string">'redis'</span> =&gt; [</div><div class="line">  <span class="string">'cluster'</span> =&gt; <span class="keyword">false</span>,</div><div class="line"></div><div class="line">  <span class="string">'default'</span> =&gt; [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'127.0.0.1'</span>,</div><div class="line">    <span class="string">'port'</span> =&gt; <span class="number">6379</span>,</div><div class="line">    <span class="string">'database'</span> =&gt; <span class="number">0</span>,</div><div class="line">  ],</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>如果你修改了 redis 服务的端口，请保持配置文件中的端口一致。</p>
+<h2 id="Laravel-Event"><a href="#Laravel-Event" class="headerlink" title="Laravel Event"></a>Laravel Event</h2><p>这里我们需要借助 Laravel 强大的事件广播能力：</p>
+<blockquote>
+<p><strong>广播事件</strong></p>
+<p>很多现代化的应用中，会使用 Web Sockets 来实现实时交互的用户接口。当一些数据在服务端变更时，一条消息会通过 WebSocket 连接来传递到客户端进行处理。<br>为了帮助你构建这种类型的应用。Laravel 使通过 WebSocket 连接进行广播事件变的非常简单。Laravel 允许你广播事件来共享事件的名称到你的服务端和客户端的 JavaScript 框架。</p>
+</blockquote>
+<h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><p>所有的事件广播配置选项都被存储在 <code>config/broadcasting.php</code> 配置文件中。Laravel 附带了几种可用的驱动如 Pusher，Redis，和 Log，我们将使用 Redis 作为广播驱动，这里需要依赖 <code>predis/predis</code> 类库。</p>
+<p>由于默认的广播驱动使用的是 <a href="https://pusher.com/" target="_blank" rel="external">pusher</a>，所以我们需要在 <code>.env</code> 文件中设置 <code>BROADCAST_DRIVER=redis</code>。</p>
+<p>我们创建一个 <code>WechatLoginedEvent</code> 事件类用来在用户扫描微信登录后进行广播：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Events</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Events</span>\<span class="title">Event</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Queue</span>\<span class="title">SerializesModels</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Broadcasting</span>\<span class="title">ShouldBroadcast</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatLoginedEvent</span> <span class="keyword">extends</span> <span class="title">Event</span> <span class="keyword">implements</span> <span class="title">ShouldBroadcast</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">use</span> <span class="title">SerializesModels</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> $token;</div><div class="line">    <span class="keyword">protected</span> $channel;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Create a new event instance.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  string $token</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span>  string $channel</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($token, $channel)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;token = $token;</div><div class="line">        <span class="keyword">$this</span>-&gt;channel = $channel;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Get the channels the event should be broadcast on.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">broadcastOn</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> [<span class="keyword">$this</span>-&gt;channel];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Get the name the event should be broadcast on.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">broadcastAs</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'wechat.login'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中你需要注意 <code>broadcastOn</code> 方法应返回一个数组，它表示所需广播的频道，而 <code>broadcastAs</code> 返回的是一个字符串，它表示广播所触发的事件，Laravel 默认的是返回事件类的全类名，这里是 <code>App\Events\WechatLoginedEvent</code>.</p>
+<p>最重要的是你需要手动的让该类实现 <code>ShouldBroadcast</code> 契约。Laravel 在生成事件时，已经自动添加了该命名空间，该契约只约束 <code>broadcastOn</code> 方法。</p>
+<p>事件完成接下来就是触发事件了，简单的一行代码就可以：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">event(<span class="keyword">new</span> WechatLoginedEvent($token, $channel));</div></pre></td></tr></table></figure>
+<p>这个操作会自动的触发事件的执行并将信息广播出去。该广播操作底层借助了 redis 的订阅和发布机制。<code>RedisBroadcaster</code> 会将事件中的允许公开访问的数据通过给定的频道发布出去。如果你想对公开的数据拥有更多的控制，你可以在事件中添加 <code>broadcastWith</code> 方法，它应该返回一个数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the data to broadcast.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> array</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">broadcastWith</span><span class="params">()</span> </span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   <span class="keyword">return</span> [<span class="string">'user'</span> =&gt; <span class="keyword">$this</span>-&gt;user-&gt;id];</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h2 id="Node-js-和-Socket-io"><a href="#Node-js-和-Socket-io" class="headerlink" title="Node.js 和 Socket.io"></a>Node.js 和 Socket.io</h2><p>对于发布出去的信息，我们需要一个服务来对接，让其能对 redis 的发布能够进行订阅，并且能把信息以 WebSocket 协议转发出去，这里我们可以借用 Node.js 和 socket.io 来非常方便的构建这个服务：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// server.js</span></div><div class="line"><span class="keyword">var</span> app = <span class="built_in">require</span>(<span class="string">'http'</span>).createServer(handler);</div><div class="line"><span class="keyword">var</span> io = <span class="built_in">require</span>(<span class="string">'socket.io'</span>)(app);</div><div class="line"></div><div class="line"><span class="keyword">var</span> Redis = <span class="built_in">require</span>(<span class="string">'ioredis'</span>);</div><div class="line"><span class="keyword">var</span> redis = <span class="keyword">new</span> Redis();</div><div class="line"></div><div class="line">app.listen(<span class="number">6001</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Server is running!'</span>) ;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">handler</span>(<span class="params">req, res</span>) </span>&#123;</div><div class="line">  res.writeHead(<span class="number">200</span>);</div><div class="line">  res.end(<span class="string">''</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">io.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">socket</span>) </span>&#123;</div><div class="line">  socket.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">message</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(message)</div><div class="line">  &#125;)</div><div class="line">  socket.on(<span class="string">'disconnect'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'user disconnect'</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;);</div><div class="line"></div><div class="line"></div><div class="line">redis.psubscribe(<span class="string">'*'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, count</span>) </span>&#123;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">redis.on(<span class="string">'pmessage'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">subscrbed, channel, message</span>) </span>&#123;</div><div class="line">  message = <span class="built_in">JSON</span>.parse(message);</div><div class="line">  io.emit(channel + <span class="string">':'</span> + message.event, message.data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这里我们使用 Node.js 引入 socket.io 服务端并监听 6001 端口，借用 redis 的 psubscribe 指令使用通配符来快速的批量订阅，接着在消息触发时将消息通过 WebSocket 转发出去。</p>
+<h2 id="Socket-io-客户端"><a href="#Socket-io-客户端" class="headerlink" title="Socket.io 客户端"></a>Socket.io 客户端</h2><p>在 web 前端，我们需要引入 Socket.io 客户端开启与服务端 6001 端口的通讯，并订阅频道事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// client.js</span></div><div class="line"><span class="keyword">let</span> io = <span class="built_in">require</span>(<span class="string">'socket.io-client'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> socket = io(<span class="string">':6001'</span>)</div><div class="line">      socket.on($channel + <span class="string">':wechat.login'</span>, (data) =&gt; &#123;</div><div class="line">        socket.close()</div><div class="line">        <span class="comment">// save user token and redirect to dashboard</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>至此整个通讯闭环结束，开发流程看起来就是这样的：</p>
+<ul>
+<li>在 Laravel 中构建一个支持广播通知的事件</li>
+<li>设置需要进行广播的频道及事件名称</li>
+<li>将广播设置为使用 redis 驱动</li>
+<li>提供一个持续的服务用于订阅 redis 的发布，及将发布内容通过 WebSocket 协议推送到客户端</li>
+<li>客户端打开服务端 WebSocket 隧道，并对事件进行订阅，根据指定事件的推送进行响应。</li>
+</ul>
+<p>PS: 欢迎关注简书 <a href="http://www.jianshu.com/collection/3dff40fa5135" target="_blank" rel="external">Laravel</a> 专题，也欢迎 Laravel 相关文章的投稿 :)，作者知识技能水平有限，如果你有更好的设计方案欢迎讨论交流，如果有错误的地方也请批评指正，在此表示感谢 :)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/08/laravel-cors-enable/" rel="next" title="laravel 开启跨域功能">
+                <i class="fa fa-chevron-left"></i> laravel 开启跨域功能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/13/server-security-best-practice/" rel="prev" title="构建相对安全的服务器">
+                构建相对安全的服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#即时交互的应用"><span class="nav-number">1.</span> <span class="nav-text">即时交互的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">2.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">2.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Laravel-Event"><span class="nav-number">3.</span> <span class="nav-text">Laravel Event</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-1"><span class="nav-number">3.1.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js-和-Socket-io"><span class="nav-number">4.</span> <span class="nav-text">Node.js 和 Socket.io</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket-io-客户端"><span class="nav-number">5.</span> <span class="nav-text">Socket.io 客户端</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

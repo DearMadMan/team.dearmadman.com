@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Redis简介Redis 是一个开源高效的键值对存储系统。它通常用作为一个数据结构服务器来存储键值对，它可以支持字符串，散列，列表，集合，和有序集合。在 laravel 中使用 Redis 之前，你需要通过 Composer 来安装 predis/predis 包（~1.0）。 配置Redis 在应用中的配置文件存储在 config/database.php。在这个文件中，你可以看到一个包含了 R">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— Redis">
+<meta property="og:url" content="http://yoursite.com/2016/06/10/laravel-from-scratch-redis/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Redis简介Redis 是一个开源高效的键值对存储系统。它通常用作为一个数据结构服务器来存储键值对，它可以支持字符串，散列，列表，集合，和有序集合。在 laravel 中使用 Redis 之前，你需要通过 Composer 来安装 predis/predis 包（~1.0）。 配置Redis 在应用中的配置文件存储在 config/database.php。在这个文件中，你可以看到一个包含了 R">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— Redis">
+<meta name="twitter:description" content="Redis简介Redis 是一个开源高效的键值对存储系统。它通常用作为一个数据结构服务器来存储键值对，它可以支持字符串，散列，列表，集合，和有序集合。在 laravel 中使用 Redis 之前，你需要通过 Composer 来安装 predis/predis 包（~1.0）。 配置Redis 在应用中的配置文件存储在 config/database.php。在这个文件中，你可以看到一个包含了 R">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/10/laravel-from-scratch-redis/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— Redis | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/10/laravel-from-scratch-redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— Redis</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-10T19:53:11+08:00">
+                2016-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="http://redis.io/" target="_blank" rel="external">Redis</a> 是一个开源高效的键值对存储系统。它通常用作为一个数据结构服务器来存储键值对，它可以支持字符串，散列，列表，集合，和有序集合。在 laravel 中使用 Redis 之前，你需要通过 Composer 来安装 <code>predis/predis</code> 包（~1.0）。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Redis 在应用中的配置文件存储在 <code>config/database.php</code>。在这个文件中，你可以看到一个包含了 Redis 服务信息的 <code>redis</code> 数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="string">'redis'</span> =&gt; [</div><div class="line">  <span class="string">'cluster'</span> =&gt; <span class="keyword">false</span>,</div><div class="line"></div><div class="line">  <span class="string">'default'</span> =&gt; [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'127.0.0.1'</span>,</div><div class="line">    <span class="string">'port'</span> =&gt; <span class="number">6379</span>,</div><div class="line">    <span class="string">'database'</span> =&gt; <span class="number">0</span>,</div><div class="line">  ],</div><div class="line">],</div></pre></td></tr></table></figure>
+<p>对于开发来说，默认的配置已经完全可以满足大部分的应用了。但是，你可以自由的在你环境中修改这个配置。你可以简单的添加 Redis 服务的名称，并且指定相应的服务器地址和端口。</p>
+<p><code>cluster</code> 选项会告诉 Laravel Redis 客户端在你的 Redis 集群中进行客户端的分片，这样就可以构成节点池并且创建大量有效的 RAM。但是，你需要注意的是客户端分片并不能处理故障转移。因此，它主要用来从一个主要数据存储地址获取可用的缓存数据。</p>
+<p>另外，你可以在你的 Redis 连接定义里添加一个 <code>options</code> 数组，这样你可以指定 Predis 的 <a href="https://github.com/nrk/predis/wiki/Client-Options" target="_blank" rel="external">客户端选项</a>。</p>
+<p>如果你的 Redis 服务器引入了认证机制，那么你需要在你的 Redis 服务配置数组中添加一个 <code>password</code> 配置项来提供密码。</p>
+<blockquote>
+<p>注意：如果你通过 PECL 来安装的 Redis PHP 扩展，那么你需要在 <code>config/app.php</code> 文件中对 Redis 的别名进行重命名。</p>
+</blockquote>
+<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><p>你可以通过使用 <code>Redis</code> 假面的各种方法来与 Redis 进行交互。<code>Redis</code> 假面支持动态方法，这意味着你可以在 <code>Redis</code> 假面上调用任何的 Redis <a href="http://redis.io/commands" target="_blank" rel="external">命令</a>，假面会直接将命令传递给 Redis。比如，我们通过 <code>Redis</code> 假面的 <code>get</code> 方法来调用 <code>GET</code> 命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Redis</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controler</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show the profile for the given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">showProfile</span><span class="params">($id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $user = Redis::get(<span class="string">'user:profile:'</span>. $id);</div><div class="line"></div><div class="line">     <span class="keyword">return</span> view(<span class="string">'user.profile'</span>, [<span class="string">'user'</span> =&gt; $user]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，就如我们前面所提到的，你可以通过 <code>Redis</code> 假面调用任何的 Redis 命令。Laravel 使用魔术方法来将其传递到 Redis 服务器，所以，可以直接简单的传递命令所需的参数即可：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Redis::set(<span class="string">'name'</span>, <span class="string">'Taylor'</span>);</div><div class="line"></div><div class="line">$value = Redis::lrange(<span class="string">'names'</span>, <span class="number">5</span>, <span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>另外，你也可以通过 <code>command</code> 方法来将命令传递到服务器，它接收第一个参数作为命令名称，第二个参数数组作为传递命令的参数值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$values = Redis::command(<span class="string">'lrange'</span>, [<span class="string">'name'</span>, <span class="number">5</span>, <span class="number">10</span>]);</div></pre></td></tr></table></figure>
+<p><strong>使用多 Redis 连接</strong></p>
+<p>你可以通过使用 <code>Redis::connection</code> 方法来获取 Redis 的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$redis = Redis::connection();</div></pre></td></tr></table></figure>
+<p>这会返回默认的 Redis 服务器的实例。如果你没有使用集群服务，你可以传递配置文件中所定义的服务名称到 <code>connection</code> 方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$redis = Redis::connection(<span class="string">'other'</span>);</div></pre></td></tr></table></figure>
+<h3 id="流水线命令"><a href="#流水线命令" class="headerlink" title="流水线命令"></a>流水线命令</h3><p>管道流水线可以允许你在一个操作中对 Redis 服务器执行多个命令。<code>pipeline</code> 方法接收一个参数: <code>Closure</code> ，它会接收 Redis 的实例。你可以在闭包中发布所有的命令，它们将会在一个操作中进行处理：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Redis::pipeline(<span class="function"><span class="keyword">function</span> <span class="params">($pipe)</span> </span>&#123;</div><div class="line">  <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">1000</span>; $i++) &#123;</div><div class="line">    $pipe-&gt;set(<span class="string">"key:$i"</span>, $i);</div><div class="line">  &#125; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="发布、订阅"><a href="#发布、订阅" class="headerlink" title="发布、订阅"></a>发布、订阅</h2><p>Laravel 也对 Redis 的 <code>publish</code> 和 <code>subscribe</code> 命令提供了一种方便的接口。这些 Redis 命令允许你通过给定的频道来监听信息。你可以从其他应用中向频道中发布信息，更甚者你可以使用其它的语言来进行发布，你可以轻而易举的在应用 / 进程间进行通讯:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Console</span>\<span class="title">Commands</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Redis</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Console</span>\<span class="title">Command</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RedisSubscribe</span> <span class="keyword">extends</span> <span class="title">Command</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The name and signature of the console command.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $signature = <span class="string">'redis:subscribe'</span>;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * The console command description.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">protected</span> $description = <span class="string">'Subscribe to a Redis channel'</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Execute the console command.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">       Redis::subscribe([<span class="string">'text-channel'</span>], <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">         <span class="keyword">echo</span> $message;</div><div class="line">       &#125;);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，你可以使用 <code>publish</code> 方法来向频道中发布信息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'publish'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Route logic...</span></div><div class="line"></div><div class="line">  Redis::publish(<span class="string">'test-channel'</span>, json_encode([<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>]));</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>订阅通配符</strong></p>
+<p>你可以使用 <code>psubscribe</code> 方法来订阅统配符匹配的频道，这通常用来捕获频道中的所有消息。<code>$channel</code> 变量会自动的传递到 <code>Closure</code> 的第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Redis::psubscribe([<span class="string">'*'</span>], <span class="function"><span class="keyword">function</span> <span class="params">($message, $channel)</span> </span>&#123;</div><div class="line">  <span class="keyword">echo</span> $message; </div><div class="line">&#125;);</div><div class="line"></div><div class="line">Redis::psubscribe([<span class="string">'users.*'</span>], <span class="function"><span class="keyword">function</span> <span class="params">($message, $channel)</span> </span>&#123;</div><div class="line">  <span class="keyword">echo</span> $message; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/10/laravel-from-scratch-queues/" rel="next" title="laravel 基础教程 —— 队列">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 队列
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/14/laravel-from-scratch-session/" rel="prev" title="laravel 基础教程 —— Session">
+                laravel 基础教程 —— Session <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis"><span class="nav-number">1.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础用法"><span class="nav-number">1.3.</span> <span class="nav-text">基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流水线命令"><span class="nav-number">1.3.1.</span> <span class="nav-text">流水线命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布、订阅"><span class="nav-number">1.4.</span> <span class="nav-text">发布、订阅</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

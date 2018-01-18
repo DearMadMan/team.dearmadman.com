@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Javascript Standard Style这是一个标准的 JavaScript 书写规范。 规范使用 2 个空格进行缩进123function hello (name) &amp;#123;  console.log(&apos;hi&apos;, name)&amp;#125; 使用单引号包裹字符串以防止转义12console.log(&apos;hello there&apos;)$(&quot;&amp;lt;div class=&apos;box&apos;&amp;gt;&quot;) 不">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript Standard Style">
+<meta property="og:url" content="http://yoursite.com/2016/05/09/javascript-standard-style/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Javascript Standard Style这是一个标准的 JavaScript 书写规范。 规范使用 2 个空格进行缩进123function hello (name) &amp;#123;  console.log(&apos;hi&apos;, name)&amp;#125; 使用单引号包裹字符串以防止转义12console.log(&apos;hello there&apos;)$(&quot;&amp;lt;div class=&apos;box&apos;&amp;gt;&quot;) 不">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript Standard Style">
+<meta name="twitter:description" content="Javascript Standard Style这是一个标准的 JavaScript 书写规范。 规范使用 2 个空格进行缩进123function hello (name) &amp;#123;  console.log(&apos;hi&apos;, name)&amp;#125; 使用单引号包裹字符串以防止转义12console.log(&apos;hello there&apos;)$(&quot;&amp;lt;div class=&apos;box&apos;&amp;gt;&quot;) 不">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/09/javascript-standard-style/"/>
+
+
+
+
+
+  <title>JavaScript Standard Style | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/09/javascript-standard-style/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript Standard Style</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-09T10:50:28+08:00">
+                2016-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Javascript-Standard-Style"><a href="#Javascript-Standard-Style" class="headerlink" title="Javascript Standard Style"></a>Javascript Standard Style</h1><p>这是一个标准的 JavaScript 书写规范。</p>
+<h2 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h2><h3 id="使用-2-个空格进行缩进"><a href="#使用-2-个空格进行缩进" class="headerlink" title="使用 2 个空格进行缩进"></a>使用 2 个空格进行缩进</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'hi'</span>, name)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="使用单引号包裹字符串以防止转义"><a href="#使用单引号包裹字符串以防止转义" class="headerlink" title="使用单引号包裹字符串以防止转义"></a>使用单引号包裹字符串以防止转义</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'hello there'</span>)</div><div class="line">$(<span class="string">"&lt;div class='box'&gt;"</span>)</div></pre></td></tr></table></figure>
+<h3 id="不定义未使用的变量"><a href="#不定义未使用的变量" class="headerlink" title="不定义未使用的变量"></a>不定义未使用的变量</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> result = something()    <span class="comment">// avoid</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="在关键字后应追加一个空格"><a href="#在关键字后应追加一个空格" class="headerlink" title="在关键字后应追加一个空格"></a>在关键字后应追加一个空格</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (condition) &#123; ... &#125;    <span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span>(condition) &#123; ... &#125;     <span class="comment">// avoid</span></div></pre></td></tr></table></figure>
+<h3 id="在函数声明的括号前追加一个空格"><a href="#在函数声明的括号前追加一个空格" class="headerlink" title="在函数声明的括号前追加一个空格"></a>在函数声明的括号前追加一个空格</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">name</span> (<span class="params">arg</span>) </span>&#123; ... &#125;     <span class="comment">// ok</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">name</span>(<span class="params">arg</span>) </span>&#123; ... &#125;      <span class="comment">// avoid</span></div><div class="line"></div><div class="line">run(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; ... &#125;)        <span class="comment">// ok</span></div><div class="line">run(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;)         <span class="comment">// avoid</span></div></pre></td></tr></table></figure>
+<h3 id="应始终使用-来代替"><a href="#应始终使用-来代替" class="headerlink" title="应始终使用 === 来代替 =="></a>应始终使用 <code>===</code> 来代替 <code>==</code></h3><p>例外： <code>obj == null</code> 允许使用 <code>==</code> 来判断 <code>null || undefined</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (name === <span class="string">'John'</span>)      <span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span> (name == <span class="string">'John'</span>)       <span class="comment">// avoid</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> (name !== <span class="string">'John'</span>)      <span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span> (name != <span class="string">'John'</span>)       <span class="comment">// avoid</span></div></pre></td></tr></table></figure>
+<h3 id="操作符前后应有空格"><a href="#操作符前后应有空格" class="headerlink" title="操作符前后应有空格"></a>操作符前后应有空格</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> x = <span class="number">2</span></div><div class="line"><span class="keyword">var</span> message = <span class="string">'hello, '</span> + name + <span class="string">'!'</span></div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> x=<span class="number">2</span></div><div class="line"><span class="keyword">var</span> message = <span class="string">'hello, '</span>+name+<span class="string">'!'</span></div></pre></td></tr></table></figure>
+<h3 id="逗号后应该追加一个空格"><a href="#逗号后应该追加一个空格" class="headerlink" title="逗号后应该追加一个空格"></a>逗号后应该追加一个空格</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span> (<span class="params">name, options</span>) </span>&#123; ... &#125;</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> list = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span> (<span class="params">name,options</span>) </span>&#123; ... &#125;</div></pre></td></tr></table></figure>
+<h3 id="使-else-声明和其大括号保持在同一行"><a href="#使-else-声明和其大括号保持在同一行" class="headerlink" title="使 else 声明和其大括号保持在同一行"></a>使 else 声明和其大括号保持在同一行</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span> (condition) &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">if</span> (condition) &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="对于多行的-if-语句，应使用大括号"><a href="#对于多行的-if-语句，应使用大括号" class="headerlink" title="对于多行的 if 语句，应使用大括号"></a>对于多行的 if 语句，应使用大括号</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span> (options.quiet !== <span class="literal">true</span>) <span class="built_in">console</span>.log(<span class="string">'done'</span>)</div><div class="line"></div><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">if</span> (options.quiet !== <span class="literal">true</span>) &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'done'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">if</span> (option.quiet !== <span class="literal">true</span>)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'done'</span>)</div></pre></td></tr></table></figure>
+<h3 id="总是处理函数中的-err-参数"><a href="#总是处理函数中的-err-参数" class="headerlink" title="总是处理函数中的 err 参数"></a>总是处理函数中的 err 参数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line">run(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (err) <span class="keyword">throw</span> err</div><div class="line">  <span class="built_in">window</span>.alert(<span class="string">'done'</span>)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line">run(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="built_in">window</span>.alert(<span class="string">'done'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="对于浏览器全局变量应始终使用-window-前缀"><a href="#对于浏览器全局变量应始终使用-window-前缀" class="headerlink" title="对于浏览器全局变量应始终使用 window. 前缀"></a>对于浏览器全局变量应始终使用 <code>window.</code> 前缀</h3><p>例外： <code>document</code>，<code>console</code> 和 <code>navigator</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.alert(<span class="string">'hi'</span>)</div></pre></td></tr></table></figure>
+<h3 id="不允许存在多行空行"><a href="#不允许存在多行空行" class="headerlink" title="不允许存在多行空行"></a>不允许存在多行空行</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> value = <span class="string">'hello world'</span></div><div class="line"><span class="built_in">console</span>.log(value)</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> value = <span class="string">'hello world'</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(value)</div></pre></td></tr></table></figure>
+<h3 id="对于多行的三元运算，应将-和-独立一行"><a href="#对于多行的三元运算，应将-和-独立一行" class="headerlink" title="对于多行的三元运算，应将 ? 和 : 独立一行"></a>对于多行的三元运算，应将 <code>?</code> 和 <code>:</code> 独立一行</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> location = env.development ? <span class="string">'localhost'</span> : <span class="string">'www.api.com'</span></div><div class="line"></div><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> location = env.development</div><div class="line">  ? <span class="string">'localhost'</span></div><div class="line">  : <span class="string">'www.api.com'</span></div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> location = env.development ?</div><div class="line">  <span class="string">'localhost'</span> :</div><div class="line">  <span class="string">'www.api.com'</span></div></pre></td></tr></table></figure>
+<h3 id="对于-var-声明，每个变量应该进行独立声明"><a href="#对于-var-声明，每个变量应该进行独立声明" class="headerlink" title="对于 var 声明，每个变量应该进行独立声明"></a>对于 var 声明，每个变量应该进行独立声明</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">var</span> silent = <span class="literal">true</span></div><div class="line"><span class="keyword">var</span> verbose = <span class="literal">true</span></div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> silent = <span class="literal">true</span>, verbose = <span class="literal">true</span></div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">var</span> silent = <span class="literal">true</span>,</div><div class="line">    verbose = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<h3 id="在条件判断的表达式中，应使用括号包裹赋值语句"><a href="#在条件判断的表达式中，应使用括号包裹赋值语句" class="headerlink" title="在条件判断的表达式中，应使用括号包裹赋值语句"></a>在条件判断的表达式中，应使用括号包裹赋值语句</h3><p>这样明确的表示是故意使用 <code>=</code> 赋值，而非 <code>===</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line"><span class="keyword">while</span> ((m = text.match(expr))) &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="keyword">while</span> (m = text.match(expr)) &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h2><h3 id="不允许使用分号"><a href="#不允许使用分号" class="headerlink" title="不允许使用分号"></a>不允许使用分号</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.alert(<span class="string">'hi'</span>)      <span class="comment">// ok</span></div><div class="line"><span class="built_in">window</span>.alert(<span class="string">'hi'</span>);     <span class="comment">// avoid</span></div></pre></td></tr></table></figure>
+<h3 id="永远不使用-、-、-作为一行的开头"><a href="#永远不使用-、-、-作为一行的开头" class="headerlink" title="永远不使用 (、[、` 作为一行的开头"></a>永远不使用 <strong>(</strong>、<strong>[</strong>、<strong>`</strong> 作为一行的开头</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ok</span></div><div class="line">;(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">window</span>.alert(<span class="string">'ok'</span>)</div><div class="line">&#125;())</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">window</span>.alert(<span class="string">'ok'</span>)</div><div class="line">&#125;())</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// ok</span></div><div class="line">;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(bar)</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(bar)</div><div class="line"></div><div class="line"><span class="comment">// ok</span></div><div class="line">;<span class="string">`hello`</span>.indexOf(<span class="string">'o'</span>)</div><div class="line"></div><div class="line"><span class="comment">// avoid</span></div><div class="line"><span class="string">`hello`</span>.indexOf(<span class="string">'o'</span>)</div></pre></td></tr></table></figure>
+<p>对于这种表达式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(bar)</div></pre></td></tr></table></figure>
+<p>可以这么替代:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line">nums.forEach(bar)</div></pre></td></tr></table></figure>
+<p>参考： <a href="https://github.com/feross/standard/blob/master/RULES.md" target="_blank" rel="external">JavaScript Standrad Style</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/07/the-PSR-7/" rel="next" title="the PSR-7">
+                <i class="fa fa-chevron-left"></i> the PSR-7
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/14/laravel-from-scratch-view/" rel="prev" title="laravel 基础教程 —— 视图">
+                laravel 基础教程 —— 视图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Javascript-Standard-Style"><span class="nav-number">1.</span> <span class="nav-text">Javascript Standard Style</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#规范"><span class="nav-number">1.1.</span> <span class="nav-text">规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-2-个空格进行缩进"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用 2 个空格进行缩进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用单引号包裹字符串以防止转义"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用单引号包裹字符串以防止转义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不定义未使用的变量"><span class="nav-number">1.1.3.</span> <span class="nav-text">不定义未使用的变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在关键字后应追加一个空格"><span class="nav-number">1.1.4.</span> <span class="nav-text">在关键字后应追加一个空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在函数声明的括号前追加一个空格"><span class="nav-number">1.1.5.</span> <span class="nav-text">在函数声明的括号前追加一个空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应始终使用-来代替"><span class="nav-number">1.1.6.</span> <span class="nav-text">应始终使用 === 来代替 ==</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符前后应有空格"><span class="nav-number">1.1.7.</span> <span class="nav-text">操作符前后应有空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逗号后应该追加一个空格"><span class="nav-number">1.1.8.</span> <span class="nav-text">逗号后应该追加一个空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使-else-声明和其大括号保持在同一行"><span class="nav-number">1.1.9.</span> <span class="nav-text">使 else 声明和其大括号保持在同一行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于多行的-if-语句，应使用大括号"><span class="nav-number">1.1.10.</span> <span class="nav-text">对于多行的 if 语句，应使用大括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总是处理函数中的-err-参数"><span class="nav-number">1.1.11.</span> <span class="nav-text">总是处理函数中的 err 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于浏览器全局变量应始终使用-window-前缀"><span class="nav-number">1.1.12.</span> <span class="nav-text">对于浏览器全局变量应始终使用 window. 前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不允许存在多行空行"><span class="nav-number">1.1.13.</span> <span class="nav-text">不允许存在多行空行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于多行的三元运算，应将-和-独立一行"><span class="nav-number">1.1.14.</span> <span class="nav-text">对于多行的三元运算，应将 ? 和 : 独立一行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于-var-声明，每个变量应该进行独立声明"><span class="nav-number">1.1.15.</span> <span class="nav-text">对于 var 声明，每个变量应该进行独立声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在条件判断的表达式中，应使用括号包裹赋值语句"><span class="nav-number">1.1.16.</span> <span class="nav-text">在条件判断的表达式中，应使用括号包裹赋值语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分号"><span class="nav-number">1.2.</span> <span class="nav-text">分号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不允许使用分号"><span class="nav-number">1.2.1.</span> <span class="nav-text">不允许使用分号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永远不使用-、-、-作为一行的开头"><span class="nav-number">1.2.2.</span> <span class="nav-text">永远不使用 (、[、` 作为一行的开头</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

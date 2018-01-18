@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库：查询生成器简介Laravel 的数据库查询生成器提供了一种方便流利的接口来构建和运行数据库查询。它可以用来在应用中提供执行大多数的数据库操作，并且它可以在所有支持的数据库系统中进行协作。  注意：Laravel 的查询生成器使用了 PDO 参数绑定来针对可能的 SQL 注入攻击。所以这里不需要手动的去清洗作为绑定所传递的字符串。  检索结果从表中检索所有的行 在开始流畅的执行查询之前，你需">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 查询生成器">
+<meta property="og:url" content="http://yoursite.com/2016/06/23/laravel-from-scratch-query-builder/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="数据库：查询生成器简介Laravel 的数据库查询生成器提供了一种方便流利的接口来构建和运行数据库查询。它可以用来在应用中提供执行大多数的数据库操作，并且它可以在所有支持的数据库系统中进行协作。  注意：Laravel 的查询生成器使用了 PDO 参数绑定来针对可能的 SQL 注入攻击。所以这里不需要手动的去清洗作为绑定所传递的字符串。  检索结果从表中检索所有的行 在开始流畅的执行查询之前，你需">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 查询生成器">
+<meta name="twitter:description" content="数据库：查询生成器简介Laravel 的数据库查询生成器提供了一种方便流利的接口来构建和运行数据库查询。它可以用来在应用中提供执行大多数的数据库操作，并且它可以在所有支持的数据库系统中进行协作。  注意：Laravel 的查询生成器使用了 PDO 参数绑定来针对可能的 SQL 注入攻击。所以这里不需要手动的去清洗作为绑定所传递的字符串。  检索结果从表中检索所有的行 在开始流畅的执行查询之前，你需">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/23/laravel-from-scratch-query-builder/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 查询生成器 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/23/laravel-from-scratch-query-builder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 查询生成器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-23T14:53:08+08:00">
+                2016-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据库：查询生成器"><a href="#数据库：查询生成器" class="headerlink" title="数据库：查询生成器"></a>数据库：查询生成器</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel 的数据库查询生成器提供了一种方便流利的接口来构建和运行数据库查询。它可以用来在应用中提供执行大多数的数据库操作，并且它可以在所有支持的数据库系统中进行协作。</p>
+<blockquote>
+<p>注意：Laravel 的查询生成器使用了 PDO 参数绑定来针对可能的 SQL 注入攻击。所以这里不需要手动的去清洗作为绑定所传递的字符串。</p>
+</blockquote>
+<h2 id="检索结果"><a href="#检索结果" class="headerlink" title="检索结果"></a>检索结果</h2><p><strong>从表中检索所有的行</strong></p>
+<p>在开始流畅的执行查询之前，你需要先使用 <code>DB</code> 假面的 <code>table</code> 方法，<code>table</code> 方法会返回一个给定表的查询生成器实例，这允许你链式添加多种查询约束，并最终获取结果。我们来看一个示例，我们只是调用 <code>get</code> 来获取所有的表中的记录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">DB</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show a list of all of the application's users.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $users = DB::table(<span class="string">'users'</span>)-&gt;get();</div><div class="line"></div><div class="line">     <span class="keyword">return</span> view(<span class="string">'user.index'</span>, [<span class="string">'users'</span> =&gt; $users]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>就像原生的查询一样，<code>get</code> 方法会返回一个 <code>array</code> ，其每一项结果都是一个 <code>StdClass</code> PHP 类的对象。你可以通过其属性来访问每一列的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</div><div class="line">  <span class="keyword">echo</span> $user-&gt;name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>从表中检索一个单独的行或者列</strong></p>
+<p>如果你只需要从数据表中检索出单独的一行，你可以使用 <code>first</code> 方法，该方法会返回一个单独的 <code>StdClass</code> 对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'name'</span>, <span class="string">'John'</span>)-&gt;first();</div><div class="line"></div><div class="line"><span class="keyword">echo</span> $user-&gt;name;</div></pre></td></tr></table></figure>
+<p>如果你甚至不需要一个完整的行，那么你可以通过使用 <code>value</code> 方法从记录中获取一个精确的列的值。该方法会直接返回列中的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$email = DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'name'</span>, <span class="string">'John'</span>)-&gt;value(<span class="string">'email'</span>);</div></pre></td></tr></table></figure>
+<p><strong>对结果进行分块</strong></p>
+<p>如果你与表中的数千条记录协作，你可以考虑使用 <code>chunk</code> 方法，该方法一次会从结果中检索出一小块。并且将这每一块放进闭包中提供给进程。该方法对于编写 Artisan 命令来协作数千条的记录非常有用。比如，让我们将整个用户表分块成每次 100 条来工作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;orderBy(<span class="string">'id'</span>)-&gt;chunk(<span class="number">100</span>, <span class="function"><span class="keyword">function</span> <span class="params">($users)</span> </span>&#123;</div><div class="line">  <span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">  &#125; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你可以通过在 <code>Closure</code> 中返回 <code>false</code> 来停止进一步的处理块的操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;orderBy(<span class="string">'id'</span>)-&gt;chunk(<span class="number">100</span>, <span class="function"><span class="keyword">function</span> <span class="params">($users)</span> </span>&#123;</div><div class="line">  <span class="comment">// Process the records...</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="keyword">false</span>; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>检索表列的值</strong></p>
+<p>如果你希望获取一个数组来包含一个列中所有的值，你可以使用 <code>pluck</code> 方法，在这个例子中，我们将获取所有的角色名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$titles = DB::table(<span class="string">'roles'</span>)-&gt;pluck(<span class="string">'title'</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span>($titles <span class="keyword">as</span> $title) &#123;</div><div class="line">  <span class="keyword">echo</span> $title;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以为所返回的数组指定自定义的键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$roles = DB::table(<span class="string">'roles'</span>)-&gt;pluck(<span class="string">'title'</span>, <span class="string">'name'</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($roles <span class="keyword">as</span> $name =&gt; $title) &#123;</div><div class="line">  <span class="keyword">echo</span> $title;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="合计"><a href="#合计" class="headerlink" title="合计"></a>合计</h3><p>查询生成器也提供了多种合计的方法。比如 <code>count</code>，<code>max</code>，<code>min</code>，<code>avg</code>，和 <code>sum</code>。你可以在查询构建后调用这些方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;count();</div><div class="line"></div><div class="line">$price = DB::table(<span class="string">'orders'</span>)-&gt;max(<span class="string">'price'</span>);</div></pre></td></tr></table></figure>
+<p>当然，你可以结合其它约束来构建你的查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$price = DB::table(<span class="string">'orders'</span>)</div><div class="line">           -&gt;where(<span class="string">'finalized'</span>, <span class="number">1</span>)</div><div class="line">           -&gt;avg(<span class="string">'price'</span>);</div></pre></td></tr></table></figure>
+<h3 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h3><p><strong>指定一个选择约束</strong></p>
+<p>当然，你不会总是想要从数据库中获取所有的列。你可以使用 <code>select</code> 方法来指定一个自定义的 <code>select</code> 约束到查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;select(<span class="string">'name'</span>, <span class="string">'email as user_email'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p><code>distinct</code> 方法允许你强迫查询返回一个不重复的结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;distinct()-&gt;get();</div></pre></td></tr></table></figure>
+<p>如果你已经获取了查询生成器的实例，并且你想要在已经添加过选择约束的实例中添加额外一列的检索，你可以使用 <code>addSelect</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$query = DB::table(<span class="string">'users'</span>)-&gt;select(<span class="string">'name'</span>);</div><div class="line"></div><div class="line">$users = $query-&gt;addSelect(<span class="string">'age'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>原生的表达式</strong></p>
+<p>有时候，你可能需要在查询时使用原生的表达式，这些表达式会以字符串的方式注入到查询中，所以你应该小心的不要构造出任何的 SQL 注入点。你可以使用 <code>DB::raw</code> 方法来构造一个原生的表达式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;select(DB::raw(<span class="string">'count(*) as user_count, status'</span>))</div><div class="line">           -&gt;where(<span class="string">'status'</span>, <span class="string">'&lt;&gt;'</span>, <span class="number">1</span>)</div><div class="line">           -&gt;groupBy(<span class="string">'status'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<h2 id="Joins"><a href="#Joins" class="headerlink" title="Joins"></a>Joins</h2><p><strong>内连接声明</strong></p>
+<p>查询生成器也可以用来编写 join 声明。为了执行一个基础的 SQL 内连接，你可以在查询生成器中使用 <code>join</code> 方法。<code>join</code> 方法所接收的第一个参数应该是你需要加入的表的名称，而其它的参数则是对加入提供约束。当然，就如你所看到的，你可以在一个查询中加入多个表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;join(<span class="string">'contacts'</span>, <span class="string">'users.id'</span>, <span class="string">'='</span>, <span class="string">'contacts.user_id'</span>)</div><div class="line">           -&gt;join(<span class="string">'orders'</span>, <span class="string">'users.id'</span>, <span class="string">'='</span>, <span class="string">'orders.user_id'</span>)</div><div class="line">           -&gt;select(<span class="string">'users.*'</span>, <span class="string">'contacts.phone'</span>, <span class="string">'orders.price'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>左连接声明</strong></p>
+<p>如果你需要执行 <code>left join</code> 来代替 <code>inner join</code>，你可以使用 <code>leftJoin</code> 方法，<code>leftJoin</code> 方法具有和 <code>join</code> 方法相同的使用方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;leftJoin(<span class="string">'posts'</span>, <span class="string">'users.id'</span>, <span class="string">'='</span>, <span class="string">'posts.user_id'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>交叉连接声明</strong></p>
+<p>你可以使用 <code>crossJoin</code> 方法来执行一个交叉的连接操作，你需要为 <code>crossJoin</code> 提供一个你想要交叉连接的表名。交叉连接会生成第一个表和加入的表的笛卡尔积：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'sizes'</span>)</div><div class="line">           -&gt;crossJoin(<span class="string">'colours'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>高级的 Join 声明</strong></p>
+<p>你也可以指定更高级的 join 约束。你可以传递一个 <code>Closure</code> 作为 <code>join</code> 方法的第二个参数。<code>Closure</code> 会接收一个 <code>JoinClause</code> 对象并且该对象允许你指定 <code>join</code> 约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)</div><div class="line">  -&gt;join(<span class="string">'contacts'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($join)</span> </span>&#123;</div><div class="line">    $join-&gt;on(<span class="string">'users.id'</span>, <span class="string">'='</span>, <span class="string">'contacts.user_id'</span>)-&gt;orOn(...); </div><div class="line">  &#125;)</div><div class="line">  -&gt;get();</div></pre></td></tr></table></figure>
+<p>如果你喜欢在 joins 中使用 <code>where</code> 风格约束，那么你可以在 join 上使用 <code>where</code> 和 <code>orWhere</code> 方法。该方法会比较列的值而取代直接比较两列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)</div><div class="line">  -&gt;join(<span class="string">'contacts'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($join)</span> </span>&#123;</div><div class="line">    $join-&gt;on(<span class="string">'users.id'</span>, <span class="string">'='</span>, <span class="string">'contacts.user_id'</span>)</div><div class="line">      -&gt;where(<span class="string">'contacts.user_id'</span>, <span class="string">'&gt;'</span>, <span class="number">5</span>);</div><div class="line">  &#125;)</div><div class="line">  -&gt;get();</div></pre></td></tr></table></figure>
+<h2 id="Unions（联合）"><a href="#Unions（联合）" class="headerlink" title="Unions（联合）"></a>Unions（联合）</h2><p>查询生成器也提供了一种快捷的方式来将两个查询联合起来。比如，你可以构建一个初始化的查询，然后使用 <code>union</code> 方法来将其与之后的查询联合起来：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$first = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNull(<span class="string">'first_name'</span>);</div><div class="line"></div><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNull(<span class="string">'last_name'</span>)</div><div class="line">           -&gt;union($first)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>unionAll</code> 方法也是可用的，并且它与 <code>union</code> 方法具有相同的签证方式。</p>
+<h2 id="Where-子句"><a href="#Where-子句" class="headerlink" title="Where 子句"></a>Where 子句</h2><p><strong>简单的 Where 子句</strong></p>
+<p>你可以在查询生成器中使用 <code>where</code> 方法来在查询中添加 <code>where</code> 约束。大多数基础的 <code>where</code> 调用都需要提供三个参数，第一个参数是列的名称，第二个参数是比较操作的方式，第三个参数则是针对列所需要评估的值。</p>
+<p>比如，这里的查询用来验证 “votes” 列的值等于 100:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'votes'</span>, <span class="string">'='</span>, <span class="number">100</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>为了方便，你可以直接传递需要比较的值到第二个参数来表明列值与给定值相等的判断：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'votes'</span>, <span class="number">100</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>当然，你也可以在使用 <code>where</code> 子句时使用其它的操作符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;='</span>, <span class="number">100</span>)</div><div class="line">           -&gt;get();</div><div class="line"></div><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'votes'</span>, <span class="string">'&lt;&gt;'</span>, <span class="number">100</span>)</div><div class="line">           -&gt;get();</div><div class="line"></div><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'name'</span>, <span class="string">'like'</span>, <span class="string">'T%'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p>你也可以传递一个数组所组成的条件到 <code>where</code> 方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;where([</div><div class="line">  [status<span class="string">', '</span><span class="number">1</span><span class="string">'],</span></div><div class="line"><span class="string">  ['</span>subscribed<span class="string">','</span>&lt;&gt;<span class="string">', '</span><span class="number">1</span><span class="string">'],</span></div><div class="line"><span class="string">])-&gt;get();</span></div></pre></td></tr></table></figure>
+<p><strong>或声明</strong></p>
+<p>你可以将 where 约束连在一起，以及添加 <code>or</code> 子句到查询中。<code>orWhere</code> 方法接收和 <code>where</code> 方法相同的参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)</div><div class="line">           -&gt;orWhere(<span class="string">'name'</span>, <span class="string">'John'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>其它 Where 子句</strong></p>
+<p><strong>whereBetween</strong></p>
+<p><code>whereBetween</code> 方法确定列的值是否在两个给定值之间：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereBetween(<span class="string">'votes'</span>, [<span class="number">1</span>, <span class="number">100</span>])-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>whereNotBetween</strong></p>
+<p><code>whereNotBetween</code> 方法确定列的值应该不在所给定值区间内：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNotBetween(<span class="string">'votes'</span>, [<span class="number">1</span>, <span class="number">100</span>])</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>whereIn / whereNotIn</strong></p>
+<p><code>whereIn</code> 方法验证给定的列的值应该是给定的数组值中之一：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereIn(<span class="string">'id'</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>whereNotIn</code> 方法验证所给定的列的值应该不在给定的数组中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNotIn(<span class="string">'id'</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>whereNull / whereNotNull</strong></p>
+<p><code>whereNull</code> 方法验证所给定列的值应该是 <code>NULL</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNull(<span class="string">'updated_at'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>whereNotNull</code> 方法验证所给定的列的值不应该为 <code>NULL</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereNotNull(<span class="string">'updated_at'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>whereColumn</strong></p>
+<p><code>whereColumn</code> 方法可以用来判断两列的值是否相等：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereColumn(<span class="string">'first_name'</span>, <span class="string">'last_name'</span>);</div></pre></td></tr></table></figure>
+<p>你也可以传递一个比较符到方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereColumn(<span class="string">'updated_at'</span>, <span class="string">'&gt;'</span>, <span class="string">'created_at'</span>);</div></pre></td></tr></table></figure>
+<p><code>whereColumn</code> 方法可以接收一个包含了多个限制条件的数组。这些条件会被使用 <code>add</code> 判定操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;whereColumn([</div><div class="line">             [<span class="string">'first_name'</span>, <span class="string">'last_name'</span>],</div><div class="line">             [<span class="string">'updated_at'</span>, <span class="string">'&gt;'</span>, <span class="string">'created_at'</span>]</div><div class="line">           ]);</div></pre></td></tr></table></figure>
+<h2 id="高级-Where-子句"><a href="#高级-Where-子句" class="headerlink" title="高级 Where 子句"></a>高级 Where 子句</h2><p><strong>参数分组</strong></p>
+<p>有时候你需要构建一些更加高级的 where 子句，比如，“where exists”或者嵌套的参数分组。Laravel 的查询生成器也能很好的处理这些。让我们来看一个分组括号内约束的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)</div><div class="line">  -&gt;where(<span class="string">'name'</span>, <span class="string">'='</span>, <span class="string">'John'</span>)</div><div class="line">  -&gt;orWhere(<span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">    $query-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)</div><div class="line">          -&gt;where(<span class="string">'title'</span>, <span class="string">'&lt;&gt;'</span>, <span class="string">'Admin'</span>);</div><div class="line">  &#125;)</div><div class="line">  -&gt;get();</div></pre></td></tr></table></figure>
+<p>就如你所看到的，传递一个 <code>Closure</code> 到 <code>orWhere</code> 方法来指导查询生成器开始一个组约束。<code>Closure</code> 会接收一个查询生成器的实例，这样你就可以在括号组内构建一些约束。上面的示例将会生成下面的 SQL：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'John'</span> <span class="keyword">or</span> (votes &gt; <span class="number">100</span> <span class="keyword">and</span> title &lt;&gt; <span class="string">'Admin'</span>)</div></pre></td></tr></table></figure>
+<p><strong>Exists 声明</strong></p>
+<p><code>whereExists</code> 方法允许你编写 <code>where exists</code> SQL 子句。<code>whereExists</code> 方法接收一个 <code>Closure</code> 参数，这个闭包会接收一个查询生成器实例，这允许你在 “exists” 子句中去构建查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)</div><div class="line">  -&gt;whereExists(<span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">    $query-&gt;select(DB::raw(<span class="number">1</span>))</div><div class="line">      -&gt;from(<span class="string">'orders'</span>)</div><div class="line">      -&gt;whereRaw(<span class="string">'orders.user_id = users.id'</span>);</div><div class="line">  &#125;)</div><div class="line">  -&gt;get();</div></pre></td></tr></table></figure>
+<p>上面的查询将生成下面的 SQL:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">users</span></div><div class="line"><span class="keyword">where</span> <span class="keyword">exists</span> (</div><div class="line">  <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> orders <span class="keyword">where</span> orders.user_id = users.id</div><div class="line">)</div></pre></td></tr></table></figure>
+<h2 id="JSON-where-子句"><a href="#JSON-where-子句" class="headerlink" title="JSON where 子句"></a>JSON where 子句</h2><p>Laravel 支持对支持 JSON 列类型的数据库查询 JSON 类型的列。目前，这只包含在 MySQL 5.7 和 Postgres。你需要使用 <code>-&gt;</code> 操作符来查询 JSON 列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'options-&gt;language'</span>, <span class="string">'en'</span>)</div><div class="line">           -&gt;get();</div><div class="line"></div><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where(<span class="string">'preferences-&gt;dining-&gt;meal'</span>, <span class="string">'salad'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<h2 id="排序，分组，限制-amp-位移"><a href="#排序，分组，限制-amp-位移" class="headerlink" title="排序，分组，限制 &amp; 位移"></a>排序，分组，限制 &amp; 位移</h2><p><strong>orderBy</strong></p>
+<p><code>orderBy</code> 方法允许你对给定列的查询结果进行排序。<code>orderBy</code> 所接受的第一个参数应该是你希望进行排序的列，而第二个参数应该是你决定进行排序的方向，它们应该是 <code>asc</code> 或者 <code>desc</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;orderBy(<span class="string">'name'</span>, <span class="string">'desc'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>inRandomOrder</strong></p>
+<p><code>inRandomOrder</code> 方法可以用来对查询的结果进行随机排序。比如，你可以使用这个方法来随机的获取用户：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$randomUser = DB::table(<span class="string">'users'</span>)</div><div class="line">                -&gt;inRandomOrder()</div><div class="line">                -&gt;first();</div></pre></td></tr></table></figure>
+<p><strong>groupBy / having / havingRaw</strong></p>
+<p><code>groupBy</code> 和 <code>having</code> 方法可以用来对查询结果进行分组。<code>having</code> 方法具有和 <code>where</code> 方法相同的签证：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;groupBy(<span class="string">'account_id'</span>)</div><div class="line">           -&gt;having(<span class="string">'account_id'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>havingRaw</code> 方法可以用来在 <code>having</code> 子句中使用原生的字符串值，比如，我们可以找到所有销售额大于 $2,500 的部门：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'orders'</span>)</div><div class="line">           -&gt;select(<span class="string">'department'</span>, DB::raw(<span class="string">'SUM(price) as total_sales'</span>))</div><div class="line">           -&gt;groupBy(<span class="string">'department'</span>)</div><div class="line">           -&gt;havingRaw(<span class="string">'SUM(price) &gt; 2500'</span>)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>skip / take</strong></p>
+<p>你可以使用 <code>take</code> 和 <code>skip</code> 方法来限制查询所返回结果的数量和在查询中跳过一定的数目（<code>offset</code>）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = DB::table(<span class="string">'users'</span>)-&gt;skip(<span class="number">10</span>)-&gt;take(<span class="number">5</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><p>有时候你可能希望只有当某些条件达成时才去添加一些查询到语句中。又或者你想要在只有进入的请求数据中含有指定的字段时才会判断在 <code>where</code> 子句中进行加入。你可以使用 <code>when</code> 方法来做到这些：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$role = $request-&gt;input(<span class="string">'role'</span>);</div><div class="line"></div><div class="line">$users = DB::table(<span class="string">'users'</span>)</div><div class="line">           -&gt;where($role, <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> <span class="title">use</span> <span class="params">($role)</span> </span>&#123;</div><div class="line">             <span class="keyword">return</span> $query-&gt;where(<span class="string">'role_id'</span>, $role);</div><div class="line">           &#125;)</div><div class="line">           -&gt;get();</div></pre></td></tr></table></figure>
+<p><code>when</code> 方法只有所给定的第一个参数为 <code>true</code> 时才会执行给定的闭包。如果第一个参数是 <code>false</code>，那么闭包将不会被执行。</p>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>查询生成器也为插入记录到数据库中提供了 <code>insert</code> 方法。<code>insert</code> 方法可以接受列名所组成的键值对数组作为参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;insert(</div><div class="line">  [<span class="string">'email'</span> =&gt; <span class="string">'john@example.com'</span>, <span class="string">'votes'</span> =&gt; <span class="number">0</span>]</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>你也可以在一次调用 <code>insert</code> 方法时添加多条记录到数据库中，你需要传递一个嵌套的数组，数组中的每一个数组都代表了数据库中的一行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;insert([</div><div class="line">  [<span class="string">'email'</span> =&gt; <span class="string">'taylor@example.com'</span>, <span class="string">'votes'</span> =&gt; <span class="number">0</span>],</div><div class="line">  [<span class="string">'email'</span> =&gt; <span class="string">'dayle@example.com'</span>, <span class="string">'votes'</span> =&gt; <span class="number">0</span>]</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p><strong>自动递增的 IDs</strong></p>
+<p>如果挑中存在自动递增的 id，你可以使用 <code>insertGetId</code> 方法来插入记录的同时获取 ID：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$id = DB::table(<span class="string">'users'</span>)-&gt;insertGetId(</div><div class="line">  [<span class="string">'email'</span> =&gt; <span class="string">'john@example.com'</span>, <span class="string">'votes'</span> =&gt; <span class="number">0</span>]</div><div class="line">);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：当使用 PostgreSQL 时，insertGetId 方法期望自增的列名为 <code>id</code>。如果你想要检索的 ID 是一个其他列名，你需要传递列名到 <code>insertGetId</code> 方法的第二个参数。</p>
+</blockquote>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>当然，除了新增记录之外，查询生成器也提供了为数据库中存在的记录更新的 <code>update</code> 方法。<code>update</code> 方法像 <code>insert</code> 方法一样，接收一个键值对所组成的数组来进行列值的更新。你可以在使用 <code>update</code> 查询时使用 <code>where</code> 子句：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)</div><div class="line">  -&gt;where(<span class="string">'id'</span>, <span class="number">1</span>)</div><div class="line">  -&gt;update([<span class="string">'votes'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<p><strong>增量 / 递减</strong></p>
+<p>查询生成器也提供一些方便的方法来对列的值进行增量和递减。这只是一种快捷的方式，用来提供比手动写入 <code>update</code> 语句更具表现力和简洁的接口。</p>
+<p>这两种方法都接收最少一个参数：待修改的列名，第二个参数是一个可选的参数，它用来控制递增或者递减的数量：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;increment(<span class="string">'votes'</span>);</div><div class="line"></div><div class="line">DB::table(<span class="string">'users'</span>)-&gt;increment(<span class="string">'votes'</span>, <span class="number">5</span>);</div><div class="line"></div><div class="line">DB::table(<span class="string">'users'</span>)-&gt;decrement(<span class="string">'votes'</span>);</div><div class="line"></div><div class="line">DB::table(<span class="string">'users'</span>)-&gt;decrement(<span class="string">'votes'</span>, <span class="number">5</span>);</div></pre></td></tr></table></figure>
+<p>你也可以指定同时更新额外的列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;increment(<span class="string">'votes'</span>, <span class="number">1</span>, [<span class="string">'name'</span> =&gt; <span class="string">'John'</span>]);</div></pre></td></tr></table></figure>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>当然，查询生成器也提供了从数据库中删除记录的 <code>delete</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;delete();</div></pre></td></tr></table></figure>
+<p>你可以在调用 <code>delete</code> 方法之前添加一些 <code>where</code> 子句：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;delete();</div></pre></td></tr></table></figure>
+<p>如果你希望清除整个表的数据，你可以使用 <code>truncate</code> 方法，它将清除所有的行并且重置自增的 ID 到 0：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;truncate();</div></pre></td></tr></table></figure>
+<h2 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h2><p>查询生成器也提供了一些方法来帮助你在 <code>select</code> 声明中实现“悲观锁”。你可以在查询中使用 <code>sharedLock</code> 方法来运行“共享锁”。共享锁可以保证所选定的行在事务提交前不会被修改：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;sharedLock()-&gt;get();</div></pre></td></tr></table></figure>
+<p>另外，你也可以使用 <code>lockForUpdate</code> 方法。更新锁可以防止行被修改或者被另一共享锁所选中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DB::table(<span class="string">'users'</span>)-&gt;where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;lockForUpdate()-&gt;get();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/23/laravel-from-scratch-database/" rel="next" title="laravel 基础教程 —— 数据库">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/23/laravel-from-scratch-migrations/" rel="prev" title="laravel 基础教程 —— 迁移">
+                laravel 基础教程 —— 迁移 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库：查询生成器"><span class="nav-number">1.</span> <span class="nav-text">数据库：查询生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检索结果"><span class="nav-number">1.2.</span> <span class="nav-text">检索结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#合计"><span class="nav-number">1.2.1.</span> <span class="nav-text">合计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">1.2.2.</span> <span class="nav-text">选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Joins"><span class="nav-number">1.3.</span> <span class="nav-text">Joins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unions（联合）"><span class="nav-number">1.4.</span> <span class="nav-text">Unions（联合）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-子句"><span class="nav-number">1.5.</span> <span class="nav-text">Where 子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级-Where-子句"><span class="nav-number">1.6.</span> <span class="nav-text">高级 Where 子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-where-子句"><span class="nav-number">1.7.</span> <span class="nav-text">JSON where 子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序，分组，限制-amp-位移"><span class="nav-number">1.8.</span> <span class="nav-text">排序，分组，限制 & 位移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件语句"><span class="nav-number">1.9.</span> <span class="nav-text">条件语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入"><span class="nav-number">1.10.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新"><span class="nav-number">1.11.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">1.12.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#悲观锁"><span class="nav-number">1.13.</span> <span class="nav-text">悲观锁</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

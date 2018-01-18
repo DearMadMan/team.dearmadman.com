@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Laravel Elixir（炼金药）简介Laravel Elixir 为你的应用定义基础的 Gulp 任务提供了简单流利的 API。Elixir 提供了几种常用的 CSS 和 JavaScript 预处理器和测试工具。Elixir 允许你通过链式调用来对你的资源管道进行流利的操作。比如： 1234elixir(function (mix) &amp;#123;  mix.sass(&apos;app.scss&apos;)">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 炼金药">
+<meta property="og:url" content="http://yoursite.com/2016/06/03/laravel-from-scratch-elixir/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Laravel Elixir（炼金药）简介Laravel Elixir 为你的应用定义基础的 Gulp 任务提供了简单流利的 API。Elixir 提供了几种常用的 CSS 和 JavaScript 预处理器和测试工具。Elixir 允许你通过链式调用来对你的资源管道进行流利的操作。比如： 1234elixir(function (mix) &amp;#123;  mix.sass(&apos;app.scss&apos;)">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 炼金药">
+<meta name="twitter:description" content="Laravel Elixir（炼金药）简介Laravel Elixir 为你的应用定义基础的 Gulp 任务提供了简单流利的 API。Elixir 提供了几种常用的 CSS 和 JavaScript 预处理器和测试工具。Elixir 允许你通过链式调用来对你的资源管道进行流利的操作。比如： 1234elixir(function (mix) &amp;#123;  mix.sass(&apos;app.scss&apos;)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/03/laravel-from-scratch-elixir/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 炼金药 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/03/laravel-from-scratch-elixir/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 炼金药</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-03T14:49:12+08:00">
+                2016-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Laravel-Elixir（炼金药）"><a href="#Laravel-Elixir（炼金药）" class="headerlink" title="Laravel Elixir（炼金药）"></a>Laravel Elixir（炼金药）</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel Elixir 为你的应用定义基础的 <a href="http://gulpjs.com/" target="_blank" rel="external">Gulp</a> 任务提供了简单流利的 API。Elixir 提供了几种常用的 CSS 和 JavaScript 预处理器和测试工具。Elixir 允许你通过链式调用来对你的资源管道进行流利的操作。比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> (<span class="params">mix</span>) </span>&#123;</div><div class="line">  mix.sass(<span class="string">'app.scss'</span>)</div><div class="line">     .coffee(<span class="string">'app.coffee'</span>);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果你曾对如何使用 Gulp 和资源预编译有所疑惑，那么你肯定会爱上 Laravel Elixir。事实上，你也可以在开发应用的时候不使用它。你可以自由的使用任何的资源管道工具，或者一点也不用。</p>
+<h2 id="安装-amp-起步"><a href="#安装-amp-起步" class="headerlink" title="安装 &amp; 起步"></a>安装 &amp; 起步</h2><h3 id="安装-Node"><a href="#安装-Node" class="headerlink" title="安装 Node"></a>安装 Node</h3><p>在触碰到 Elixir 之前，你首先需要确定你的机器中已经安装了 Node:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node -v</div></pre></td></tr></table></figure>
+<p>默认的，Laravel Homestead 包含了所有你所需要的；事实上，如果你使用 Vagrant，你也是可以非常简单的通过 <a href="http://nodejs.org/download/" target="_blank" rel="external">这里</a> 来进行安装 Node。</p>
+<h3 id="Gulp"><a href="#Gulp" class="headerlink" title="Gulp"></a>Gulp</h3><p>接着，你需要通过 NPM 中安装 <a href="http://gulpjs.com/" target="_blank" rel="external">Gulp</a> 到全局:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install --<span class="keyword">global</span> gulp</div></pre></td></tr></table></figure>
+<p>如果你使用了版本控制器，你可能希望去运行 <code>npm shrinkwrap</code> 来锁住你的 NPM 依赖：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm shrinkwrap</div></pre></td></tr></table></figure>
+<p>一旦你运行了这条命令。你可以自由的提交 <code>npm-shrinkwrap.json</code> 文件到源码控制器中去。</p>
+<h3 id="Laravel-Elixir"><a href="#Laravel-Elixir" class="headerlink" title="Laravel Elixir"></a>Laravel Elixir</h3><p>最后剩下的就是安装 Elixir 了！在一个新的 laravel 应用中，你会在根目录中发现 <code>package.json</code> 文件。你可以把它想象成 <code>composer.json</code> 文件。它的不同之处就是它定义的是 Node 依赖，而不是 PHP。你可以通过下面的命令来安装这些依赖：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install</div></pre></td></tr></table></figure>
+<p>如果你是在 Windows 系统中进行开发，或者运行在虚拟机中的 Windows 系统，你需要运行 <code>npm install</code> 命令的同时添加 <code>--no-bin-links</code> 选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install --no-bin-links</div></pre></td></tr></table></figure>
+<h2 id="运行-Elixir"><a href="#运行-Elixir" class="headerlink" title="运行 Elixir"></a>运行 Elixir</h2><p>Elixir 是建立于 Gulp 之上的，所以运行 Elixir 任务你只需要在终端运行 <code>gulp</code> 命令就行了。添加 <code>--production</code> 标识到命令会指导 Elixir 去压缩你的 CSS 和 JavaScript 文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Run all tasks...</span></div><div class="line">gulp</div><div class="line"></div><div class="line"><span class="comment">// Run all tasks and minify all CSS and JavaScript...</span></div></pre></td></tr></table></figure>
+<p><strong>监控资源文件的变动</strong></p>
+<p>为了不让你每次文件变动之后还要重新运行 <code>gulp</code> 命令，你应该使用 <code>gulp watch</code> 命令来监控资源文件的变动。这个命令会持续的在你的终端中运行。当检测到资源文件的变动，新的文件将自动编译完成：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gulp watch</div></pre></td></tr></table></figure>
+<h2 id="与样式文件合作"><a href="#与样式文件合作" class="headerlink" title="与样式文件合作"></a>与样式文件合作</h2><p> 在你项目的根目录中有一个 <code>gulpfile.js</code> 文件，该文件包含了所有的 Elixir 任务。Elixir 任务可以被链式的调用，会通过有序的传递来对你的资源文件进行编译。</p>
+<h3 id="Less"><a href="#Less" class="headerlink" title="Less"></a>Less</h3><p>你可以使用 <code>less</code> 方法来将 less 文件编译为 CSS。<code>less</code> 方法假设你的 less 文件存放在 <code>resources/assets/less</code> 目录中。默认的，在下面的示例中，任务运行的结果将编译的 CSS 文件存放在 <code>public/css/app.css</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line"> mix.less(<span class="string">'app.less'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你也可以合并多个 less 文件到一个单独的 CSS 文件中。默认的，他们将被编译为 <code>public/css/app.css</code> 文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">mix.less([</div><div class="line">  <span class="string">'app.less'</span>,</div><div class="line">  <span class="string">'controllers.less'</span></div><div class="line">]); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果你希望将编译的文件存放到自定义的位置，那么你可以传递第二个参数到 less 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">mix.less(<span class="string">'app.less'</span>, <span class="string">'public/stylesheets'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Specifying a specific output filename...</span></div><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">mix.less(<span class="string">'app.less'</span>, <span class="string">'public/stylesheets/style.css'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="sass"><a href="#sass" class="headerlink" title="sass"></a>sass</h3><p><code>sass</code> 方法允许你讲 sass 文件编译为 CSS。它假定你的 Sass 文件存放在 <code>resources/assets/sass</code>，你可以像下面的方式来使用该方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.sass(<span class="string">'app.scss'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>就像 <code>less</code> 方法一样，你可以编译多个 Sass 文件到一个 CSS 文件中，还可以将编译的结果存放到指定的位置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.sass([</div><div class="line">    <span class="string">'app.scss'</span>,</div><div class="line">    <span class="string">'controllers.scss'</span></div><div class="line">  ], <span class="string">'public/assets/css'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="原生-CSS"><a href="#原生-CSS" class="headerlink" title="原生 CSS"></a>原生 CSS</h3><p>如果你希望合并多个 CSS 文件到一个文件中，你可以使用 <code>styles</code> 方法。你需要传递文件的路径是相对于 <code>resources/assets/css</code> 目录的，并且默认的合并的结果将会被存放到 <code>public/css/all.css</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.styles([</div><div class="line">    <span class="string">'normalize.css'</span>,</div><div class="line">    <span class="string">'main.css'</span></div><div class="line">  ]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>当然，你也是可以自定义输出结果的路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.styles([</div><div class="line">    <span class="string">'normalize.css'</span>,</div><div class="line">    <span class="string">'main.css'</span></div><div class="line">  ], <span class="string">'public/assets/css'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="编译地图"><a href="#编译地图" class="headerlink" title="编译地图"></a>编译地图</h3><p>编译地图是开箱即用的。所以，对于所有的被编译后的文件你都可以在相同的目录下发现 <code>*.css.map</code> 文件。这个地图文件可以使你在浏览器中追踪到编译前代码的位置，这样方便于调试。</p>
+<p>如果你不希望生成地图，你可以在配置中进行关闭：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">elixir.config.sourcemaps = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.sass(<span class="string">'app.scss'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="与脚本合作"><a href="#与脚本合作" class="headerlink" title="与脚本合作"></a>与脚本合作</h2><p>Elixr 也提供了多种方法来帮助你协同 JavaScript 的工作，例如 ECMAPScript 6，CoffeeScript 的编译，Browserify 模块的加载，脚本的压缩，或者是简单的原生 JavaScript 文件的合并，这都不是问题！</p>
+<h3 id="CoffeeScript"><a href="#CoffeeScript" class="headerlink" title="CoffeeScript"></a>CoffeeScript</h3><p><code>coffee</code> 方法可以用来编译 CoffeeScript 到原生 JavaScript。<code>coffee</code> 方法可以接收一个字符串或者一个 CoffeeScript 文件的数组来进行文件的编译，它假设你的 CoffeeScript 文件存放在 <code>resources/assets/coffee</code> 目录，并且合并生成的 JavaScript 文件到 <code>public/js/app.js</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.coffee([<span class="string">'app.coffee'</span>, <span class="string">'controllers.coffee'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="Browserify"><a href="#Browserify" class="headerlink" title="Browserify"></a>Browserify</h3><p>Elixir 也附带了 <code>browserify</code> 方法，该方法可以在浏览器中给你提供你所需要模块的加载，并且允许你使用 ECMAScript 6 和 JSX。</p>
+<p>这个任务假设你的脚本存放在 <code>resources/assets/js</code> 并且会将结果文件输出到 <code>public/js/main.js</code>。你也可以传递第二个参数来指定输出的位置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.browserify(<span class="string">'main.js'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Specifying a specific output filename...</span></div><div class="line">elixir(<span class="function"><span class="keyword">function</span><span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.browserify(<span class="string">'main.js'</span>, <span class="string">'public/javascripts/main.js'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>而 Browserify 附带了 Partialify 和 Babelify 转换器，你可以自由的安装你所希望的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install aliasify --save-dev</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">elixir.config.js.browserify.transformers.push(&#123;</div><div class="line">  name: <span class="string">'aliasify'</span>,</div><div class="line">  options: &#123;&#125; </div><div class="line">&#125;);</div><div class="line"></div><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.browserify(<span class="string">'main.js'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="Babel"><a href="#Babel" class="headerlink" title="Babel"></a>Babel</h3><p><code>babel</code> 方法可以使你编译 <code>ECMAScript 6 和 7</code> 和 <code>JSX</code> 到原生的 JavaScript。该方法接收一个文件列表相对于 <code>resources/assets/js</code> 目录的数组，并且在 <code>public/js</code> 目录中生成 <code>all.js</code> 文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.babel([</div><div class="line">    <span class="string">'order.js'</span>,</div><div class="line">    <span class="string">'product.js'</span>,</div><div class="line">    <span class="string">'react-component.jsx'</span></div><div class="line">  ]); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你可以传递第二个参数来指定不同的输出路径。除了进行 Babel 编译，其方法的功能和 <code>mix.scripts</code> 一样。</p>
+<h3 id="Scripts"><a href="#Scripts" class="headerlink" title="Scripts"></a>Scripts</h3><p>如果你想要将多个 JavaScript 文件合并到一个文件中，你可以使用 <code>scripts</code> 方法。</p>
+<p><code>scripts</code> 方法假设你所有的文件都相对于 <code>resouces/assets/js</code> 目录，并且会默认的将结果编译到 <code>public/js/all.js</code> 文件中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.scripts([</div><div class="line">    <span class="string">'jquery.js'</span>,</div><div class="line">    <span class="string">'app.js'</span></div><div class="line">  ]);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果你需要合并多个文件到多个不同的路径，你可以通过多次链式调用并传递第二个参数作为指定输出的路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.scripts([<span class="string">'app.js'</span>, <span class="string">'controllers.js'</span>], <span class="string">'public/js/app.js'</span>)</div><div class="line">     .scripts([<span class="string">'forum.js'</span>, <span class="string">'threads.js'</span>], <span class="string">'public/js/forum.js'</span>);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果你需要合并指定目录下的所有脚本文件，你可以使用 <code>scriptIn</code> 方法。合并的结果将存放到 <code>public/js/all.js</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.scriptsIn(<span class="string">'public/js/some/directory'</span>)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="复制文件-amp-目录"><a href="#复制文件-amp-目录" class="headerlink" title="复制文件 &amp; 目录"></a>复制文件 &amp; 目录</h2><p><code>copy</code> 方法可以用来复制文件和目录到一个新的位置。所有的操作都是相对于项目的根目录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.copy(<span class="string">'vendor/foo/bar.css'</span>, <span class="string">'public/css/bar.css'</span>)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">elixir(<span class="function"><span class="keyword">function</span><span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.copy(<span class="string">'vendor/package/views'</span>, <span class="string">'resources/views'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="版本-缓存移除"><a href="#版本-缓存移除" class="headerlink" title="版本 / 缓存移除"></a>版本 / 缓存移除</h2><p>对于许多开发者比较痛苦的事就是手动的对资源文件增加时间戳或者唯一的 token 标识来强迫浏览器重新加载新的资源文件。Elixir 可以通过 <code>version</code> 方法来帮你自动的完成这些。</p>
+<p><code>version</code> 方法接收文件名称相对于 <code>public</code> 目录，并且它会自动的为文件名增加一个独特的 hash，这样就可以自动的进行缓存清除了。比如，新生成的文件名看上去像这样：<code>all-16d570a7.css</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.version(<span class="string">'css/all.css'</span>) </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>在生成版本化的文件之后，你可以使用 laravel 的全局帮助函数 <code>elixir</code> 在你的视图文件中进行加载适当的 hashed 资源。<code>elixir</code> 方法会自动的判断文件的名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"&#123;&#123; elixir('css/all.css') &#125;&#125;"</span>&gt;</div></pre></td></tr></table></figure>
+<p><strong>对多个文件进行版本化</strong></p>
+<p>你可以传递一个数组到 <code>version</code> 方法来进行多个文件的版本化：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.version([<span class="string">'css/all.css'</span>, <span class="string">'js/app.js'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>一旦文件本版本化，你就可以使用 laravel 的 <code>elixir</code> 方法去生成版本化的 link。记住，你只需要向 <code>elixir</code> 帮助方法中传递文件名的前缀就可以了，并不需要填写 hash 后的文件名。帮助方法会自动的识别 hash 后的文件名：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"&#123;&#123; elixir('css/all.css') &#125;&#125;"</span>&gt;</div><div class="line"></div><div class="line">&lt;script src=<span class="string">"&#123;&#123; elixir('js/app.js') &#125;&#125;"</span>&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<h2 id="BrowserSync"><a href="#BrowserSync" class="headerlink" title="BrowserSync"></a>BrowserSync</h2><p>BrowserSync 可以在你的前端资源文件变更之后自动的刷新的你浏览器。你可以使用 <code>browserSync</code> 方法来指导 Elixir 当你运行 <code>gulp watch</code> 命令时启动 BrowserSync 服务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.browserSync(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>一旦你运行 <code>gulp watch</code>，你可以通过访问你的应用使用 3000 端口来启用 browsersyncing: <code>http://homestead.app:3000</code>。如果你使用了 <code>homestead.app</code> 之外的域名作为本地开发的支持，你可以传递一个 <a href="http://www.browsersync.io/docs/options/" target="_blank" rel="external">options</a> 数组到第一个参数到 <code>browserSync</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.browserSync(&#123;</div><div class="line">    proxy: <span class="string">'project.app'</span></div><div class="line">  &#125;) </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="调用已存在的-Gulp-任务"><a href="#调用已存在的-Gulp-任务" class="headerlink" title="调用已存在的 Gulp 任务"></a>调用已存在的 Gulp 任务</h2><p>如果你需要从 Elixir 中调用已经存在的 Gulp 任务。你可以使用 <code>task</code> 方法。你可以想象一下你有一个 Gulp 任务是用来简单的发送一个文本：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'speak'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">var</span> message = <span class="string">'Tea...Earl Grey...Hot'</span>;</div><div class="line"></div><div class="line">  gulp.src(<span class="string">''</span>).pipe(shell(<span class="string">'say '</span> + message))</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果你想通过 Elixir 来调用这个任务，你可以使用 <code>mix.task</code> 方法并且传递任务的名称到该方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.task(<span class="string">'speak'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>自定义监控</strong></p>
+<p>如果你需要注册一个监控者在你的自定义任务中监控每次文件的变更。你可以传递一个正则表达式作为第二个参数到 <code>task</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.task(<span class="string">'speak'</span>, <span class="string">'app/**/*.php'</span>) </div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="编写-Elixir-扩展"><a href="#编写-Elixir-扩展" class="headerlink" title="编写 Elixir 扩展"></a>编写 Elixir 扩展</h2><p>如果你需要比 Elixir <code>task</code> 方法所提供的更高的灵活性，你可以创建自己的 Elixir 扩展。Elixir 扩展允许你传递参数到你的自定义任务中。比如，你可以编写一个下面类似的扩展：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// File: elixir-extensions.js</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> gulp = <span class="keyword">require</span>(<span class="string">'gulp'</span>)</div><div class="line"><span class="keyword">var</span> shell = <span class="keyword">require</span>(<span class="string">'gulp-shell'</span>)</div><div class="line"><span class="keyword">var</span> Elixir = <span class="keyword">require</span>(<span class="string">'laravel-elixir'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> Task = Elixir.Task</div><div class="line"></div><div class="line">Elixi.extends(<span class="string">'speak'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(message)</span> </span>&#123;</div><div class="line">  <span class="keyword">new</span> Task(<span class="string">'speak'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> gulp.src(<span class="string">''</span>).pipe(shell(<span class="string">'say '</span> + message))</div><div class="line">  &#125;)  </div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// mix.speak('Hello World')</span></div></pre></td></tr></table></figure>
+<p>就是这么简单。你应该注意，任务的专有逻辑应该编写在方法中传递给 <code>Tast</code> 构造函数作为第二个参数。你也可以将其存放在 Gulpfile 的顶部或者提取到独立的扩展文件中。比如，你可以存放你的扩展到 <code>elixir-extendsions.js</code>，然后在你的 <code>Gulpfile</code> 文件中进行载入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// File: Gulpfile.js</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> elixir = <span class="keyword">require</span>(<span class="string">'laravel-elixir'</span>)</div><div class="line"></div><div class="line"><span class="keyword">require</span>(<span class="string">'./elixir-extendsions'</span>)</div><div class="line"></div><div class="line">elixir(<span class="function"><span class="keyword">function</span> <span class="params">(mix)</span> </span>&#123;</div><div class="line">  mix.speak(<span class="string">'Tea, Earl Grey, Hot'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>自定义监控者</strong><br>如果你希望在运行 <code>gulp watch</code> 时，你的自定义任务可以在文件变更时自动的触发，你可以注册一个监控者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> Task(<span class="string">'speak'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">''</span>).pipe(shell(<span class="string">'say '</span> + mesage))</div><div class="line">&#125;)</div><div class="line">.watch(<span class="string">'./app/**'</span>)</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/03/laravel-from-scratch-collections/" rel="next" title="laravel 基础教程 —— 集合">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/05/laravel-from-scratch-encryption/" rel="prev" title="laravel 基础教程 —— 加密">
+                laravel 基础教程 —— 加密 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Laravel-Elixir（炼金药）"><span class="nav-number">1.</span> <span class="nav-text">Laravel Elixir（炼金药）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-amp-起步"><span class="nav-number">1.2.</span> <span class="nav-text">安装 & 起步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Node"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装 Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gulp"><span class="nav-number">1.2.2.</span> <span class="nav-text">Gulp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Laravel-Elixir"><span class="nav-number">1.2.3.</span> <span class="nav-text">Laravel Elixir</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行-Elixir"><span class="nav-number">1.3.</span> <span class="nav-text">运行 Elixir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与样式文件合作"><span class="nav-number">1.4.</span> <span class="nav-text">与样式文件合作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Less"><span class="nav-number">1.4.1.</span> <span class="nav-text">Less</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sass"><span class="nav-number">1.4.2.</span> <span class="nav-text">sass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原生-CSS"><span class="nav-number">1.4.3.</span> <span class="nav-text">原生 CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译地图"><span class="nav-number">1.4.4.</span> <span class="nav-text">编译地图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与脚本合作"><span class="nav-number">1.5.</span> <span class="nav-text">与脚本合作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CoffeeScript"><span class="nav-number">1.5.1.</span> <span class="nav-text">CoffeeScript</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Browserify"><span class="nav-number">1.5.2.</span> <span class="nav-text">Browserify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Babel"><span class="nav-number">1.5.3.</span> <span class="nav-text">Babel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scripts"><span class="nav-number">1.5.4.</span> <span class="nav-text">Scripts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制文件-amp-目录"><span class="nav-number">1.6.</span> <span class="nav-text">复制文件 & 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本-缓存移除"><span class="nav-number">1.7.</span> <span class="nav-text">版本 / 缓存移除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BrowserSync"><span class="nav-number">1.8.</span> <span class="nav-text">BrowserSync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用已存在的-Gulp-任务"><span class="nav-number">1.9.</span> <span class="nav-text">调用已存在的 Gulp 任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写-Elixir-扩展"><span class="nav-number">1.10.</span> <span class="nav-text">编写 Elixir 扩展</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

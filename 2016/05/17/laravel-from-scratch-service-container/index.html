@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介laravel 提供了强大的服务容器工具来管理类之间的依赖关系并以此来提供依赖注入。依赖注入是一个奇特的短语，其实它的意思是说所依赖的类的实例通过构造函数或者其它的方式被注入到类中。如果你还是不太明白，你可以参考我写的这篇 《理解依赖注入与控制反转》。 让我们来看一个简单的例子： 123456789101112131415161718192021222324252627282930313233">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 服务容器">
+<meta property="og:url" content="http://yoursite.com/2016/05/17/laravel-from-scratch-service-container/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="简介laravel 提供了强大的服务容器工具来管理类之间的依赖关系并以此来提供依赖注入。依赖注入是一个奇特的短语，其实它的意思是说所依赖的类的实例通过构造函数或者其它的方式被注入到类中。如果你还是不太明白，你可以参考我写的这篇 《理解依赖注入与控制反转》。 让我们来看一个简单的例子： 123456789101112131415161718192021222324252627282930313233">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 服务容器">
+<meta name="twitter:description" content="简介laravel 提供了强大的服务容器工具来管理类之间的依赖关系并以此来提供依赖注入。依赖注入是一个奇特的短语，其实它的意思是说所依赖的类的实例通过构造函数或者其它的方式被注入到类中。如果你还是不太明白，你可以参考我写的这篇 《理解依赖注入与控制反转》。 让我们来看一个简单的例子： 123456789101112131415161718192021222324252627282930313233">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/17/laravel-from-scratch-service-container/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 服务容器 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/17/laravel-from-scratch-service-container/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 服务容器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-17T21:11:56+08:00">
+                2016-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>laravel 提供了强大的服务容器工具来管理类之间的依赖关系并以此来提供依赖注入。依赖注入是一个奇特的短语，其实它的意思是说所依赖的类的实例通过构造函数或者其它的方式被注入到类中。如果你还是不太明白，你可以参考我写的这篇 <a href="http://team.dearmadman.com/2016/04/13/dependency-injection-and-inversion-of-control/" target="_blank" rel="external">《理解依赖注入与控制反转》</a>。</p>
+<p>让我们来看一个简单的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Jobs</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Mail</span>\<span class="title">Mailer</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Bus</span>\<span class="title">SelfHandling</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PurchasePodcast</span> <span class="keyword">implements</span> <span class="title">SelfHandling</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * The mailer implementation.</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">protected</span> $mailer;</div><div class="line"></div><div class="line">     <span class="comment">/**</span></div><div class="line"><span class="comment">      * Create a new instance.</span></div><div class="line"><span class="comment">      *</span></div><div class="line"><span class="comment">      * <span class="doctag">@param</span> Mailer $mailer</span></div><div class="line"><span class="comment">      * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">      */</span></div><div class="line">      <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Mailer $mailer)</span></span></div><div class="line"><span class="function">      </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;mailer = $mailer;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">/**</span></div><div class="line"><span class="comment">       * Purchase a podcast.</span></div><div class="line"><span class="comment">       *</span></div><div class="line"><span class="comment">       * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">       */</span></div><div class="line">       <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line"><span class="function">       </span>&#123;</div><div class="line">          <span class="comment">//</span></div><div class="line">       &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子中 <code>PurchasePodcast</code> 任务需要在播客服务被购买时发送一个 email，所以我们注入了一个可以发送邮件的服务。因为服务是注入进去的而不是类自身硬编码进去的，所以我们可以很容易的切换到其他发送邮件的实现，我们也可以很容易的去 <code>mock</code>，这样我们在做单元测试的时候就很容易去做一些假的数据。</p>
+<p>能够更深层次的理解 laravel 的服务容器是非常必要的，它是能够构造强大的应用的关键，服务容器构成了整个 laravel 应用的核心。</p>
+<h2 id="绑定"><a href="#绑定" class="headerlink" title="绑定"></a>绑定</h2><p>几乎所有的服务容器的绑定都是在服务提供者中被注册的，所有下面的例子都是在这个环境下进行演示的。如果类并没有依赖什么接口，它是没有必要在容器中进行绑定的。容器并不需要有什么具体的指示去如何构造这些实例，因为他们会根据 PHP 的反射进行自动的实例化。</p>
+<p>在服务提供者内部，你可以通过 <code>$this-&gt;app</code> 来访问容器的实例。我们可以使用 <code>bind</code> 方法来注册绑定，这需要传递类或接口名，然后跟上一个 <code>Closure</code> 闭包函数，闭包用来返回一个所绑定类的实例:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'HelpSpot\API'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> HelpSpot\API($app[<span class="string">'HttpClient'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>注意上面的例子，我们将容器的实例作为参数传递到闭包中，这样我们就可以使用容器来解析我们所构建对象的子依赖。</p>
+<h3 id="单例式绑定"><a href="#单例式绑定" class="headerlink" title="单例式绑定"></a>单例式绑定</h3><p><code>singleton</code> 方法绑定的类或者接口只会被解析一次，也就是说随后的访问都会返回这个相同的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;singleton(<span class="string">'FooBar'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> FooBar($app[<span class="string">'SomethingElse'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="直接绑定实例"><a href="#直接绑定实例" class="headerlink" title="直接绑定实例"></a>直接绑定实例</h3><p>你也可以使用 <code>instance</code> 方法来绑定一个已经存在的实例对象到容器中。随后的访问中，容器都会返回这个给定的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$fooBar = <span class="keyword">new</span> FooBar(<span class="keyword">new</span> SomethingElse);</div><div class="line"></div><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;instance(<span class="string">'FooBar'</span>, $fooBar);</div></pre></td></tr></table></figure>
+<h3 id="绑定接口到实现"><a href="#绑定接口到实现" class="headerlink" title="绑定接口到实现"></a>绑定接口到实现</h3><p>服务容器具有一个非常强大的特性就是能够绑定接口到给定的实现。比如，让我们假设我们有 <code>EventPusher</code> 接口和 <code>RedisEventPusher</code> 实现。一旦我们绑定 <code>RedisEventPusher</code> 实现到这个接口，我们可以在服务容器中这么来进行注册：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'App\Contracts\EventPusher'</span>, <span class="string">'App\Services\RedisEventPusher'</span>);</div></pre></td></tr></table></figure>
+<p>这就告诉了容器如果类需要一个 <code>EventPusher</code> 的实现时，那就注入一个 <code>RedisEventPusher</code> 的实例。现在我们可以在构造函数或者其他地方来写入 <code>EventPusher</code> 接口的类型提示来进行依赖注入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Contracts</span>\<span class="title">EventPusher</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Create a new class instance.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> EventPusher $pusher</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(EventPusher $pusher)</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;pusher = $pusher;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="上下文绑定"><a href="#上下文绑定" class="headerlink" title="上下文绑定"></a>上下文绑定</h3><p>有时候你可能会有实现了同一个接口的两个类，而且你想要在不同的场景下注入不同的实现，比如说，当我们的系统接收到了一个订单，我们可能想要通过 <a href="http://www.pubnub.com/" target="_blank" rel="external">PubNub</a> 来发送一个事件，而不是 Pusher。laravel 提供了一种简单流利的接口来定义这种行为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;when(<span class="string">'App\Handlers\Commands\CreateOrderHandler'</span>)</div><div class="line">          -&gt;needs(<span class="string">'App\Contracts\EventPusher'</span>)</div><div class="line">          -&gt;give(<span class="string">'App\Services\PubNubEventPusher'</span>);</div></pre></td></tr></table></figure>
+<p>你也可以在 <code>give</code> 方法中传递一个 Closure :</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;when(<span class="string">'App\Handlers\Commands\CreateOrderHandler'</span>)</div><div class="line">          -&gt;needs(<span class="string">'App\Contracts\EventPusher'</span>)</div><div class="line">          -&gt;give(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">            <span class="comment">// Resolve dependency...</span></div><div class="line">          &#125;);</div></pre></td></tr></table></figure>
+<h3 id="绑定原始类型"><a href="#绑定原始类型" class="headerlink" title="绑定原始类型"></a>绑定原始类型</h3><p>有时候你可能需要在类中注入许多的依赖类，但是你可能也需要注入一些 PHP 的原始类型数据，比如说 integer, boolean。你可以在上下文绑定中非常轻松的绑定类所需要的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;when(<span class="string">'App\Handlers\Commands\CreateOrderHandler'</span>)</div><div class="line">          -&gt;needs(<span class="string">'$maxOrderCount'</span>)</div><div class="line">          -&gt;give(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<h2 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h2><p>有时候你可能需要解析一些符合某种类别的所有绑定。比如说，你可能需要来建造一个报告聚合器来接收一个包含了不同 <code>Report</code> 接口的实现集。在实现了 <code>Report</code> 的注册之后，你可以使用 <code>tag</code> 方法来给它们打上标记：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'SpeedReport'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">//  </span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'MemoryReport'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;tag([<span class="string">'SpeedReport'</span>, <span class="string">'MemoryReport'</span>], <span class="string">'reports'</span>);</div></pre></td></tr></table></figure>
+<p>一旦这些服务被打上标记，你可以使用 <code>tagged</code> 方法来解析获得它们:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'ReportAggregator'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> ReportAggregator($app-&gt;tagged(<span class="string">'reports'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>laravel 提供了多种方式从服务容器中解析出实例。首先，你可以使用 <code>make</code> 方法，它接收一个你想要解析的类或者接口：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$fooBar = <span class="keyword">$this</span>-&gt;app-&gt;make(<span class="string">'FooBar'</span>);</div></pre></td></tr></table></figure>
+<p>其次，你也可以使用数组的方式从容器中解析对象，因为它实现了 PHP 的 <code>ArrayAccess</code> 接口:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$fooBar = <span class="keyword">$this</span>-&gt;app[<span class="string">'FooBar'</span>];</div></pre></td></tr></table></figure>
+<p>最后，也是最重要的，你也可以在类的构造函数中简单的使用‘类型提示’来从容器中解析依赖。控制器，事件监听器，队列任务，中间件等都支持这种方式。在实践中，这是大部分对象从容器中解析的方式。</p>
+<p>容器会自动的为类进行依赖的注入。比如，你可以在控制器的构造函数中对应用中定义的仓库类进行类型提示。仓库实例会自动的从容器中进行解析并注入到控制器中:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Users</span>\<span class="title">Repository</span> <span class="title">as</span> <span class="title">UserRepository</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The user repository instance.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $users;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Create a new controller instance.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> UserRepository $users</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(UserRepository $users)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="keyword">$this</span>-&gt;users = $users;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Show the user with the given ID.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">     */</span></div><div class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">($id)</span></span></div><div class="line"><span class="function">     </span>&#123;</div><div class="line">       <span class="comment">//</span></div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="容器事件"><a href="#容器事件" class="headerlink" title="容器事件"></a>容器事件</h2><p>容器在每次解析一个对象时都会触发一个事件，你可以通过 <code>resolving</code> 方法来监听这个事件:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;resolving(<span class="function"><span class="keyword">function</span> <span class="params">($object, $app)</span> </span>&#123;</div><div class="line">  <span class="comment">// Called when container resolves object of any type... </span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">$this</span>-&gt;app-&gt;resolving(FooBar::class, <span class="function"><span class="keyword">function</span> <span class="params">(FooBar $fooBar, $app)</span> </span>&#123;</div><div class="line">  <span class="comment">// Called when container resolves objects of type "FooBar"... </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如你所看到的，<code>resolving</code> 方法中你可以传递一个回调函数，回调函数会接收两个参数，一个是解析得到的对象，一个是容器本身，这样你就可以在对象传递到消费者之前添加一些额外的属性。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/15/laravel-from-scratch-service-providers/" rel="next" title="laravel 基础教程 —— 服务提供者">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 服务提供者
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/18/laravel-from-scratch-contracts/" rel="prev" title="laravel 基础教程 —— 契约">
+                laravel 基础教程 —— 契约 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#绑定"><span class="nav-number">1.1.</span> <span class="nav-text">绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单例式绑定"><span class="nav-number">1.1.1.</span> <span class="nav-text">单例式绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接绑定实例"><span class="nav-number">1.1.2.</span> <span class="nav-text">直接绑定实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定接口到实现"><span class="nav-number">1.1.3.</span> <span class="nav-text">绑定接口到实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上下文绑定"><span class="nav-number">1.1.4.</span> <span class="nav-text">上下文绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定原始类型"><span class="nav-number">1.1.5.</span> <span class="nav-text">绑定原始类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记"><span class="nav-number">1.2.</span> <span class="nav-text">标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析"><span class="nav-number">1.3.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器事件"><span class="nav-number">1.4.</span> <span class="nav-text">容器事件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

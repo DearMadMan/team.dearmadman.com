@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Eloquent: 存取器简介访问器和存储器允许你在获取或者设置 Eloquent 模型属性值时对其进行格式化操作。比如，你可能希望当一个值存储进数据库之前先对其进行 Laravel encrypter 进行加密操作，并且可以在你通过模型访问的时候自动的进行该属性的解密。 除了可自定义的的访问器和存储器，Eloquent 也可以自动的将日期字段转换为 Carbon 实例，或者甚至是将字符串字段转换">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 存取器">
+<meta property="og:url" content="http://yoursite.com/2016/06/26/laravel-from-scratch-eloquent-mutators/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Eloquent: 存取器简介访问器和存储器允许你在获取或者设置 Eloquent 模型属性值时对其进行格式化操作。比如，你可能希望当一个值存储进数据库之前先对其进行 Laravel encrypter 进行加密操作，并且可以在你通过模型访问的时候自动的进行该属性的解密。 除了可自定义的的访问器和存储器，Eloquent 也可以自动的将日期字段转换为 Carbon 实例，或者甚至是将字符串字段转换">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 存取器">
+<meta name="twitter:description" content="Eloquent: 存取器简介访问器和存储器允许你在获取或者设置 Eloquent 模型属性值时对其进行格式化操作。比如，你可能希望当一个值存储进数据库之前先对其进行 Laravel encrypter 进行加密操作，并且可以在你通过模型访问的时候自动的进行该属性的解密。 除了可自定义的的访问器和存储器，Eloquent 也可以自动的将日期字段转换为 Carbon 实例，或者甚至是将字符串字段转换">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/26/laravel-from-scratch-eloquent-mutators/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 存取器 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/26/laravel-from-scratch-eloquent-mutators/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 存取器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-26T19:55:45+08:00">
+                2016-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Eloquent-存取器"><a href="#Eloquent-存取器" class="headerlink" title="Eloquent: 存取器"></a>Eloquent: 存取器</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>访问器和存储器允许你在获取或者设置 Eloquent 模型属性值时对其进行格式化操作。比如，你可能希望当一个值存储进数据库之前先对其进行 <a href="https://laravel.com/docs/5.2/encryption" target="_blank" rel="external">Laravel encrypter</a> 进行加密操作，并且可以在你通过模型访问的时候自动的进行该属性的解密。</p>
+<p>除了可自定义的的访问器和存储器，Eloquent 也可以自动的将日期字段转换为 <a href="https://github.com/briannesbitt/Carbon" target="_blank" rel="external">Carbon</a> 实例，或者甚至是将字符串字段转换为 JSON。</p>
+<h2 id="访问器-amp-存取器"><a href="#访问器-amp-存取器" class="headerlink" title="访问器 &amp; 存取器"></a>访问器 &amp; 存取器</h2><p><strong>定义一个访问器</strong></p>
+<p>为了定义一个访问器，你需要在你的模型上创建一个 <code>getFooAttribute</code> 方法，其中的 <code>Foo</code> 是你需要进行访问的列名的驼峰方式的命名。在这个例子中，我们将定义一个 <code>first_name</code> 属性的访问器。这个访问器会在 Eloquent 尝试获取 <code>first_name</code> 属性值时触发：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the user's first name.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> string $value</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getFirstNameAttribute</span><span class="params">($value)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> ucfirst($value);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>就如你所看到的，属性原始的值会被传递到访问器中，这允许你对原始值进行操作及返回格式化后的值。你只需要简单的访问 <code>first_name</code> 属性就可以从存取器中访问该值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$firstName = $user-&gt;first_name;</div></pre></td></tr></table></figure>
+<p><strong>定义一个存储器</strong></p>
+<p>为了定义一个存储器，你需要在你的模型上定义一个 <code>setFooAttribute</code> 方法，其中的 <code>Foo</code> 是你期望访问的列的驼峰样式的名称。那么，这一次，让我们为 <code>first_name</code> 属性定义一个存储器。这个存储器会在模型尝试设置 <code>first_name</code> 属性的值时进行调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Set the user's first name.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> string $value</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setFirstNameAttribute</span><span class="params">($value)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;attributes[<span class="string">'first_name'</span>] = strtolower($value);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>存储器会接收即将设置到属性中的值，这允许你对这个值进行操作，并将其设置到模型内部的 <code>$attributes</code> 属性中。所以，举个示例，如果我们尝试将 <code>first_name</code> 属性设置为 <code>Sally</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;first_name = <span class="string">'Sally'</span>;</div></pre></td></tr></table></figure>
+<p>在这个例子中，<code>setFirstNameAttribute</code> 方法会被调用并伴随 <code>Sally</code> 值。存储器会应用 <code>strtolower</code> 方法将名字小写化然后将值设置到内部的 <code>$attributes</code> 数组中。</p>
+<h2 id="日期存取器"><a href="#日期存取器" class="headerlink" title="日期存取器"></a>日期存取器</h2><p>默认的，Eloquent 会转换 <code>created_at</code> 和 <code>updated_at</code> 列为 <a href="https://github.com/briannesbitt/Carbon" target="_blank" rel="external">Carbon</a> 实例，这个实例可以提供多种有用的方法，并且它继承自原生 PHP 的 <code>DataTime</code> 类。</p>
+<p>你可以自定义哪些字段可以进行自动的转换，甚至是完全禁用这种转换，你需要在你的模型中复写 <code>$dates</code> 属性：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that should be mutated to dates</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">protected</span> $dates = [<span class="string">'created_at'</span>, <span class="string">'updated_at'</span>, <span class="string">'deleted_at'</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当一列被认为是日期时，你可以将其设置为 UNIX 时间戳，日期字符串（<code>Y-m-d</code>），时间字符串，和 <code>DateTime</code> / <code>Carbon</code> 实例，并且日期的值会自动的正确的存储到数据库中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;deleted_at = Carbon::now();</div><div class="line"></div><div class="line">$user-&gt;save();</div></pre></td></tr></table></figure>
+<p>就如上面所述，当获取的属性是 <code>$dates</code> 属性所列出的值之一时，它会自动的被转换为 <code>Carbon</code> 实例，这允许你在属性上使用 Carbon 的一些方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">return</span> $user-&gt;deleted_at-&gt;getTimestamp();</div></pre></td></tr></table></figure>
+<p>默认的，时间戳被格式化为 <code>Y-m-d H:i:s</code> 的格式。如果你希望自定义时间戳的格式，你需要在你的模型中设置 <code>$dateFormat</code> 属性。该属性将确定日期属性将如何存储到数据库中以及当模型进行序列化或者 JSON 化时如何展示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flight</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The storage format of the model's date columns.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> string</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">protected</span> $dateFormat = <span class="string">'U'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="属性转换"><a href="#属性转换" class="headerlink" title="属性转换"></a>属性转换</h2><p>你可以在你的模型中定义 <code>$casts</code> 属性来提供一种方便的方式将属性转换为通用的数据类型。<code>$casts</code> 属性应该是一个数组，并且其每一项的键应该是需要进行转换的属性名，而其键所对应的值应该是你需要属性转换到的类型。支持的转换类型有：<code>integer</code>，<code>real</code>，<code>float</code>，<code>double</code>，<code>string</code>，<code>boolean</code>，<code>object</code>，<code>array</code>，<code>coolection</code>，<code>date</code>，<code>datetime</code>，和 <code>timestamp</code>。</p>
+<p>比如，让我们转换 <code>is_admin</code> 属性，它在数据库中存储的值为一个整型（<code>0</code> 或者 <code>1</code>），我们将其转换为布尔值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that should be casted to native types.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">protected</span> $casts = [</div><div class="line">    <span class="string">'is_admin'</span> =&gt; <span class="string">'boolean'</span>,</div><div class="line">  ];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，每当你访问 <code>is_admin</code> 属性时，其值都会被转换为布尔值，即使其在数据库中存储的整型值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($user-&gt;is_admin) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>数组转换</strong></p>
+<p><code>array</code> 转换的类型对于存储序列化 JSON 值的列尤其有用。比如，如果数据库有一个 <code>TEXT</code> 类型的字段，并且其存储的是序列化的 JSON，如果你添加该属性的 <code>array</code> 转换，那么当你在 Eloquent 模型上访问这个属性时，它将会自动的进行反序列化为 PHP 的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The attributes that should be casted to native types.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">protected</span> $casts = [</div><div class="line">    <span class="string">'options'</span> =&gt; <span class="string">'array'</span></div><div class="line">  ];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当你转义定义完成之后，你可以访问 <code>options</code> 属性，并且它会自动的被从 JSON 反序列化为 PHP 数组。当你设置值到 <code>options</code> 属性时，所给定的数组会自动的序列化为 JSON 格式，然后进行存储：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$options = $user-&gt;options;</div><div class="line"></div><div class="line">$options[<span class="string">'key'</span>] = <span class="string">'value'</span>;</div><div class="line"></div><div class="line">$user-&gt;options = $options;</div><div class="line"></div><div class="line">$user-&gt;save();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/26/laravel-from-scratch-eloquent-collection/" rel="next" title="laravel 基础教程 —— Eloquent 集合">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Eloquent 集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/26/laravel-from-scratch-serialization/" rel="prev" title="laravel 基础教程 —— 序列化">
+                laravel 基础教程 —— 序列化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eloquent-存取器"><span class="nav-number">1.</span> <span class="nav-text">Eloquent: 存取器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问器-amp-存取器"><span class="nav-number">1.2.</span> <span class="nav-text">访问器 & 存取器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日期存取器"><span class="nav-number">1.3.</span> <span class="nav-text">日期存取器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性转换"><span class="nav-number">1.4.</span> <span class="nav-text">属性转换</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

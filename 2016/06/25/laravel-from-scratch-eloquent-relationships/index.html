@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Eloquent: 关联模型简介数据库中的表经常性的关联其它的表。比如，一个博客文章可以有很多的评论，或者一个订单会关联一个用户。Eloquent 使管理和协作这些关系变的非常的容易，并且支持多种不同类型的关联：  一对一 一对多 多对多 远程一对多 多态关联 多态多对多关联  定义关联Eloquent 关联可以像定义方法一样在 Eloquent 模型类中进行定义。同时，它就像 Eloquent">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 关联模型">
+<meta property="og:url" content="http://yoursite.com/2016/06/25/laravel-from-scratch-eloquent-relationships/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Eloquent: 关联模型简介数据库中的表经常性的关联其它的表。比如，一个博客文章可以有很多的评论，或者一个订单会关联一个用户。Eloquent 使管理和协作这些关系变的非常的容易，并且支持多种不同类型的关联：  一对一 一对多 多对多 远程一对多 多态关联 多态多对多关联  定义关联Eloquent 关联可以像定义方法一样在 Eloquent 模型类中进行定义。同时，它就像 Eloquent">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 关联模型">
+<meta name="twitter:description" content="Eloquent: 关联模型简介数据库中的表经常性的关联其它的表。比如，一个博客文章可以有很多的评论，或者一个订单会关联一个用户。Eloquent 使管理和协作这些关系变的非常的容易，并且支持多种不同类型的关联：  一对一 一对多 多对多 远程一对多 多态关联 多态多对多关联  定义关联Eloquent 关联可以像定义方法一样在 Eloquent 模型类中进行定义。同时，它就像 Eloquent">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/25/laravel-from-scratch-eloquent-relationships/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 关联模型 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/25/laravel-from-scratch-eloquent-relationships/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 关联模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-25T22:55:22+08:00">
+                2016-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Eloquent-关联模型"><a href="#Eloquent-关联模型" class="headerlink" title="Eloquent: 关联模型"></a>Eloquent: 关联模型</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>数据库中的表经常性的关联其它的表。比如，一个博客文章可以有很多的评论，或者一个订单会关联一个用户。Eloquent 使管理和协作这些关系变的非常的容易，并且支持多种不同类型的关联：</p>
+<ul>
+<li>一对一</li>
+<li>一对多</li>
+<li>多对多</li>
+<li>远程一对多</li>
+<li>多态关联</li>
+<li>多态多对多关联</li>
+</ul>
+<h2 id="定义关联"><a href="#定义关联" class="headerlink" title="定义关联"></a>定义关联</h2><p>Eloquent 关联可以像定义方法一样在 Eloquent 模型类中进行定义。同时，它就像 Eloquent 模型自身一样也提供了强大的查询生成器。这允许关联模型可以链式的执行查询能力。比如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;posts()-&gt;where(<span class="string">'active'</span>, <span class="number">1</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>但是，在更深入的使用关联之前，让我们先来学习一下如何定义各种类型的关联。</p>
+<h3 id="一对一"><a href="#一对一" class="headerlink" title="一对一"></a>一对一</h3><p>一对一的关联是最基础的关联。比如，一个 <code>User</code> 模型可能关联一个 <code>Phone</code>。我们需要在 <code>User</code> 模型上放置一个 <code>phone</code> 方法来定义这种关联。<code>phone</code> 方法应该返回一个基类 Eloquent 模型上 <code>hasOne</code> 方法的结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the phone record associated with the user.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">phone</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasOne(<span class="string">'App\Phone'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>传递到 <code>hasOne</code> 方法的第一个参数应该是关联模型的名称。一旦关联被定义完成，我们可以使用 Eloquent 的动态属性来访问关联模型的记录。动态属性允许你访问关联函数，就像是它们是定义在模型中的属性一样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$phone = User::find(<span class="number">1</span>)-&gt;phone;</div></pre></td></tr></table></figure>
+<p>Eloquent 假定所关联的外键是基于模型的名称的。在这个前提下，<code>Phone</code> 模型会自动的假定其拥有一个 <code>user_id</code> 外键。如果你希望修改这个惯例，你可以传递第二个参数到 <code>hasOne</code> 方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasOne(<span class="string">'App\Phone'</span>, <span class="string">'foreign_key'</span>);</div></pre></td></tr></table></figure>
+<p>另外，Eloquent 也会假定外键应该在其上层模型上拥有一个匹配的 <code>id</code>（或者自定义的 <code>$primaryKey</code>）值。换句话说，Eloquent 会查询 <code>Phone</code> 记录中的 <code>user_id</code> 列所对应的用户的 <code>id</code> 列的记录。如果你希望关联使用 <code>id</code> 以外的值，你可以传递第三个参数到 <code>hasOne</code> 方法来指定自定义的键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasOne(<span class="string">'App\Phone'</span>, <span class="string">'foreign_key'</span>, <span class="string">'local_key'</span>);</div></pre></td></tr></table></figure>
+<p><strong>定义相对的关联</strong></p>
+<p>那么，我们可以从我们的 <code>User</code> 中访问 <code>Phone</code> 模型。现在，让我们在 <code>Phone</code> 模型上定义一个关联，让我们可以从 <code>Phone</code> 模型中访问其所属的 <code>User</code>。我们使用 <code>belongsTo</code> 方法来定义 <code>hasOne</code> 相对的关联：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the user that owns the phone.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">user</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\User'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的例子中，Eloquent 将会尝试从 <code>Phone</code> 模型中的 <code>user_id</code> 字段中匹配查找 <code>id</code> 相同的 <code>User</code>。Eloquent 会依据所关联的模型的蛇形命名和 <code>_id</code> 来假定默认的外键名。事实上，如果在 <code>Phone</code> 模型上的外键不是 <code>user_id</code>，那么你可以传递自定义的外键名到 <code>belongsTo</code> 方法的第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the user that owns the phone.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">user</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\User'</span>, <span class="string">'foreign_key'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你的上级模型并没有使用 <code>id</code> 作为主键名，或者你希望下级模型关联一个不同的列。你可以传递第三个参数到 <code>belongsTo</code> 方法来指定上级模型表中的自定义键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the user that owns the phone.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">user</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\User'</span>, <span class="string">'foreign_key'</span>, <span class="string">'other_key'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h3><p>一个一对多的关联常常用来定义一个模型拥有其他任意数目的模型。比如，一个博客文章可以拥有很多条评论。就像其他的 Eloquent 关联一样，一对多关联在 Eloquent 模型中通过方法来进行定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the comments for the blog post.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">comments</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasMany(<span class="string">'App\Comment'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>记住，Eloquent 会自动的根据 <code>Comment</code> 模型来判断合适的外键。依据惯例，Eloquent 会使用自身模型的蛇形命名和 <code>_id</code> 来作为外键。所以，在这个例子中，Eloquent 会假定 <code>Comment</code> 模型的外键是 <code>post_id</code>。</p>
+<p>一旦关联定义完成之后，我们可以通过 <code>comments</code> 属性来访问所有关联的评论的集合。记住，由于 Eloquent 提供了动态属性，我们可以对关联函数进行访问，就像他们是在模型中定义的属性一样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$comments = App\Post::find(<span class="number">1</span>)-&gt;comments;</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($comments <span class="keyword">as</span> $comment) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，由于所有的关联都提供了查询生成器的功能，所以你可以在调用 <code>comments</code> 方法时继续的添加一些限制条件，你可以通过链式的调用进行查询条件的添加：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$comments = App\Post::find(<span class="number">1</span>)-&gt;comments()-&gt;where(<span class="string">'title'</span>, <span class="string">'foo'</span>)-&gt;first();</div></pre></td></tr></table></figure>
+<p>就像 <code>hasOne</code> 方法，你可以通过添加额外的参数到 <code>hasMany</code> 方法中来重置外键和主键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasMany(<span class="string">'App\Comment'</span>, <span class="string">'foreign_key'</span>);</div><div class="line"></div><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasMany(<span class="string">'App\Comment'</span>, <span class="string">'foreign_key'</span>, <span class="string">'local_key'</span>);</div></pre></td></tr></table></figure>
+<p><strong>定义相对的关联</strong></p>
+<p>现在我们可以访问文章中所有的评论了，让我们为评论定义一个关联使其可以访问它的上层文章模型。为了定义一个 <code>hasMany</code> 相对的关联，你需要在下层模型中定义一个关联方法并调用 <code>belongsTo</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Comment</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the post that owns the comment.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">post</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\Post'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦关联被定义完成，我们就可以通过 <code>Comment</code> 模型的 <code>post</code> 动态属性来检索到其对应的 <code>Post</code> 模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$comment = App\Comment::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">echo</span> $comment-&gt;post-&gt;title;</div></pre></td></tr></table></figure>
+<p>在上面的例子中，Eloquent 会尝试从 <code>Comment</code> 模型中的 <code>post_id</code> 字段检索与其相对应 <code>id</code> 的 <code>Post</code> 模型。Eloquent 会使用关联模型的蛇形命名和 <code>_id</code> 来作为默认的外键。如果 <code>Comment</code> 模型的外键不是 <code>post_id</code>，你可以传递一个自定义的键名到 <code>belongsTo</code> 方法的第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the post that owns the comment.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">post</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\Post'</span>, <span class="string">'foreign_key'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果上层模型并没有使用 <code>id</code> 作为主键，或者你想在下层模型中关联其他的列，你可以传递第三个参数到 <code>belongsTo</code> 方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Get the post that owns the comment.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">post</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\Post'</span>, <span class="string">'foreign_key'</span>, <span class="string">'other_key'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3><p>多对多的关联比 <code>hasOne</code> 和 <code>hasMany</code> 关联要稍微复杂一些。假如一个用户拥有多个角色，而角色又可以被其他的用户所共享。比如，多个用户可以拥有管理员的角色。如果定义这种关联，我们需要定义三个数据库表：<code>users</code>，<code>roles</code>，和 <code>role_user</code>。<code>role_user</code> 表的命名是以相关联的两个模型数据表来依照字母顺序命名，并且表中包含了 <code>user_id</code> 和 <code>role_id</code> 列。</p>
+<p>多对多关联需要编写一个方法调用基础 Eloquent 类 <code>belongsToMany</code> 方法。比如，让我们在 <code>User</code> 模型中定义一个 <code>roles</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The roles that belong to the user.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">roles</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦关联被定义，你可以通过 <code>roles</code> 动态属性来访问用户的角色：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($user-&gt;roles <span class="keyword">as</span> $role) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，就像其他类型的关联，你可以调用 <code>roles</code> 方法并且链式调用查询条件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$roles = App\User::find(<span class="number">1</span>)-&gt;roles()-&gt;orderBy(<span class="string">'name'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>就如先前所提到的，Eloquent 会合并两个关联模型并依照字母顺序进行命名。当然你也可以随意的重写这个约定，你可以传递第二个参数到 <code>belongsToMany</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>, <span class="string">'role_user'</span>);</div></pre></td></tr></table></figure>
+<p>除了自定义合并数据表的名称之外，你也可以通过往 <code>belongsToMany</code> 方法传传递额外参数来自定义数据表里的键的字段名称。第三个参数是你定义在关联中模型外键的名称。第四个参数则是你要合并的模型外键的名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>, <span class="string">'role_user'</span>, <span class="string">'user_id'</span>, <span class="string">'role_id'</span>);</div></pre></td></tr></table></figure>
+<p><strong>定义相对关联</strong></p>
+<p>你只需要在相对应的关联模型里放置其他的方法来调用 <code>belongsToMany</code> 方法就可以定义相对关联。继续我们上面的用户角色示例，让我们在 <code>Role</code> 模型中定义一个 <code>users</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Role</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The users that belongs to the role.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">users</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\User'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>就如你所看到的，这个关联的定义与用户的关联定义完全相同。因为我们重复的使用了 <code>belongsToMany</code> 方法，当定义相对于多对多的关联时，所有常用的自定义数据表和键的选项都是可用的。</p>
+<p><strong>检索中间表字段</strong></p>
+<p>正如你已经了解到的。定义多对多的关联需要引入一个中间表。Eloquent 提供了几种非常有帮助的方式来与这个表进行交互。比如，让我们假定我们的 <code>User</code> 对象关联到了很多 <code>Role</code> 对象。在访问这些关联对象时，我们可以通过在模型上使用 <code>pivot</code> 属性来访问中间表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($user-&gt;roles <span class="keyword">as</span> $role) &#123;</div><div class="line">  <span class="keyword">echo</span> $role-&gt;pivot-&gt;created_at;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意我们取出的每个 <code>Role</code> 对象，都会被自动的分配 <code>pivot</code> 属性。这个属性包含了一个代表中间表的模型，并且可以像其他 Eloquent 模型一样被使用。</p>
+<p>默认的，只有模型的键会被 <code>pivot</code> 对象提供，如果你的中间表包含了额外的属性，你必须在定义关联时指定它们：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>)-&gt;withPivot(<span class="string">'column1'</span>, <span class="string">'column2'</span>);</div></pre></td></tr></table></figure>
+<p>如果你想要中间表自动维护 <code>created_at</code> 和 <code>updated_at</code> 时间戳，你可以在定义关联时使用 <code>withTimestamps</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>)-&gt;withTimestamps();</div></pre></td></tr></table></figure>
+<p><strong>通过中间表字段过滤关系</strong></p>
+<p>你可以通过在定义关联时使用 <code>wherePrivot</code> 和 <code>wherePivotIn</code> 方法来在返回的结果中进行过滤：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>)-&gt;wherePivot(<span class="string">'approved'</span>, <span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsToMany(<span class="string">'App\Role'</span>)-&gt;wherePivotIn(<span class="string">'approved'</span>, [<span class="number">1</span>, <span class="number">2</span>]);</div></pre></td></tr></table></figure>
+<h3 id="远程一对多"><a href="#远程一对多" class="headerlink" title="远程一对多"></a>远程一对多</h3><p>远程一对多关联提供了简短便捷的方法通过中间关联件来访问远端的关联。比如，一个 <code>Country</code> 模型应该通过 <code>User</code> 模型可以拥有很多的 <code>Post</code> 模型。在这个例子中，你可以非常容易的就检索出一个国家中的所有的文章。让我们来看一下定义这些关联所需要的表:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">countries</div><div class="line">  id - integer</div><div class="line">  name - string</div><div class="line"></div><div class="line">users</div><div class="line">  id - integer</div><div class="line">  country_id - integer</div><div class="line">  name - string</div><div class="line"></div><div class="line">posts</div><div class="line">  id - integer</div><div class="line">  user_id - integer</div><div class="line">  title - string</div></pre></td></tr></table></figure>
+<p>远端的 <code>posts</code> 并没有包含 <code>country_id</code> 列，<code>hasManyThrough</code> 关联可以通过 <code>$country-&gt;posts</code> 来访问一个国家的文章。为了执行这个查询，Eloquent 会通过中间表 <code>users</code> 的 <code>country_id</code> 来检索 <code>posts</code> 表中用户 ID 相匹配的记录。</p>
+<p>现在我们已经明确了关联表的结构，那么让我们来在 <code>Country</code> 模型上定义关联：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Country</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the posts for the country.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">posts</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasManyThrough(<span class="string">'App\Post'</span>, <span class="string">'App\User'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>传递到 <code>hasManyThrough</code> 方法的第一个参数是我们最终想要访问到的模型，而第二个参数则是中间层的模型名称。</p>
+<p>当使用关联查询时，通常 Eloquent 会遵循外键约定。如果你希望对关联的键进行自定义，你可以传递第三和第四个参数到 <code>hasManyThrough</code> 方法。第三个参数是中间层模型的外键名称，第四个参数是最终想要获取的模型中的所对应的中间层的外键, 而第五个参数则是当前模型的主键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Country</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">posts</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasManyThrough(</div><div class="line">      <span class="string">'App\Post'</span>, <span class="string">'App\User'</span>,</div><div class="line">      <span class="string">'country_id'</span>, <span class="string">'user_id'</span>, <span class="string">'id'</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="多态关联"><a href="#多态关联" class="headerlink" title="多态关联"></a>多态关联</h3><p><strong>表结构</strong></p>
+<p>多态关联允许一个模型在单个关联中从属一个或多个其它模型。比如，想象一下应用中的用户可以喜欢文章及其评论。如果使用多态关联，那么你就可以使用一个单独的 <code>likes</code> 表来关联这两个场景。首先，让我们确定定义这种关联所需要的表结构：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">posts</div><div class="line">  id - integer</div><div class="line">  title - string</div><div class="line">  body - text</div><div class="line"></div><div class="line">comments</div><div class="line">  id - integer</div><div class="line">  post_id - integer</div><div class="line">  body - text</div><div class="line"></div><div class="line">likes</div><div class="line">  id - integer</div><div class="line">  likeable_id - integer</div><div class="line">  likeable_type - string</div></pre></td></tr></table></figure>
+<p>你需要注意到的两个在 <code>likes</code> 表中重要的字段 <code>likeable_id</code> 和 <code>likeable_type</code>。<code>likeable_id</code> 字段会包含文章或者评论的 ID 值，而 <code>likeable_type</code> 字段会包含其所属的模型的类名。<code>likeable_type</code> 就是当访问 <code>likeable</code> 关联时 ORM 用来判断所属的模型是哪个类型。</p>
+<p><strong>模型结构</strong></p>
+<p>接着，让我们检查一下这个关联所需要的模型定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">like</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the owning likeable models.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">likeable</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphTo();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the post's likes.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">likes</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphMany(<span class="string">'App\Like'</span>, <span class="string">'likeable'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Comment</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the comment's likes.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">likes</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphMany(<span class="string">'App\Like'</span>, <span class="string">'likeable'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>获取多态关联</strong></p>
+<p>一旦数据库表和模型都定义完成，你就可以在你的模型中访问这些关联。比如，你可以使用 <code>likes</code> 动态属性来访问文章中所有关联的 likes 模型:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$post = App\Post::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($post-&gt;likes <span class="keyword">as</span> $like) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以通过在模型上调用提供 <code>morphTo</code> 的方法来获取多态模型其关系所有者。在上面的例子中，指的就是 <code>Like</code> 模型中的 <code>likeable</code> 方法。所以，我们可以像使用动态属性一样使用方法来进行访问：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$like = App\Like::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$likeable = $like-&gt;likeable;</div></pre></td></tr></table></figure>
+<p><code>Like</code> 模型的 <code>likeable</code> 关联将会返回一个 <code>Post</code> 或者 <code>Comment</code> 实例，这取决于其所属者的类型。</p>
+<p><strong>自定义多态类型</strong></p>
+<p>默认的，Laravel 会使用包完全限定类名来存储所关联模型的类型。比如，上面的例子中 <code>Like</code> 可以属于 <code>Post</code> 或者 <code>Comment</code>。默认的 <code>likeable_type</code> 应该是 <code>App\Post</code> 或者 <code>App\Comment</code>。事实上，你可能希望从你的应用程序的内部结构分离数据库。在这个例子中，你可以定义一个关联的多态映射来指导 Eloquent 使用模型关联的表名称来替代类名：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Relations</span>\<span class="title">Relation</span>;</div><div class="line"></div><div class="line">Relation::morphMap([</div><div class="line">  App\Post::class,</div><div class="line">  App\Comment::class,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>或者，你可以指定一个自定的字符串与每个模型进行关联：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Relations</span>\<span class="title">Relation</span>;</div><div class="line"></div><div class="line">Relation::morphMap([</div><div class="line">  <span class="string">'posts'</span> =&gt; App\Post::class,</div><div class="line">  <span class="string">'likes'</span> =&gt; App\Like::class,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>你可以在你的 <code>AppServiceProvider</code> 或者一个分离的服务提供者的 <code>boot</code> 方法中注册你的 <code>morphMap</code>。</p>
+<h3 id="多态多对多关联"><a href="#多态多对多关联" class="headerlink" title="多态多对多关联"></a>多态多对多关联</h3><p><strong>表结构</strong></p>
+<p>除了传统的多态关联，你也可以定义多对多的多态关联。比如，一个博客的 <code>Post</code> 和 <code>Video</code> 模型应该可以共享一个多态关联的 <code>Tag</code> 模型。使用多对多的多态关联可以允许你的博客文章和视频能够共享独特标签的单个列表。首先，让我们来看一下表结构：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">posts</div><div class="line">  id - integer</div><div class="line">  name - string</div><div class="line"></div><div class="line">videos</div><div class="line">  id - integer</div><div class="line">  name - string</div><div class="line"></div><div class="line">tags</div><div class="line">  id - integer</div><div class="line">  name - string</div><div class="line"></div><div class="line">taggables</div><div class="line">  tag_id - integer</div><div class="line">  taggable_id - integer</div><div class="line">  taggable_type - string</div></pre></td></tr></table></figure>
+<p><strong>模型结构</strong></p>
+<p>接着，我们来定义模型中的关联。<code>Post</code> 和 <code>Video</code> 模型将都会包含调用基础 Eloquent 类的 <code>morphToMany</code> 方法的 <code>tags</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the tags for the post.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">tags</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphToMany(<span class="string">'App\Tag'</span>, <span class="string">'taggable'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>定义相对的关联</strong></p>
+<p>接着，在 <code>Tag</code> 模型中，你应该为所有关联模型定义相应的方法。所以，在这个例子中，我们将定义 <code>posts</code> 方法和 <code>videos</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the posts that are assigned this tag.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">posts</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphedByMany(<span class="string">'App\Post'</span>, <span class="string">'taggable'</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the videos that are assigned this tag.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">videos</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;morphedByMany(<span class="string">'App\Video'</span>, <span class="string">'taggable'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>获取关联</strong></p>
+<p>当定义完成数据表和模型之后，你就可以通过模型来访问其关联。比如，你可以简单的使用 <code>tags</code> 动态属性来访问文章的所有标签模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$post = App\Post::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($post-&gt;tags <span class="keyword">as</span> $tag) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以通过访问模型中提供执行 <code>morphedByMany</code> 方法的方法来获取关联模型的所属模型。在上面的例子中，就是 <code>Tag</code> 模型上的 <code>posts</code> 或者 <code>videos</code> 方法。所以，你可以像动态属性一样访问这些方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$tab = App\Tag::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($tag-&gt;videos <span class="keyword">as</span> $video) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="关联查询"><a href="#关联查询" class="headerlink" title="关联查询"></a>关联查询</h2><p>由于所有的 Eloquent 关联类型都是通过方法定义的，所以你可以调用这些方法来获取所关联的模型的实例而无需实际的执行关联查询。另外，所有的 Eloquent 关联也都提供了查询生成器服务，这允许你可以继续的链式执行查询操作。</p>
+<p>比如，想象一下博客系统中 <code>User</code> 模型拥有很多 <code>Post</code> 关联的模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?</span>ph</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get all of the posts for the user.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">posts</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasMany(<span class="string">'App\Post'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以查询 <code>posts</code> 关联的同时添加一些额外的查询约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;posts()-&gt;where(<span class="string">'active'</span>, <span class="number">1</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>你应该注意到了，你可以在关联中使用任何的查询生成器的方法。</p>
+<p><strong>关联方法 Vs. 动态属性</strong></p>
+<p>如果你不需要在进行 Eloquent 关联查询时添加额外的约束，你可以简单的像它的属性一样进行访问。比如，我们继续使用 <code>User</code> 和 <code>Post</code> 示例模型。我们可以像这样来访问用户的所有文章：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($user-&gt;posts <span class="keyword">as</span> $post) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>动态属性是惰性加载的，这意味着在你实际访问他们之前，其关联数据是不会加载的。正因为如此，开发的时候通常使用预加载来进行加载一些即将用到的关联模型。预加载要求必须加载一个模型的关系，这有效的减少了查询的次数。</p>
+<p><strong>查询关联是否存在</strong></p>
+<p>当访问一个模型的记录时，你可能会希望基于关联的记录是否存在来对结果进行限制。比如，想象一下你希望获取最少有一条评论的博客文章。你可以传递关联的名称到 <code>has</code> 方法来做这些：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve all posts that have at least one comment...</span></div><div class="line">$posts = App\Post::has(<span class="string">'comments'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>你也可以指定操作符，和数量来进一步定制查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve all posts that have three or more comments...</span></div><div class="line">$posts = Post::has(<span class="string">'comments'</span>, <span class="string">'&gt;='</span>, <span class="number">3</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>.</code> 语法来构造嵌套的 <code>has</code> 语句。比如，你可以获取所有包含至少一条评论和投票的文章：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve all posts that hava at least one comment with votes...</span></div><div class="line">$posts = Post::has(<span class="string">'comments.votes'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p>如果你需要更高的控制，你可以使用 <code>whereHas</code> 和 <code>orWhereHas</code> 方法来在 <code>has</code> 查询中插入 <code>where</code> 子句。这些方法允许你为关联进行自定义的约束查询。比如检查评论的内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Retrieve all posts with at least one comment containing words like foo%</span></div><div class="line">$posts = Post::whereHas(<span class="string">'comments'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">  $query-&gt;where(<span class="string">'content'</span>, <span class="string">'like'</span>, <span class="string">'foo%'</span>); </div><div class="line">&#125;)-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>统计关联结果</strong></p>
+<p>如果你希望统计关联的结果而不实际的加载它们，你可以使用 <code>withCount</code> 方法，这将在你的结果模型中添加 <code>{relation}_count</code> 列。比如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$posts = App\Post::withCount(<span class="string">'comments'</span>)-&gt;get();</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($posts <span class="keyword">as</span> $post) &#123;</div><div class="line">  <span class="keyword">echo</span> $post-&gt;comments_count;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以同时检索多个关联的统计，以及添加查询约束：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$posts = Post::withCount([<span class="string">'votes'</span>, <span class="string">'comments'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">  $query-&gt;where(<span class="string">'content'</span>, <span class="string">'like'</span>, <span class="string">'foo%'</span>);</div><div class="line">&#125;])-&gt;get();</div><div class="line"></div><div class="line"><span class="keyword">echo</span> $posts[<span class="number">0</span>]-&gt;votes_count;</div><div class="line"><span class="keyword">echo</span> $posts[<span class="number">0</span>]-&gt;comments_count;</div></pre></td></tr></table></figure>
+<h3 id="预加载"><a href="#预加载" class="headerlink" title="预加载"></a>预加载</h3><p>当通过属性访问 Eloquent 关联时，该关联的数据会被延迟加载。这意味着该关联数据只有在你真实的访问属性时才会进行加载。事实上，Eloquent 可以在上层模型中一次性预加载的。预加载有效避免了 N + 1 的查找问题。要说明 N + 1 查找问题，我们可以来看一个 <code>Author</code> 关联 <code>Book</code> 的示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the author that wrote the book.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">author</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\Author'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，让我们检索所有的书籍和他们的作者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$books = App\Book::all();</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($books <span class="keyword">as</span> $book) &#123;</div><div class="line">  <span class="keyword">echo</span> $book-&gt;author-&gt;name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个循环会执行一次查找回所有的书籍，接着每本书会运行一次查找作者的操作。所以，如果我们拥有 25 本书，那么循环将会进行 26 次查询：1 次查询所有的书籍，25 次查询相关书籍的作者。</p>
+<p>非常幸运的，我们可以使用预加载来将查询有效的控制在 2 次。当查询时，使用 <code>with</code> 方法来指定关联的预加载：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$books = App\Book::with(<span class="string">'author'</span>)-&gt;get();</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> ($books <span class="keyword">as</span> $book) &#123;</div><div class="line">  <span class="keyword">echo</span> $book-&gt;author-&gt;name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于这个操作，只会执行两个查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">select * from books</div><div class="line"></div><div class="line">select * from authors where id in (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, ...)</div></pre></td></tr></table></figure>
+<p><strong>预加载多个关联</strong></p>
+<p>有时候你可能需要在一个操作中预加载多个关联，你只需要传递额外的参数到 <code>with</code> 方法中就可以：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$books = App\Book::with(<span class="string">'author'</span>, <span class="string">'publisher'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<p><strong>嵌套的预加载</strong></p>
+<p>你可以使用 <code>.</code> 语法来加载嵌套的关联。比如，让我们在一个 Eloquent 语句中一次加载所有书籍的作者以及作者的私人通讯簿：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$books = App\Book::with(<span class="string">'author.contacts'</span>)-&gt;get();</div></pre></td></tr></table></figure>
+<h3 id="预加载约束"><a href="#预加载约束" class="headerlink" title="预加载约束"></a>预加载约束</h3><p>有时候你可能希望预加载一些关联，但是也需要对预加载查询指定额外的约束，这里有个示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = App\User::with([<span class="string">'posts'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">  $query-&gt;where(<span class="string">'title'</span>, <span class="string">'like'</span>, <span class="string">'%first%'</span>);</div><div class="line">&#125;])-&gt;get();</div></pre></td></tr></table></figure>
+<p>在这个例子中，Eloquent 会值预加载文章的 <code>title</code> 列包含 <code>first</code> 单词的记录。当然，你也可以调用其他查询生成器可用的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$users = App\User::with([<span class="string">'posts'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">  $query-&gt;orderBy(<span class="string">'created_at'</span>, <span class="string">'desc'</span>);</div><div class="line">&#125;])-&gt;get();</div></pre></td></tr></table></figure>
+<h3 id="延迟预加载"><a href="#延迟预加载" class="headerlink" title="延迟预加载"></a>延迟预加载</h3><p>有时候你可能需要在上层模型被获取后才预加载其关联。当你需要来动态决定是否加载关联模型时尤其有用:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$books = App\Book::all();</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($someCondition) &#123;</div><div class="line">  $books-&gt;load(<span class="string">'author'</span>, <span class="string">'publisher'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你需要对预加载做一些查询约束，你可以传递 <code>Closure</code> 到 <code>load</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$books-&gt;load([<span class="string">'author'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">($query)</span> </span>&#123;</div><div class="line">  $query-&gt;orderBy(<span class="string">'published_date'</span>, <span class="string">'asc'</span>);</div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<h2 id="插入关系模型"><a href="#插入关系模型" class="headerlink" title="插入关系模型"></a>插入关系模型</h2><p><strong>Save 方法</strong></p>
+<p>Eloquent 提供了方便的方法来为模型添加一个关联。比如，也许你需要为 <code>Post</code> 模型新增一个 <code>Comment</code>。除了手动的设置 <code>Comment</code> 的 <code>post_id</code> 属性，你也可以直接在关联模型中调用 <code>save</code> 方法来插入 <code>Comment</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$comment = <span class="keyword">new</span> App\Comment([<span class="string">'message'</span> =&gt; <span class="string">'A new comment.'</span>]);</div><div class="line"></div><div class="line">$post = App\Post::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$post-&gt;comments()-&gt;save($comment);</div></pre></td></tr></table></figure>
+<p>注意上面我们并没有使用关联模型的动态属性的方式来访问 <code>comments</code>，而是使用 <code>comments</code> 方法的形式来获取关联模型的实例。<code>save</code> 方法会自动的添加相应的 <code>post_id</code> 值到新的 <code>Comment</code> 模型上。</p>
+<p>如果你需要一次添加多个关联模型，你需要使用 <code>saveMany</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$post = App\Post::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$post-&gt;comments()-&gt;saveMany([</div><div class="line">  <span class="keyword">new</span> App\Comment([<span class="string">'message'</span> =&gt; <span class="string">'A new comment.'</span>]),</div><div class="line">  <span class="keyword">new</span> App\Comment([<span class="string">'message'</span> =&gt; <span class="string">'Another comment.'</span>]),</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p><strong>Save &amp; 多对多关联</strong></p>
+<p>当与多对多关联互动时，<code>save</code> 方法接收一个中间层表属性的额外参数数组作为第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">App\User::find(<span class="number">1</span>)-&gt;roles()-&gt;save($role, [<span class="string">'expires'</span> =&gt; $expires]);</div></pre></td></tr></table></figure>
+<p><strong>Create 方法</strong></p>
+<p>除了 <code>save</code> 和 <code>saveMany</code> 方法之外，你也可以使用 <code>create</code> 方法，它可以接收属性组成的数组，创建一个模型并且将其存储到数据库。这一次，<code>save</code> 和 <code>create</code> 方法的区别是 <code>save</code> 接收一个完整的 Eloquent 模型实例，而 <code>create</code> 接收的是一个原生的 PHP <code>array</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$post = App\Post::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$comment = $post-&gt;comments()-&gt;create([</div><div class="line">  <span class="string">'message'</span> =&gt; <span class="string">'A new comment.'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>在使用 <code>create</code> 方法之前，你应该确保已经阅读了属性的 <a href="https://laravel.com/docs/5.2/eloquent#mass-assignment" target="_blank" rel="external">批量赋值文档</a>。</p>
+<p><strong>更新从属关联模型</strong></p>
+<p>当更新一个 <code>belongsTo</code> 关联时，你应该使用 <code>associate</code> 方法。这个方法会在下层模型中设置外键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$account = App\Account::find(<span class="number">10</span>);</div><div class="line"></div><div class="line">$user-&gt;account()-&gt;associate($account);</div><div class="line"></div><div class="line">$user-&gt;save();</div></pre></td></tr></table></figure>
+<p>当删除 <code>belongsTo</code> 关联时，你应该使用 <code>dissociate</code> 方法，该方法会重置下层模型所关联的外键：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;account()-&gt;dissociate();</div><div class="line"></div><div class="line">$user-&gt;save();</div></pre></td></tr></table></figure>
+<h3 id="多对多关联"><a href="#多对多关联" class="headerlink" title="多对多关联"></a>多对多关联</h3><p><strong>附加 / 抽离</strong></p>
+<p>当使用多对多关联时，Eloquent 提供了一些额外的帮助方法来更方便的管理关联模型。比如，让我们想象一下用户可以有很多角色并且角色可以有很多用户。你可以使用 <code>attach</code> 方法来附加一个角色到用户并且在中间表中加入这条记录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;roles()-&gt;attach($roleId);</div></pre></td></tr></table></figure>
+<p>当附加关联到模型时，你也可以传递一个含有额外数据的数组来将其添加到中间表中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;roles()-&gt;attach($roleId, [<span class="string">'expires'</span> =&gt; $expires]);</div></pre></td></tr></table></figure>
+<p>当然，有时候你可能需要从用户中删除一个角色。你可以使用 <code>detach</code> 方法来删除多对多关联的记录。<code>datech</code> 方法将从中间表中删除相应的记录。但是，除了中间表，其它两个模型的记录都还会被保留：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Detach a single role from the user...</span></div><div class="line">$user-&gt;roles()-&gt;detach($roleId);</div><div class="line"></div><div class="line"><span class="comment">// Detach all roles from the user...</span></div><div class="line">$user-&gt;roles()-&gt;detach();</div></pre></td></tr></table></figure>
+<p>为了更加的便捷，<code>attach</code> 和 <code>detach</code> 也可以接收 IDs 所组成的数组作为输入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;roles()-&gt;detach([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</div><div class="line"></div><div class="line">$user-&gt;roles()-&gt;attach([<span class="number">1</span> =&gt; [<span class="string">'expires'</span> =&gt; $expires], <span class="number">2</span>, <span class="number">3</span>]);</div></pre></td></tr></table></figure>
+<p><strong>更新中间表的记录</strong><br>如果你需要更新中间表中存在的行，你可以使用 <code>updateExistingPivot</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;roles()-&gt;updateExistingPivot($roleId, $attributes);</div></pre></td></tr></table></figure>
+<p><strong>便利的同步</strong></p>
+<p>你也可以使用 <code>sync</code> 方法来构建多对多的关联。<code>sync</code> 方法接收放置中间表 IDs 所组成的数组。任意 IDs 如果没有在所给定的数组中，那么其将会从中间表中进行删除。所以，在操作完成之后，只有存在于给定数组里的 IDs 才会存在于中间表中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;roles()-&gt;sync([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</div></pre></td></tr></table></figure>
+<p>你也可以同时传递额外的中间表的键值对：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;roles()-&gt;sync([<span class="number">1</span> =&gt; [<span class="string">'expires'</span> =&gt; <span class="keyword">true</span>], <span class="number">2</span>, <span class="number">3</span>]);</div></pre></td></tr></table></figure>
+<p><strong>联动上层模型时间戳</strong></p>
+<p>当一个模型 <code>belongsTo</code> 或者 <code>belongsToMany</code> 另外一个模型时，比如 <code>Comment</code> 从属于 <code>Post</code>，这对下层模型更新时同时要求更新上层模型的时间戳时很有帮助。比如，当 <code>Comment</code> 模型更新了，你想要自动的更新其所属的 <code>Post</code> 模型的 <code>updated_at</code> 时间戳。Eloquent 使之变的非常容易。你只需要在下层模型中添加一个 <code>touches</code> 属性来包含关联的名称就可以了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Comment</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * All of the relationships to be touched.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">protected</span> $touches = [<span class="string">'post'</span>];</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Get the post that the comment belongs to.</span></div><div class="line"><span class="comment">   */</span></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">post</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;belongsTo(<span class="string">'App\Post'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，当你更新 <code>Comment</code> 时，其所属的 <code>Post</code> 将会同时更新 <code>updated_at</code> 列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$comment = App\Comment::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$comment-&gt;text = <span class="string">'Edit to this comment!'</span>;</div><div class="line"></div><div class="line">$comment-&gt;save();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/24/laravel-from-scratch-eloquent/" rel="next" title="laravel 基础教程 —— Eloquent">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Eloquent
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/26/laravel-from-scratch-eloquent-collection/" rel="prev" title="laravel 基础教程 —— Eloquent 集合">
+                laravel 基础教程 —— Eloquent 集合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eloquent-关联模型"><span class="nav-number">1.</span> <span class="nav-text">Eloquent: 关联模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义关联"><span class="nav-number">1.2.</span> <span class="nav-text">定义关联</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一对一"><span class="nav-number">1.2.1.</span> <span class="nav-text">一对一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多"><span class="nav-number">1.2.2.</span> <span class="nav-text">一对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多"><span class="nav-number">1.2.3.</span> <span class="nav-text">多对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#远程一对多"><span class="nav-number">1.2.4.</span> <span class="nav-text">远程一对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态关联"><span class="nav-number">1.2.5.</span> <span class="nav-text">多态关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态多对多关联"><span class="nav-number">1.2.6.</span> <span class="nav-text">多态多对多关联</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联查询"><span class="nav-number">1.3.</span> <span class="nav-text">关联查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预加载"><span class="nav-number">1.3.1.</span> <span class="nav-text">预加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预加载约束"><span class="nav-number">1.3.2.</span> <span class="nav-text">预加载约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟预加载"><span class="nav-number">1.3.3.</span> <span class="nav-text">延迟预加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入关系模型"><span class="nav-number">1.4.</span> <span class="nav-text">插入关系模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多关联"><span class="nav-number">1.4.1.</span> <span class="nav-text">多对多关联</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

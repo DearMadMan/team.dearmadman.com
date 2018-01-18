@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="帮助方法简介Laravel 包含了多中“帮手” PHP 函数，很多方法都在框架中进行了使用，如果你发现他们很方便，你也可以在自己的应用中使用。 方法名单数组array_add()array_add 方法用来在数组中添加键值对，它仅会在数组中不存在所给定的键时才会添加： 123$array = array_add([&apos;name&apos; =&amp;gt; &apos;Desk&apos;], &apos;price&apos;, 100);// [&apos;n">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 帮助方法">
+<meta property="og:url" content="http://yoursite.com/2016/06/07/laravel-from-scratch-helpers/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="帮助方法简介Laravel 包含了多中“帮手” PHP 函数，很多方法都在框架中进行了使用，如果你发现他们很方便，你也可以在自己的应用中使用。 方法名单数组array_add()array_add 方法用来在数组中添加键值对，它仅会在数组中不存在所给定的键时才会添加： 123$array = array_add([&apos;name&apos; =&amp;gt; &apos;Desk&apos;], &apos;price&apos;, 100);// [&apos;n">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 帮助方法">
+<meta name="twitter:description" content="帮助方法简介Laravel 包含了多中“帮手” PHP 函数，很多方法都在框架中进行了使用，如果你发现他们很方便，你也可以在自己的应用中使用。 方法名单数组array_add()array_add 方法用来在数组中添加键值对，它仅会在数组中不存在所给定的键时才会添加： 123$array = array_add([&apos;name&apos; =&amp;gt; &apos;Desk&apos;], &apos;price&apos;, 100);// [&apos;n">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/07/laravel-from-scratch-helpers/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 帮助方法 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/07/laravel-from-scratch-helpers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 帮助方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-07T23:45:45+08:00">
+                2016-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="帮助方法"><a href="#帮助方法" class="headerlink" title="帮助方法"></a>帮助方法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel 包含了多中“帮手” PHP 函数，很多方法都在框架中进行了使用，如果你发现他们很方便，你也可以在自己的应用中使用。</p>
+<h2 id="方法名单"><a href="#方法名单" class="headerlink" title="方法名单"></a>方法名单</h2><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="array-add"><a href="#array-add" class="headerlink" title="array_add()"></a>array_add()</h3><p><code>array_add</code> 方法用来在数组中添加键值对，它仅会在数组中不存在所给定的键时才会添加：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$array = array_add([<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>], <span class="string">'price'</span>, <span class="number">100</span>);</div><div class="line"></div><div class="line"><span class="comment">// ['name' =&gt; 'Desk', 'price' =&gt; 100]</span></div></pre></td></tr></table></figure>
+<h3 id="array-collapse"><a href="#array-collapse" class="headerlink" title="array_collapse()"></a>array_collapse()</h3><p><code>array_collapse</code> 方法会将坍塌数组到一个单一的数组中。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$array = array_collapse([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]])</div><div class="line"></div><div class="line"><span class="comment">// [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div></pre></td></tr></table></figure>
+<h3 id="array-divide"><a href="#array-divide" class="headerlink" title="array_divide()"></a>array_divide()</h3><p><code>array_divide</code> 方法将会分列数组，它会返回两个数组，一个数组包含了原数组的所有的键，另一个数组包含原数组所有的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">list</span>($keys, $values) = array_divide([<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>]);</div><div class="line"></div><div class="line"><span class="comment">// $keys: ['name']</span></div><div class="line"></div><div class="line"><span class="comment">// $values: ['Desk']</span></div></pre></td></tr></table></figure>
+<h3 id="array-dot"><a href="#array-dot" class="headerlink" title="array_dot()"></a>array_dot()</h3><p><code>array_dot</code> 方法将数组从多维降低为一维数组，它使用 <code>.</code> 符号来表明其深度：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$array = array_dot([<span class="string">'foo'</span> =&gt; [<span class="string">'bar'</span> =&gt; <span class="string">'baz'</span>]]);</div><div class="line"></div><div class="line"><span class="comment">// ['foo.bar' =&gt; 'baz'];</span></div></pre></td></tr></table></figure>
+<h3 id="array-except"><a href="#array-except" class="headerlink" title="array_except()"></a>array_except()</h3><p><code>array_except</code> 方法从数组中移除指定的键值对：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>, <span class="string">'price'</span> =&gt; <span class="number">100</span>];</div><div class="line"></div><div class="line">$array = array_except($array, [<span class="string">'price'</span>]);</div><div class="line"></div><div class="line"><span class="comment">// ['name' =&gt; 'Desk']</span></div></pre></td></tr></table></figure>
+<h3 id="array-first"><a href="#array-first" class="headerlink" title="array_first()"></a>array_first()</h3><p><code>array_first</code> 方法返回数组回调迭代中第一个返回真值的元素:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>];</div><div class="line"></div><div class="line">$value = array_first($array, <span class="function"><span class="keyword">function</span> <span class="params">($key, $value)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $value &gt;= <span class="number">150</span>; </div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 200</span></div></pre></td></tr></table></figure>
+<p>你也可以在第三个参数中传递一个默认值，如果迭代结束仍未返回真值，将返回默认值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = array_first($array, $callback, $default);</div></pre></td></tr></table></figure>
+<h3 id="array-flatten"><a href="#array-flatten" class="headerlink" title="array_flatten()"></a>array_flatten()</h3><p><code>array_flatten</code> 方法会将多维数组降为一维数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'name'</span> =&gt; <span class="string">'Joe'</span>, <span class="string">'languages'</span> =&gt; [<span class="string">'PHP'</span>, <span class="string">'Ruby'</span>]];</div><div class="line"></div><div class="line">$array = array_flatten($array);</div><div class="line"></div><div class="line"><span class="comment">// ['Joe', 'PHP', 'Ruby'];</span></div></pre></td></tr></table></figure>
+<h3 id="array-forget"><a href="#array-forget" class="headerlink" title="array_forget()"></a>array_forget()</h3><p><code>array_forget</code> 方法可以使用 <code>.</code> 语法来删除数组中嵌套的键值对:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'products'</span> =&gt; [<span class="string">'desk'</span> =&gt; [<span class="string">'price'</span> =&gt; <span class="number">100</span>]]];</div><div class="line"></div><div class="line">array_forget($array, <span class="string">'products.desk'</span>);</div><div class="line"></div><div class="line"><span class="comment">// ['products' =&gt; []]</span></div></pre></td></tr></table></figure>
+<h3 id="array-get"><a href="#array-get" class="headerlink" title="array_get()"></a>array_get()</h3><p><code>array_get</code> 方法可以使用 <code>.</code> 语法来从数组中检索嵌套的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'products'</span> =&gt; [<span class="string">'desk'</span> =&gt; [<span class="string">'price'</span> =&gt; <span class="number">100</span>]]];</div><div class="line"></div><div class="line">$value = array_get($array, <span class="string">'products.desk'</span>);</div><div class="line"></div><div class="line"><span class="comment">// ['price' =&gt; 100]</span></div></pre></td></tr></table></figure>
+<p><code>array_get</code> 方法也可以接收第三个参数，用来作为默认值，如果数组中并没有检索到相应的值，将会返回默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = array_get($array, <span class="string">'names.john'</span>, <span class="string">'default'</span>);</div></pre></td></tr></table></figure>
+<h3 id="array-has"><a href="#array-has" class="headerlink" title="array_has()"></a>array_has()</h3><p><code>array_has</code> 方法允许使用 <code>.</code> 语法来检查数组中是否含有给定的项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'products'</span> =&gt; [<span class="string">'desk'</span> =&gt; [<span class="string">'price'</span> =&gt; <span class="number">100</span>]]];</div><div class="line"></div><div class="line">$hasDesk = array_has($array, <span class="string">'products.desk'</span>);</div><div class="line"></div><div class="line"><span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="array-only"><a href="#array-only" class="headerlink" title="array_only()"></a>array_only()</h3><p><code>array_only</code> 方法会给定的数组中返回指定的键值对：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>, <span class="string">'price'</span> =&gt; <span class="number">100</span>, <span class="string">'orders'</span> =&gt; <span class="number">10</span>];</div><div class="line"></div><div class="line">$array = array_only($array, [<span class="string">'name'</span>, <span class="string">'price'</span>]);</div><div class="line"></div><div class="line"><span class="comment">// ['name' =&gt; 'Desk', 'price' =&gt; 100]</span></div></pre></td></tr></table></figure>
+<h3 id="array-pluck"><a href="#array-pluck" class="headerlink" title="array_pluck()"></a>array_pluck()</h3><p><code>array_pluck</code> 方法摘取数组中所给定的键值对：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$array = [</div><div class="line">  [<span class="string">'developer'</span> =&gt; [<span class="string">'id'</span> =&gt; <span class="number">1</span>, <span class="string">'name'</span> =&gt; <span class="string">'Taylor'</span>]],</div><div class="line">  [<span class="string">'developer'</span> =&gt; [<span class="string">'id'</span> =&gt; <span class="number">2</span>, <span class="string">'name'</span> =&gt; <span class="string">'Abigail'</span>]],</div><div class="line">];</div><div class="line"></div><div class="line">$array = array_pluck($array, <span class="string">'developer.name'</span>);</div><div class="line"></div><div class="line"><span class="comment">// ['Taylor', 'Abigail'];</span></div></pre></td></tr></table></figure>
+<p>你可以可以指定希望返回的结果如何键化：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$array = array_pluck($array, <span class="string">'developer.name'</span>, <span class="string">'developer.id'</span>);</div><div class="line"></div><div class="line"><span class="comment">// [1 =&gt; 'Taylor', 2 =&gt; 'Abigail'];</span></div></pre></td></tr></table></figure>
+<h3 id="array-prepend"><a href="#array-prepend" class="headerlink" title="array_prepend()"></a>array_prepend()</h3><p><code>array_prepend</code> 方法会在数组的起始端加入项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>, <span class="string">'four'</span>];</div><div class="line"></div><div class="line">$array = array_prepend($array, <span class="string">'zero'</span>);</div><div class="line"></div><div class="line"><span class="comment">// $array: ['zero', 'one', 'two', 'three', 'four']</span></div></pre></td></tr></table></figure>
+<h3 id="array-pull"><a href="#array-pull" class="headerlink" title="array_pull()"></a>array_pull()</h3><p><code>array_pull</code> 方法从数组中返回键值对并将其在数组中进行剔除：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>, <span class="string">'price'</span> =&gt; <span class="number">100</span>];</div><div class="line"></div><div class="line">$name = array_pull($array, <span class="string">'name'</span>)</div><div class="line"></div><div class="line"><span class="comment">// $name: Desk</span></div><div class="line"><span class="comment">// $array: ['price' =&gt; 100]</span></div></pre></td></tr></table></figure>
+<h3 id="array-set"><a href="#array-set" class="headerlink" title="array_set()"></a>array_set()</h3><p><code>array_set</code> 方法使用 <code>.</code> 语法对数组中的项进行设置值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="string">'products'</span> =&gt; [<span class="string">'desk'</span> =&gt; [<span class="string">'price'</span> =&gt; <span class="number">100</span>]]];</div><div class="line"></div><div class="line">array_set($array, <span class="string">'products.desk.price'</span>, <span class="number">200</span>);</div><div class="line"></div><div class="line"><span class="comment">// ['products' =&gt; ['desk' =&gt; ['price' =&gt; 200]]]</span></div></pre></td></tr></table></figure>
+<h3 id="array-sort"><a href="#array-sort" class="headerlink" title="array_sort()"></a>array_sort()</h3><p><code>array_sort</code> 方法会根据给定闭包所返回的结果对数组进行排序：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$array = [</div><div class="line">  [<span class="string">'name'</span> =&gt; <span class="string">'Desk'</span>],</div><div class="line">  [<span class="string">'name'</span> =&gt; <span class="string">'Chair'</span>],</div><div class="line">];</div><div class="line"></div><div class="line">$array = array_values(array_sort($array, <span class="function"><span class="keyword">function</span> <span class="params">($value)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $value[<span class="string">'name'</span>];</div><div class="line">&#125;));</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">   [</span></div><div class="line"><span class="comment">    ['name' =&gt; 'Chair'],</span></div><div class="line"><span class="comment">    ['name' =&gt; 'Desk'],</span></div><div class="line"><span class="comment">   ]</span></div><div class="line"><span class="comment"> */</span></div></pre></td></tr></table></figure>
+<h3 id="array-sort-recursive"><a href="#array-sort-recursive" class="headerlink" title="array_sort_recursive()"></a>array_sort_recursive()</h3><p><code>array_sort_recursive</code> 方法会对数组进行递归的使用 <code>sort</code> 方法排序：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">$array = [</div><div class="line">  [</div><div class="line">    <span class="string">'Roman'</span>,</div><div class="line">    <span class="string">'Taylor'</span>,</div><div class="line">    <span class="string">'Li'</span>,</div><div class="line">  ],</div><div class="line">  [</div><div class="line">    <span class="string">'PHP'</span>,</div><div class="line">    <span class="string">'Ruby'</span>,</div><div class="line">    <span class="string">'JavaScript'</span>,</div><div class="line">  ],</div><div class="line">];</div><div class="line"></div><div class="line">$array = array_sort_recursive($array);</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">  [</span></div><div class="line"><span class="comment">    [</span></div><div class="line"><span class="comment">      'Li',</span></div><div class="line"><span class="comment">      'Roman',</span></div><div class="line"><span class="comment">      'Taylor',</span></div><div class="line"><span class="comment">    ],</span></div><div class="line"><span class="comment">    [</span></div><div class="line"><span class="comment">      'JavaScript',</span></div><div class="line"><span class="comment">      'PHP',</span></div><div class="line"><span class="comment">      'Ruby',</span></div><div class="line"><span class="comment">    ],</span></div><div class="line"><span class="comment">  ];</span></div><div class="line"><span class="comment"> */</span></div></pre></td></tr></table></figure>
+<h3 id="array-where"><a href="#array-where" class="headerlink" title="array_where()"></a>array_where()</h3><p><code>array_where</code> 方法会根据给定的闭包对数组进行过滤：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="number">100</span>, <span class="string">'200'</span>, <span class="number">300</span>, <span class="string">'400'</span>, <span class="number">500</span>];</div><div class="line"></div><div class="line">$array = array_where($array, <span class="function"><span class="keyword">function</span> <span class="params">($key, $value)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> is_string($value);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// [1 =&gt; 200, 3 =&gt; 400]</span></div></pre></td></tr></table></figure>
+<h3 id="head"><a href="#head" class="headerlink" title="head()"></a>head()</h3><p><code>head</code> 方法简单的从数组中返回其首个元素：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>];</div><div class="line"></div><div class="line">$first = head($array);</div><div class="line"></div><div class="line"><span class="comment">// 100</span></div></pre></td></tr></table></figure>
+<h3 id="last"><a href="#last" class="headerlink" title="last()"></a>last()</h3><p><code>last</code> 方法返回所给定数组中的最后一个元素：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$array = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>];</div><div class="line"></div><div class="line">$last = last($array);</div><div class="line"></div><div class="line"><span class="comment">// 300</span></div></pre></td></tr></table></figure>
+<h2 id="Paths"><a href="#Paths" class="headerlink" title="Paths"></a>Paths</h2><h3 id="app-path"><a href="#app-path" class="headerlink" title="app_path()"></a>app_path()</h3><p><code>app_path</code> 方法返回 <code>app</code> 目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = app_path();</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>app_path</code> 方法来生成相对于应用目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = app_path(<span class="string">'Http/Controllers/Controller.php'</span>);</div></pre></td></tr></table></figure>
+<h3 id="base-path"><a href="#base-path" class="headerlink" title="base_path()"></a>base_path()</h3><p><code>base_path</code> 方法返回项目根目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = base_path();</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>base_path</code> 方法来返回相对于根目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = base_path(<span class="string">'vendor/bin'</span>);</div></pre></td></tr></table></figure>
+<h3 id="config-path"><a href="#config-path" class="headerlink" title="config_path()"></a>config_path()</h3><p><code>config_path</code> 方法用来返回应用的配置文件目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = config_path();</div></pre></td></tr></table></figure>
+<h3 id="database-path"><a href="#database-path" class="headerlink" title="database_path()"></a>database_path()</h3><p><code>database_path</code> 方法返回应用的数据库目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = database_path();</div></pre></td></tr></table></figure>
+<h3 id="elixir"><a href="#elixir" class="headerlink" title="elixir()"></a>elixir()</h3><p><code>elixir</code> 方法返回版本化的文件路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elixir($file);</div></pre></td></tr></table></figure>
+<h3 id="public-path"><a href="#public-path" class="headerlink" title="public_path()"></a>public_path()</h3><p><code>public_path</code> 方法返回 <code>public</code> 目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = public_path();</div></pre></td></tr></table></figure>
+<h3 id="storage-path"><a href="#storage-path" class="headerlink" title="storage_path()"></a>storage_path()</h3><p><code>storage_path</code> 方法返回 <code>storage</code> 目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = storage_path();</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>storage_path</code> 方法来生成相对目录的完整路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$path = storage_path(<span class="string">'app/file.txt'</span>);</div></pre></td></tr></table></figure>
+<h2 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h2><h3 id="camel-case"><a href="#camel-case" class="headerlink" title="camel_case()"></a>camel_case()</h3><p><code>camel_case</code> 方法将给定字符串转换成 <code>camelCase</code> 格式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$camel = camel_case(<span class="string">'foo_bar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// fooBar</span></div></pre></td></tr></table></figure>
+<h3 id="class-basename"><a href="#class-basename" class="headerlink" title="class_basename()"></a>class_basename()</h3><p><code>class_basename</code> 反回所给定类移除命名空间之后的类名：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$class = class_basename(<span class="string">'Foo\Bar\Baz'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Baz</span></div></pre></td></tr></table></figure>
+<h3 id="e"><a href="#e" class="headerlink" title="e()"></a>e()</h3><p><code>e</code> 方法使用 <code>htmlentities</code> 方法来过滤给定字符串：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> e(<span class="string">'&lt;html&gt;foo&lt;/html&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// &amp;lt;html&amp;gt;foo&amp;lt;/html&amp;gt;</span></div></pre></td></tr></table></figure>
+<h3 id="ends-with"><a href="#ends-with" class="headerlink" title="ends_with()"></a>ends_with()</h3><p><code>ends_with</code> 方法用来判断给定的字符串是否以给定的值结尾：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = ends_with(<span class="string">'This is my name'</span>, <span class="string">'name'</span>);</div><div class="line"></div><div class="line"><span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="snake-case"><a href="#snake-case" class="headerlink" title="snake_case()"></a>snake_case()</h3><p><code>snake_case</code> 方法将字符串转换成 <code>snake_case</code> 格式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$snake = snake_case(<span class="string">'fooBar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// foo_bar</span></div></pre></td></tr></table></figure>
+<h3 id="str-limit"><a href="#str-limit" class="headerlink" title="str_limit()"></a>str_limit()</h3><p><code>str_limit</code> 方法用来限制字符串的长度。该方法的第一个参数应该是一个字符串，而第二个参数应该是允许返回结果的最大长度：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = str_limit(<span class="string">'The PHP framework for web artisans.'</span>, <span class="number">7</span>);</div><div class="line"></div><div class="line"><span class="comment">// The PHP...</span></div></pre></td></tr></table></figure>
+<h3 id="starts-with"><a href="#starts-with" class="headerlink" title="starts_with()"></a>starts_with()</h3><p><code>starts_with</code> 方法用来判断给定的字符串是否已给定的值起始：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = starts_with(<span class="string">'This is my name'</span>, <span class="string">'This'</span>);</div><div class="line"></div><div class="line"><span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="str-finish"><a href="#str-finish" class="headerlink" title="str_finish()"></a>str_finish()</h3><p><code>str_finish</code> 方法可以在字符串的结尾添加独特的值（如果字符串不是以该值结尾）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$string = str_finish(<span class="string">'this/string'</span>, <span class="string">'/'</span>);</div><div class="line"></div><div class="line"><span class="comment">// this/string/</span></div></pre></td></tr></table></figure>
+<h3 id="str-is"><a href="#str-is" class="headerlink" title="str_is()"></a>str_is()</h3><p><code>str_is</code> 方法用来判断给定的字符串是否匹配给定的模式。可以使用星号作为通配符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$value = str_is(<span class="string">'foo*'</span>, <span class="string">'foobar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// true</span></div><div class="line"></div><div class="line">$value = str_is(<span class="string">'baz*'</span>, <span class="string">'foobar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h3 id="str-plural"><a href="#str-plural" class="headerlink" title="str_plural()"></a>str_plural()</h3><p><code>str_plural</code> 方法将字符串转换为其相应的复数形式，该方法目前只支持英语：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$plural = str_plural(<span class="string">'car'</span>);</div><div class="line"></div><div class="line"><span class="comment">// cars</span></div><div class="line"></div><div class="line">$plural = str_plural(<span class="string">'child'</span>);</div><div class="line"></div><div class="line"><span class="comment">// children</span></div></pre></td></tr></table></figure>
+<p>你可以传递一个整型值到第二个参数来表明返回单数或复数形式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$plural = str_plural(<span class="string">'child'</span>, <span class="number">2</span>);</div><div class="line"></div><div class="line"><span class="comment">// children</span></div><div class="line"></div><div class="line">$plural = str_plural(<span class="string">'child'</span>, <span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="comment">// child</span></div></pre></td></tr></table></figure>
+<h3 id="str-random"><a href="#str-random" class="headerlink" title="str_random()"></a>str_random()</h3><p><code>str_random</code> 方法根据指定的长度生成随机字符串：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$string = str_random(<span class="number">40</span>);</div></pre></td></tr></table></figure>
+<h3 id="str-singular"><a href="#str-singular" class="headerlink" title="str_singular()"></a>str_singular()</h3><p><code>str_singular</code> 方法将字符串转换为单数形式，目前只支持英语：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$singular = str_singular(<span class="string">'cars'</span>);</div><div class="line"></div><div class="line"><span class="comment">// car</span></div></pre></td></tr></table></figure>
+<h3 id="str-slug"><a href="#str-slug" class="headerlink" title="str_slug()"></a>str_slug()</h3><p><code>str_slug</code> 方法使用给定的胶连字符对给定的字符串生成 URL:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$title = str_slug(<span class="string">'Laravel 5 Framework'</span>, <span class="string">'-'</span>);</div><div class="line"></div><div class="line"><span class="comment">// laravel-5-framework</span></div></pre></td></tr></table></figure>
+<h3 id="studly-case"><a href="#studly-case" class="headerlink" title="studly_case()"></a>studly_case()</h3><p><code>studly_case</code> 方法转换给定的字符串到 <code>StudlyCase</code> 格式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = studly_case(<span class="string">'foo_bar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// FooBar</span></div></pre></td></tr></table></figure>
+<h3 id="trans"><a href="#trans" class="headerlink" title="trans()"></a>trans()</h3><p><code>trans</code> 方法根据本地文件中的语言来进行翻译：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> trans(<span class="string">'validation.required'</span>);</div></pre></td></tr></table></figure>
+<h3 id="trans-choice"><a href="#trans-choice" class="headerlink" title="trans_choice()"></a>trans_choice()</h3><p><code>trans_choice</code> 方法来转义到给定的语言，并使用相应的单复数形式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = trans_choice(<span class="string">'foo.bar'</span>, $count);</div></pre></td></tr></table></figure>
+<h2 id="URLs"><a href="#URLs" class="headerlink" title="URLs"></a>URLs</h2><h3 id="action"><a href="#action" class="headerlink" title="action()"></a>action()</h3><p><code>action</code> 方法根据给定的控制器动作生成相应的 URL。你不需要传递完整的命名空间。默认的所传递的控制器类名是相对于 <code>App\Http\Controllers</code> 的命名空间：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = action (<span class="string">'HomeController@getIndex'</span>);</div></pre></td></tr></table></figure>
+<p>如果方法接受路由参数，你可以传递第二个参数到该方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = action(<span class="string">'UserController@profile'</span>, [<span class="string">'id'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<h3 id="asset"><a href="#asset" class="headerlink" title="asset()"></a>asset()</h3><p>根据当前的请求方式来返回指定资源的地址：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = asset(<span class="string">'img/photo.jpg'</span>);</div></pre></td></tr></table></figure>
+<h3 id="secure-asset"><a href="#secure-asset" class="headerlink" title="secure_asset()"></a>secure_asset()</h3><p>使用 HTTPS 生成给定资源的 URL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> secure_asset(<span class="string">'foo/bar.zip'</span>, $title, $attributes = []);</div></pre></td></tr></table></figure>
+<h3 id="route"><a href="#route" class="headerlink" title="route()"></a>route()</h3><p><code>route</code> 方法根据给定的路由名称来生成 URL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = route(<span class="string">'routeName'</span>);</div></pre></td></tr></table></figure>
+<p>如果路由接受参数，你可以传递第二个参数到方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = route(<span class="string">'routeName'</span>, [<span class="string">'id'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<h3 id="url"><a href="#url" class="headerlink" title="url()"></a>url()</h3><p><code>url</code> 方法根据指定的路径生成完整的路径：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> url(<span class="string">'user/profile'</span>);</div><div class="line"></div><div class="line"><span class="keyword">echo</span> url(<span class="string">'user/profile'</span>, [<span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<p>如果没有路径指定，将返回 <code>Illuminate\Routing\UrlGenerator</code> 的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> url()-&gt;current();</div><div class="line"><span class="keyword">echo</span> url()-&gt;full();</div><div class="line"><span class="keyword">echo</span> url()-&gt;previous();</div></pre></td></tr></table></figure>
+<h2 id="Miscellaneous"><a href="#Miscellaneous" class="headerlink" title="Miscellaneous"></a>Miscellaneous</h2><h3 id="auth"><a href="#auth" class="headerlink" title="auth()"></a>auth()</h3><p><code>auth</code> 方法返回一个认证实例。你可以方便的替换 <code>Auth</code> 假面：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user = auth()-&gt;user();</div></pre></td></tr></table></figure>
+<h3 id="back"><a href="#back" class="headerlink" title="back()"></a>back()</h3><p><code>back</code> 方法生成重定向响应到用户之前的地址：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> back();</div></pre></td></tr></table></figure>
+<h3 id="bcrypt"><a href="#bcrypt" class="headerlink" title="bcrypt()"></a>bcrypt()</h3><p><code>bcrypt</code> 方法使用 Bcrypt 加密来哈希化给定的值。你也可以通过 <code>Hash</code> 假面来调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$password = bcrypt(<span class="string">'my-secret-password'</span>);</div></pre></td></tr></table></figure>
+<h3 id="collect"><a href="#collect" class="headerlink" title="collect()"></a>collect()</h3><p><code>collect</code> 方法根据给定的项目组来生成 <code>collection</code> 实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$collection = collect([<span class="string">'taylor'</span>, <span class="string">'abigail'</span>]);</div></pre></td></tr></table></figure>
+<h3 id="config"><a href="#config" class="headerlink" title="config()"></a>config()</h3><p><code>config</code> 根据给定的值来获取配置项的值。你可以使用 <code>.</code> 语法来获取配置项的值。也可以传递第二个参数作为配置项未找到时的默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = config(<span class="string">'app.timezone'</span>);</div><div class="line"></div><div class="line">$value = config(<span class="string">'app.timezone'</span>, $default);</div></pre></td></tr></table></figure>
+<p>你也可以在运行时使用键值对的方式对配置进行设置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">config([<span class="string">'app.debug'</span> =&gt; <span class="keyword">true</span>]);</div></pre></td></tr></table></figure>
+<h3 id="csrf-field"><a href="#csrf-field" class="headerlink" title="csrf_field()"></a>csrf_field()</h3><p><code>csrf_field</code> 方法用来生成一个 <code>hidden</code> 文本框字段来包含 CSRF token。你可以在 Blade 模板中使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; csrf_field() &#125;&#125;</div></pre></td></tr></table></figure>
+<h3 id="csrf-token"><a href="#csrf-token" class="headerlink" title="csrf_token()"></a>csrf_token()</h3><p><code>csrf_token</code> 方法返回当前的 CSRF token 值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$token = csrf_token();</div></pre></td></tr></table></figure>
+<h3 id="dd"><a href="#dd" class="headerlink" title="dd()"></a>dd()</h3><p><code>dd</code> 方法打印输出给定的变量并终止执行之后的代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd($value);</div></pre></td></tr></table></figure>
+<p>如果你不想停止执行之后的代码，你应该使用 <code>dump</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dump($value);</div></pre></td></tr></table></figure>
+<h3 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch()"></a>dispatch()</h3><p><code>dispatch</code> 方法在 laravel 的任务对了中添加一个新的任务：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch(<span class="keyword">new</span> App\Jobs\SendEmails);</div></pre></td></tr></table></figure>
+<h3 id="env"><a href="#env" class="headerlink" title="env()"></a>env()</h3><p><code>env</code> 方法用来获取环境变量，也可以在未设置环境变量时返回默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$env = env(<span class="string">'APP_ENV'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Return a default value if the variable doesn't exist...</span></div><div class="line">$env = env(<span class="string">'APP_ENV'</span>, <span class="string">'production'</span>);</div></pre></td></tr></table></figure>
+<h3 id="event"><a href="#event" class="headerlink" title="event()"></a>event()</h3><p><code>event</code> 方法分发给定的事件到它的监听器中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">event(<span class="keyword">new</span> UserRegistered($user));</div></pre></td></tr></table></figure>
+<h3 id="factory"><a href="#factory" class="headerlink" title="factory()"></a>factory()</h3><p><code>factory</code> 方法创建一个模型工厂构造器来生成给定的类名的实例。你可以在写单元测试或者 seeding 时使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user = factory(App\User::class)-&gt;make();</div></pre></td></tr></table></figure>
+<h3 id="method-field"><a href="#method-field" class="headerlink" title="method_field()"></a>method_field()</h3><p><code>method_field</code> 方法生成一个 <code>hidden</code> 文本框来包含一个欺骗性的 HTTP 请求动词。你可以在 Blade 模板中使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;form method=<span class="string">"POST"</span>&gt;</div><div class="line">  &#123;&#123; method_field(<span class="string">'DELETE'</span>) &#125;&#125;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+<h3 id="old"><a href="#old" class="headerlink" title="old()"></a>old()</h3><p><code>old</code> 方法返回 session 中闪存的旧的文本值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = old(<span class="string">'value'</span>);</div><div class="line"></div><div class="line">$value = old(<span class="string">'value'</span>, <span class="string">'default'</span>);</div></pre></td></tr></table></figure>
+<h3 id="redirect"><a href="#redirect" class="headerlink" title="redirect()"></a>redirect()</h3><p><code>redirect</code> 方法返回一个重定向的实例来做重定向响应：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect(<span class="string">'/home'</span>);</div></pre></td></tr></table></figure>
+<h3 id="request"><a href="#request" class="headerlink" title="request()"></a>request()</h3><p><code>request</code> 方法返回当前的请求实例或者检索请求中的输入项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$request = request();</div><div class="line"></div><div class="line">$value = request(<span class="string">'key'</span>, $default = <span class="keyword">null</span>)</div></pre></td></tr></table></figure>
+<h3 id="response"><a href="#response" class="headerlink" title="response()"></a>response()</h3><p><code>response</code> 方法生成一个响应实例或者从响应工厂中获得一个实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response(<span class="string">'Hello World'</span>, <span class="number">200</span>, $headers);</div><div class="line"></div><div class="line"><span class="keyword">return</span> response()-&gt;json([<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], <span class="number">200</span>, $headers);</div></pre></td></tr></table></figure>
+<h3 id="session"><a href="#session" class="headerlink" title="session()"></a>session()</h3><p><code>session</code> 方法可以用来获取或者设置 session 值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = session(<span class="string">'key'</span>);</div></pre></td></tr></table></figure>
+<p>你可以通过传递键值对来进行 session 值的设置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session([<span class="string">'chairs'</span> =&gt; <span class="number">7</span>, <span class="string">'instruments'</span> =&gt; <span class="number">3</span>]);</div></pre></td></tr></table></figure>
+<p>如果调用的是无参数的 <code>session</code> 方法，将返回 session 存储器：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = session()-&gt;get(<span class="string">'key'</span>);</div><div class="line"></div><div class="line">session()-&gt;put(<span class="string">'key'</span>, $value);</div></pre></td></tr></table></figure>
+<h3 id="value"><a href="#value" class="headerlink" title="value()"></a>value()</h3><p><code>value</code> 方法会简单的返回所给定的值。但是，如果你传递的是一个 <code>Closure</code> ，<code>Closure</code> 将会被执行，其结果将被返回：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$value = value(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'bar'</span>;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="view"><a href="#view" class="headerlink" title="view()"></a>view()</h3><p><code>view</code> 方法用来检索 <code>view</code> 实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> view(<span class="string">'auth.login'</span>);</div></pre></td></tr></table></figure>
+<h3 id="with"><a href="#with" class="headerlink" title="with()"></a>with()</h3><p><code>with</code> 方法返回给定的值。它主要用于方法的链式调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = with(<span class="keyword">new</span> Foo)-&gt;work();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/07/laravel-from-scratch-hashing/" rel="next" title="laravel 基础教程 —— 哈希">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 哈希
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/08/laravel-from-scratch-localization/" rel="prev" title="laravel 基础教程 —— 本土化">
+                laravel 基础教程 —— 本土化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#帮助方法"><span class="nav-number">1.</span> <span class="nav-text">帮助方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法名单"><span class="nav-number">1.2.</span> <span class="nav-text">方法名单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.3.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#array-add"><span class="nav-number">1.3.1.</span> <span class="nav-text">array_add()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-collapse"><span class="nav-number">1.3.2.</span> <span class="nav-text">array_collapse()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-divide"><span class="nav-number">1.3.3.</span> <span class="nav-text">array_divide()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-dot"><span class="nav-number">1.3.4.</span> <span class="nav-text">array_dot()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-except"><span class="nav-number">1.3.5.</span> <span class="nav-text">array_except()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-first"><span class="nav-number">1.3.6.</span> <span class="nav-text">array_first()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-flatten"><span class="nav-number">1.3.7.</span> <span class="nav-text">array_flatten()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-forget"><span class="nav-number">1.3.8.</span> <span class="nav-text">array_forget()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-get"><span class="nav-number">1.3.9.</span> <span class="nav-text">array_get()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-has"><span class="nav-number">1.3.10.</span> <span class="nav-text">array_has()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-only"><span class="nav-number">1.3.11.</span> <span class="nav-text">array_only()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-pluck"><span class="nav-number">1.3.12.</span> <span class="nav-text">array_pluck()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-prepend"><span class="nav-number">1.3.13.</span> <span class="nav-text">array_prepend()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-pull"><span class="nav-number">1.3.14.</span> <span class="nav-text">array_pull()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-set"><span class="nav-number">1.3.15.</span> <span class="nav-text">array_set()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-sort"><span class="nav-number">1.3.16.</span> <span class="nav-text">array_sort()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-sort-recursive"><span class="nav-number">1.3.17.</span> <span class="nav-text">array_sort_recursive()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-where"><span class="nav-number">1.3.18.</span> <span class="nav-text">array_where()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head"><span class="nav-number">1.3.19.</span> <span class="nav-text">head()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#last"><span class="nav-number">1.3.20.</span> <span class="nav-text">last()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paths"><span class="nav-number">1.4.</span> <span class="nav-text">Paths</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#app-path"><span class="nav-number">1.4.1.</span> <span class="nav-text">app_path()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#base-path"><span class="nav-number">1.4.2.</span> <span class="nav-text">base_path()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config-path"><span class="nav-number">1.4.3.</span> <span class="nav-text">config_path()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#database-path"><span class="nav-number">1.4.4.</span> <span class="nav-text">database_path()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elixir"><span class="nav-number">1.4.5.</span> <span class="nav-text">elixir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#public-path"><span class="nav-number">1.4.6.</span> <span class="nav-text">public_path()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#storage-path"><span class="nav-number">1.4.7.</span> <span class="nav-text">storage_path()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Strings"><span class="nav-number">1.5.</span> <span class="nav-text">Strings</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#camel-case"><span class="nav-number">1.5.1.</span> <span class="nav-text">camel_case()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#class-basename"><span class="nav-number">1.5.2.</span> <span class="nav-text">class_basename()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#e"><span class="nav-number">1.5.3.</span> <span class="nav-text">e()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ends-with"><span class="nav-number">1.5.4.</span> <span class="nav-text">ends_with()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#snake-case"><span class="nav-number">1.5.5.</span> <span class="nav-text">snake_case()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-limit"><span class="nav-number">1.5.6.</span> <span class="nav-text">str_limit()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#starts-with"><span class="nav-number">1.5.7.</span> <span class="nav-text">starts_with()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-finish"><span class="nav-number">1.5.8.</span> <span class="nav-text">str_finish()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-is"><span class="nav-number">1.5.9.</span> <span class="nav-text">str_is()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-plural"><span class="nav-number">1.5.10.</span> <span class="nav-text">str_plural()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-random"><span class="nav-number">1.5.11.</span> <span class="nav-text">str_random()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-singular"><span class="nav-number">1.5.12.</span> <span class="nav-text">str_singular()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#str-slug"><span class="nav-number">1.5.13.</span> <span class="nav-text">str_slug()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#studly-case"><span class="nav-number">1.5.14.</span> <span class="nav-text">studly_case()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trans"><span class="nav-number">1.5.15.</span> <span class="nav-text">trans()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trans-choice"><span class="nav-number">1.5.16.</span> <span class="nav-text">trans_choice()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URLs"><span class="nav-number">1.6.</span> <span class="nav-text">URLs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#action"><span class="nav-number">1.6.1.</span> <span class="nav-text">action()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#asset"><span class="nav-number">1.6.2.</span> <span class="nav-text">asset()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#secure-asset"><span class="nav-number">1.6.3.</span> <span class="nav-text">secure_asset()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#route"><span class="nav-number">1.6.4.</span> <span class="nav-text">route()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url"><span class="nav-number">1.6.5.</span> <span class="nav-text">url()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Miscellaneous"><span class="nav-number">1.7.</span> <span class="nav-text">Miscellaneous</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#auth"><span class="nav-number">1.7.1.</span> <span class="nav-text">auth()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#back"><span class="nav-number">1.7.2.</span> <span class="nav-text">back()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bcrypt"><span class="nav-number">1.7.3.</span> <span class="nav-text">bcrypt()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#collect"><span class="nav-number">1.7.4.</span> <span class="nav-text">collect()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config"><span class="nav-number">1.7.5.</span> <span class="nav-text">config()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#csrf-field"><span class="nav-number">1.7.6.</span> <span class="nav-text">csrf_field()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#csrf-token"><span class="nav-number">1.7.7.</span> <span class="nav-text">csrf_token()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dd"><span class="nav-number">1.7.8.</span> <span class="nav-text">dd()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dispatch"><span class="nav-number">1.7.9.</span> <span class="nav-text">dispatch()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#env"><span class="nav-number">1.7.10.</span> <span class="nav-text">env()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#event"><span class="nav-number">1.7.11.</span> <span class="nav-text">event()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#factory"><span class="nav-number">1.7.12.</span> <span class="nav-text">factory()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#method-field"><span class="nav-number">1.7.13.</span> <span class="nav-text">method_field()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#old"><span class="nav-number">1.7.14.</span> <span class="nav-text">old()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redirect"><span class="nav-number">1.7.15.</span> <span class="nav-text">redirect()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#request"><span class="nav-number">1.7.16.</span> <span class="nav-text">request()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#response"><span class="nav-number">1.7.17.</span> <span class="nav-text">response()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session"><span class="nav-number">1.7.18.</span> <span class="nav-text">session()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#value"><span class="nav-number">1.7.19.</span> <span class="nav-text">value()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#view"><span class="nav-number">1.7.20.</span> <span class="nav-text">view()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#with"><span class="nav-number">1.7.21.</span> <span class="nav-text">with()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

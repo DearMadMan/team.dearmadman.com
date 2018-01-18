@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HTTP 控制器简介控制器允许你将相应的路由业务逻辑封装在控制器类中进行有效的管理，这样你不必将所有的路由逻辑集中到routes.php文件中，导致代码的臃肿与难以维护。所有的控制器类都被存储在app/Http/Controllers目录中. 基本控制器一个基本的控制器应该继承自App\Http\Controllers\Controller控制器类: 12345678910111213&amp;lt;?p">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 控制器">
+<meta property="og:url" content="http://yoursite.com/2016/05/02/laravel-from-scratch-controllers/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="HTTP 控制器简介控制器允许你将相应的路由业务逻辑封装在控制器类中进行有效的管理，这样你不必将所有的路由逻辑集中到routes.php文件中，导致代码的臃肿与难以维护。所有的控制器类都被存储在app/Http/Controllers目录中. 基本控制器一个基本的控制器应该继承自App\Http\Controllers\Controller控制器类: 12345678910111213&amp;lt;?p">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 控制器">
+<meta name="twitter:description" content="HTTP 控制器简介控制器允许你将相应的路由业务逻辑封装在控制器类中进行有效的管理，这样你不必将所有的路由逻辑集中到routes.php文件中，导致代码的臃肿与难以维护。所有的控制器类都被存储在app/Http/Controllers目录中. 基本控制器一个基本的控制器应该继承自App\Http\Controllers\Controller控制器类: 12345678910111213&amp;lt;?p">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/02/laravel-from-scratch-controllers/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 控制器 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/02/laravel-from-scratch-controllers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 控制器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-02T08:49:43+08:00">
+                2016-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HTTP-控制器"><a href="#HTTP-控制器" class="headerlink" title="HTTP 控制器"></a>HTTP 控制器</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>控制器允许你将相应的路由业务逻辑封装在控制器类中进行有效的管理，这样你不必将所有的路由逻辑集中到<code>routes.php</code>文件中，导致代码的臃肿与难以维护。<br>所有的控制器类都被存储在<code>app/Http/Controllers</code>目录中.</p>
+<h2 id="基本控制器"><a href="#基本控制器" class="headerlink" title="基本控制器"></a>基本控制器</h2><p>一个基本的控制器应该继承自<code>App\Http\Controllers\Controller</code>控制器类:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">showProfile</span><span class="params">($id)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> view(<span class="string">'user.profile'</span>, [<span class="string">'user'</span> =&gt; User::findOrFail($id)]);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">`</div></pre></td></tr></table></figure>
+<p>我们可以通过下面的方式把控制器的行为分配到路由:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'user/&#123;id&#125;'</span>, <span class="string">'UserController@showProfile'</span>);</div></pre></td></tr></table></figure>
+<p>一旦将控制器的行为分配到路由之后，每次客户端请求该路由，都会触发控制器的行为。这里即客户端每次请求<code>user/{id}</code>路由，<code>showProfile</code>方法都会被执行，路由中的参数也会被直接传递到该方法中.</p>
+<h3 id="控制器-amp-命名空间"><a href="#控制器-amp-命名空间" class="headerlink" title="控制器 &amp; 命名空间"></a>控制器 &amp; 命名空间</h3><p>你应该知道我们在定义控制器路由时是不需要指定控制器的命名空间的，而只需要指定到类名就可以了，这是因为在<code>RouteServiceProvider</code>文件中自动加载的<code>routes.php</code>文件已经被指定了路由组的根命名空间<code>App\Http\Controllers</code>;</p>
+<p>如果你想在<code>App\Http\Controllers</code>目录下使用php命名空间来嵌套或组织控制器，那么你只需要简单的指定相对于<code>App\Http\Controllers</code>部分的类名就可以了。所以如果你的控制器的全部类名为<code>App\Http\Controllers\Photos\AdminController</code>,那么你就可以这样来定义控制器路由:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'foo'</span>, <span class="string">'Photos\AdminController@method'</span>);</div></pre></td></tr></table></figure>
+<h3 id="命名控制器路由"><a href="#命名控制器路由" class="headerlink" title="命名控制器路由"></a>命名控制器路由</h3><p>就像定义命名路由一样，我们也可以给一个控制器路由命名：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'foo'</span>, [<span class="string">'uses'</span> =&gt; <span class="string">'FooController@method'</span>, <span class="string">'as'</span> =&gt; <span class="string">'name'</span>]);</div></pre></td></tr></table></figure>
+<p>一旦你为一个路由进行了命名， 那么你就可以通过<code>route</code>帮助方法去快速的生成被命名路由的资源表述地址:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash">url = route(<span class="string">'name'</span>);</span></div></pre></td></tr></table></figure>
+<h2 id="控制器中间件"><a href="#控制器中间件" class="headerlink" title="控制器中间件"></a>控制器中间件</h2><p>中间件可以这样被分配到控制器路由中:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'profile'</span>, [</div><div class="line">  <span class="string">'middleware'</span> =&gt; <span class="string">'auth'</span>,</div><div class="line">  <span class="string">'uses'</span> =&gt; <span class="string">'UserController@showProfile'</span></div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>当然你也可以在控制器类中直接使用<code>middleware</code>方法来进行中间件的分配，你也可以只允许类中的某些行为受到指定中间件的约束:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;middleware(<span class="string">'auth'</span>);</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;middleware(<span class="string">'log'</span>, [<span class="string">'only'</span> =&gt; [</div><div class="line">      <span class="string">'fooAction'</span>,</div><div class="line">      <span class="string">'barAction'</span></div><div class="line">    ]]);</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;middleware(<span class="string">'subscribed'</span>, [<span class="string">'except'</span> =&gt; [</div><div class="line">      <span class="string">'fooAction'</span>,</div><div class="line">      <span class="string">'barAction'</span></div><div class="line">    ]]);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="RESTful-资源控制器"><a href="#RESTful-资源控制器" class="headerlink" title="RESTful 资源控制器"></a>RESTful 资源控制器</h2><p>资源控制器可以使你快速的构建RESTful型的控制器。你可以使用artisan命令来快速的创建:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:controller PhotoController --resource</div></pre></td></tr></table></figure>
+<p>该命令会生成<code>app\Http\Controllers\PhotoController.php</code>文件，资源控制器中将包含每个可用的资源操作相应的方法.</p>
+<p>你可以通过下面的方式来进行资源路由的注册:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::resource(<span class="string">'photo'</span>, <span class="string">'PhotoController'</span>);</div></pre></td></tr></table></figure>
+<p>这一个简单的声明会创造多条路由用来处理RESTful式的请求.相应的通过命令生成的资源型控制器也为这些请求设置了对应的处理方法.</p>
+<h3 id="资源控制器所处理的行为"><a href="#资源控制器所处理的行为" class="headerlink" title="资源控制器所处理的行为"></a>资源控制器所处理的行为</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">请求方式</th>
+<th style="text-align:left">路由地址</th>
+<th style="text-align:left">控制器行为</th>
+<th style="text-align:left">路由命名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GET</td>
+<td style="text-align:left"><code>/photo</code></td>
+<td style="text-align:left">index</td>
+<td style="text-align:left">photo.index</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td style="text-align:left"><code>/photo/create</code></td>
+<td style="text-align:left">create</td>
+<td style="text-align:left">photo.create</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td style="text-align:left"><code>/photo</code></td>
+<td style="text-align:left">store</td>
+<td style="text-align:left">photo.store</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td style="text-align:left"><code>/photo/{photo}</code></td>
+<td style="text-align:left">show</td>
+<td style="text-align:left">photo.show</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td style="text-align:left"><code>/photo/{photo}/edit</code></td>
+<td style="text-align:left">edit</td>
+<td style="text-align:left">photo.edit</td>
+</tr>
+<tr>
+<td style="text-align:left">PUT/PATCH</td>
+<td style="text-align:left"><code>/photo/{photo}</code></td>
+<td style="text-align:left">update</td>
+<td style="text-align:left">photo.update</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td style="text-align:left"><code>/photo/{photo}</code></td>
+<td style="text-align:left">destroy</td>
+<td style="text-align:left">photo.destroy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="部分资源路由"><a href="#部分资源路由" class="headerlink" title="部分资源路由"></a>部分资源路由</h3><p>有时候你可能并不想控制器处理全部的请求方式，那么你可以这么做：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Route::resource(<span class="string">'photo'</span>, <span class="string">'PhotoController'</span>, [<span class="string">'only'</span> =&gt; [</div><div class="line">  <span class="string">'index'</span>, <span class="string">'show'</span></div><div class="line">]]);</div><div class="line"></div><div class="line">Route::resource(<span class="string">'photo'</span>, <span class="string">'PhotoController'</span>, [<span class="string">'except'</span> =&gt; [</div><div class="line">  <span class="string">'create'</span>, <span class="string">'store'</span>, <span class="string">'update'</span>, <span class="string">'destroy'</span></div><div class="line">]]);</div></pre></td></tr></table></figure>
+<h3 id="命名资源路由"><a href="#命名资源路由" class="headerlink" title="命名资源路由"></a>命名资源路由</h3><p>默认的，所有的资源控制器行为都被进行了相应的路由命名，你可以通过<code>names</code>参数来进行重命名:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::resource(<span class="string">'photo'</span>, <span class="string">'PhotoController'</span>, [<span class="string">'names'</span> =&gt; [</div><div class="line">  <span class="string">'create'</span> =&gt; <span class="string">'photo.build'</span></div><div class="line">]]);</div></pre></td></tr></table></figure>
+<h3 id="命名资源路由参数"><a href="#命名资源路由参数" class="headerlink" title="命名资源路由参数"></a>命名资源路由参数</h3><p>默认的，资源路由的路由参数都被命名为相应的资源名称，你可以用过<code>parameters</code>参数来进行重命名:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::resource(<span class="string">'user'</span>, <span class="string">'AdminUserController'</span>, [<span class="string">'parameters'</span> =&gt; [</div><div class="line">  <span class="string">'user'</span> =&gt; <span class="string">'admin_user'</span></div><div class="line">]]);</div><div class="line"></div><div class="line"><span class="comment">// /user/&#123;admin_user&#125;</span></div></pre></td></tr></table></figure>
+<p>有时候你可能希望资源路由的路由参数并不需要像默认的资源名称一样采取复数的形式，那么你可以通过传递<code>parameters</code>的选项设置为<code>singular</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::resource(<span class="string">'users.photos'</span>, <span class="string">'PhotoController'</span>, [</div><div class="line">  <span class="string">'parameters'</span> =&gt; <span class="string">'singular'</span></div><div class="line">]);</div><div class="line"></div><div class="line"><span class="comment">// /users/&#123;user&#125;/photos/&#123;photo&#125;</span></div></pre></td></tr></table></figure>
+<p>另外，你也可以全局设置你的资源路由参数为单数形式或者全局进行资源路由参数的命名映射:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Route::singularResourceParameters();</div><div class="line"></div><div class="line">Route::resourceParameters([</div><div class="line">  <span class="string">'user'</span> =&gt; <span class="string">'person'</span>,</div><div class="line">  <span class="string">'photo'</span> =&gt; <span class="string">'image'</span></div><div class="line">])</div></pre></td></tr></table></figure>
+<p>当你对资源路由参数进行定制时，你应该清楚的知道命名的顺序优先级:</p>
+<ol>
+<li>参数被直接的传递给<code>Route::resource</code></li>
+<li>通过 <code>Router::resourceParameters</code> 进行全局参数映射</li>
+<li>通过<code>parameters</code>数组选项传递给<code>Route::resource</code> 或者 通过 <code>Route::singularResoureParameters</code> 进行单数形式参数设置</li>
+<li>默认行为</li>
+</ol>
+<h3 id="资源控制器中意外的行为"><a href="#资源控制器中意外的行为" class="headerlink" title="资源控制器中意外的行为"></a>资源控制器中意外的行为</h3><p>如果你必须在资源控制器中添加额外的行为去注册相应的路由，那么你一定要在使用<code>Route::resource</code>之前进行注册,否则该行为很可能会被资源控制器意外的覆盖掉.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'photos/popular'</span>, <span class="string">'PhotoController@method'</span>);</div><div class="line"></div><div class="line">Route::resource(<span class="string">'photos'</span>, <span class="string">'PhotoController'</span>);</div></pre></td></tr></table></figure>
+<h2 id="依赖注入-amp-控制器"><a href="#依赖注入-amp-控制器" class="headerlink" title="依赖注入 &amp; 控制器"></a>依赖注入 &amp; 控制器</h2><h3 id="构造器注入"><a href="#构造器注入" class="headerlink" title="构造器注入"></a>构造器注入</h3><p>laravel的服务容器支持所有的laravel控制器的解析。由于这个原因，所以你可以在控制器的构造函数中添加你所需要依赖的相应类型提示，这些依赖会被自动的解析并注入进控制器实例.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">UserRepository</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">protected</span> $users;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(UserRepository $users)</span> </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;users = $users;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，你也被允许添加一些laravel <code>contract</code>的类型提示，只要服务容器能够正确的解析，你都可以被允许添加。</p>
+<h3 id="方法注入"><a href="#方法注入" class="headerlink" title="方法注入"></a>方法注入</h3><p>除了在构造函数中进行依赖注入，你也可以在控制器的行为方法中进行依赖注入，比如，将<code>Illuminate\Http\Reqeust</code>实例注入到控制器的store方法中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span> <span class="params">(Request $request)</span> </span>&#123;</div><div class="line">    $name = $request-&gt;input(<span class="string">'name'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你的控制器方法也接收从路由传递过来的参数，那么他们会在其它依赖解析完毕之后被传递，比如你的路由是这么定义的:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::put(<span class="string">'user/&#123;id&#125;'</span>, <span class="string">'UserController@update'</span>);</div></pre></td></tr></table></figure>
+<p>那么你可以这么修正你的控制器行为,来进行参数的接收:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span> <span class="params">(Request $request, $id)</span> </span>&#123;</div><div class="line">    <span class="comment">// </span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="缓存路由"><a href="#缓存路由" class="headerlink" title="缓存路由"></a>缓存路由</h2><blockquote>
+<p>注意：缓存路由不支持闭包函数定义的路由，如果你想使你的路由被缓存，那么你应该使用控制器来管理你的路由.</p>
+</blockquote>
+<p>如果你所有的路由都是基于控制器的路由，那么你应该使用laravel推荐的缓存路由，你可以简单的通过artisan命令来缓存所有路由注册到同一个文件里，它会替代<code>routes.php</code>文件被解析，使用这种缓存注册路由的方式在某些情况下注册路由的时间将被大大的减少，从而提高了应用的响应速度。<br>但是每次添加新的路由或者删除路由时，为了使路由生效，你需要重新生成一次缓存路由:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan route:cache</div></pre></td></tr></table></figure>
+<p>你可以通过下面的方式去删除路由缓存：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan route:clear</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/30/laravel-from-scratch-middleware/" rel="next" title="laravel 基础教程 —— 中间件">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 中间件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/02/laravel-from-scratch-requests/" rel="prev" title="laravel 基础教程 —— 请求">
+                laravel 基础教程 —— 请求 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP-控制器"><span class="nav-number">1.</span> <span class="nav-text">HTTP 控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本控制器"><span class="nav-number">1.2.</span> <span class="nav-text">基本控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#控制器-amp-命名空间"><span class="nav-number">1.2.1.</span> <span class="nav-text">控制器 & 命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命名控制器路由"><span class="nav-number">1.2.2.</span> <span class="nav-text">命名控制器路由</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制器中间件"><span class="nav-number">1.3.</span> <span class="nav-text">控制器中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESTful-资源控制器"><span class="nav-number">1.4.</span> <span class="nav-text">RESTful 资源控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#资源控制器所处理的行为"><span class="nav-number">1.4.1.</span> <span class="nav-text">资源控制器所处理的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部分资源路由"><span class="nav-number">1.4.2.</span> <span class="nav-text">部分资源路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命名资源路由"><span class="nav-number">1.4.3.</span> <span class="nav-text">命名资源路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命名资源路由参数"><span class="nav-number">1.4.4.</span> <span class="nav-text">命名资源路由参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源控制器中意外的行为"><span class="nav-number">1.4.5.</span> <span class="nav-text">资源控制器中意外的行为</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖注入-amp-控制器"><span class="nav-number">1.5.</span> <span class="nav-text">依赖注入 & 控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造器注入"><span class="nav-number">1.5.1.</span> <span class="nav-text">构造器注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法注入"><span class="nav-number">1.5.2.</span> <span class="nav-text">方法注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存路由"><span class="nav-number">1.6.</span> <span class="nav-text">缓存路由</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

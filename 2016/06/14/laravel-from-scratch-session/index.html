@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Session简介由于 HTTP 驱动是一种无状态的协议，这通常意味着服务端并不能清楚的知道当前请求用户与之前请求用户间的关系，而 Session 提供了这种跨请求用户的解决方案。Laravel 附带了简洁统一的 API 来支持各种后端 session 驱动。对于 Memcached，Redis 和数据库这种流行的后端驱动，Laravel 提供了开箱即用的支持。 配置session 的配置文件被存">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— Session">
+<meta property="og:url" content="http://yoursite.com/2016/06/14/laravel-from-scratch-session/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Session简介由于 HTTP 驱动是一种无状态的协议，这通常意味着服务端并不能清楚的知道当前请求用户与之前请求用户间的关系，而 Session 提供了这种跨请求用户的解决方案。Laravel 附带了简洁统一的 API 来支持各种后端 session 驱动。对于 Memcached，Redis 和数据库这种流行的后端驱动，Laravel 提供了开箱即用的支持。 配置session 的配置文件被存">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— Session">
+<meta name="twitter:description" content="Session简介由于 HTTP 驱动是一种无状态的协议，这通常意味着服务端并不能清楚的知道当前请求用户与之前请求用户间的关系，而 Session 提供了这种跨请求用户的解决方案。Laravel 附带了简洁统一的 API 来支持各种后端 session 驱动。对于 Memcached，Redis 和数据库这种流行的后端驱动，Laravel 提供了开箱即用的支持。 配置session 的配置文件被存">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/14/laravel-from-scratch-session/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— Session | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/14/laravel-from-scratch-session/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— Session</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-14T16:29:28+08:00">
+                2016-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>由于 HTTP 驱动是一种无状态的协议，这通常意味着服务端并不能清楚的知道当前请求用户与之前请求用户间的关系，而 Session 提供了这种跨请求用户的解决方案。Laravel 附带了简洁统一的 API 来支持各种后端 session 驱动。对于 <a href="http://memcached.org/" target="_blank" rel="external">Memcached</a>，<a href="http://redis.io/" target="_blank" rel="external">Redis</a> 和数据库这种流行的后端驱动，Laravel 提供了开箱即用的支持。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>session 的配置文件被存储在 <code>config/session.php</code>。你应该确保在使用前阅读该文件中的配置项注释。Laravel 对配置中的每一项都进行了详细的注释。默认的，laravel 配置使用的是 <code>file</code> session 驱动，这对于大多数应用来说已经够用了。但是在生产环境中还是建议使用 <code>memcached</code> 或者 <code>redis</code> 这种内存级驱动，这对于应用的 session 性能来说会是一个很大的提升。</p>
+<p>对于每个请求的 session 数据，都会存储在你所定义的 session <code>driver</code> 所在的位置中。下列驱动在 laravel 中可以开箱即用：</p>
+<ul>
+<li><code>file</code> - sessions 会存储在 <code>storage/framework/sessions</code> 中。</li>
+<li><code>cookie</code> - sessions 会被存储在经过安全加密的 cookies 中。</li>
+<li><code>database</code> - sessions 会被存储在你应用中所使用的数据库中。</li>
+<li><code>memcached</code> / <code>redis</code> - sessions 会被存储在更快的内存级存储驱动中。</li>
+<li><code>array</code> - sessions 会使简单存储在 PHP 的数组中，并且它不能被跨请求访问。</li>
+</ul>
+<blockquote>
+<p>注意：<code>array</code> 驱动通常是用来进行测试时使用的以避免持久的 session 数据。</p>
+</blockquote>
+<h3 id="驱动先决条件"><a href="#驱动先决条件" class="headerlink" title="驱动先决条件"></a>驱动先决条件</h3><p><strong>数据库</strong></p>
+<p>当使用 <code>database</code> session 驱动时，你需要先创建一个表来存储 session 项。下面的例子是数据库 session 驱动表的架构声明：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Schema::create(<span class="string">'sessions'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'id'</span>)-&gt;unique();</div><div class="line">  $table-&gt;integer(<span class="string">'user_id'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'ip_address'</span>, <span class="number">45</span>)-&gt;nullable();</div><div class="line">  $table-&gt;text(<span class="string">'user_agent'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;text(<span class="string">'payload'</span>);</div><div class="line">  $table-&gt;integer(<span class="string">'last_activity'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>session:table</code> Artisan 命令来生成一个数据库会话驱动的迁移表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">php artisan session:table</div><div class="line"></div><div class="line">composer dump-autoload</div><div class="line"></div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
+<p><strong>Redis</strong></p>
+<p>在使用 Redis session 驱动之前，你需要通过 Composer 安装 <code>predis/predis</code>（~1.0）。</p>
+<p><strong>其他 Session 注意事项</strong></p>
+<p>Laravel 框架内部使用了 <code>flash</code> 作为 session 其中的一个键，所以你应该避免使用该名称的键到 session 中。</p>
+<p>如果你需要存储安全加密后的 session 数据，你可以在配置文件中将 <code>encrypt</code> 选项设置为 <code>true</code>。</p>
+<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><p><strong>访问 Session</strong></p>
+<p>首先，让我们来访问 session。我们可以通过 HTTP 请求来访问 session 的实例。HTTP 请求可以通过在控制器方法中使用类型提示来进行依赖注入。你应该记得，控制器方法的依赖会通过 laravel 的服务容器进行注入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show the profile for the given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">showProfile</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $value = $request-&gt;session()-&gt;get(<span class="string">'key'</span>);</div><div class="line"></div><div class="line">     <span class="comment">//</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当你从 session 中检索值时，你也可以指定一个默认的值到 <code>get</code> 方法的第二个参数，默认值会在 session 未检索到相应键的值时返回。你也可以传递 <code>Closure</code> 作为默认值，如果找不到相应的键，<code>Closure</code> 执行的结果所返回的值将作为默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$value = $request-&gt;session()-&gt;get(<span class="string">'key'</span>, <span class="string">'default'</span>);</div><div class="line"></div><div class="line">$value = $request-&gt;session()-&gt;get(<span class="string">'key'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'default'</span>; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果你希望从 session 中检索出所有的值，你可以使用 <code>all</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$data = $request-&gt;session()-&gt;all();</div></pre></td></tr></table></figure>
+<p>你可以可以使用全局帮助方法 <code>session</code> 来进行值的检索和存储：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'home'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Retrieve a piece of data from the session...</span></div><div class="line">  $value = session(<span class="string">'key'</span>);</div><div class="line"></div><div class="line">  <span class="comment">// Store a piece of data in the session...</span></div><div class="line">  session([<span class="string">'key'</span> =&gt; <span class="string">'value'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>判断 session 是否存在某项</strong></p>
+<p>你可以使用 <code>has</code> 方法来判断 session 中是否含有某项，如果存在则返回 <code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;session()-&gt;has(<span class="string">'user'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>在 session 中存储数据</strong></p>
+<p>一旦你获取了 session 的实例，你就拥有了和底层数据进行交互的能力，你可以通过各种实例的方法来进行交互。比如，你可以使用 <code>put</code> 方法来在 session 中存储一个新的数据项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;put(<span class="string">'key'</span>, <span class="string">'value'</span>);</div></pre></td></tr></table></figure>
+<p><strong>推送内容到 session 中值为数组的项</strong></p>
+<p>你可以使用 <code>push</code> 方法来将一个新的值推送到 session 中值为数组的项中。比如，如果 <code>user.teams</code> 键表明了数组在 session 中的路径，你可以像这样推送新的值到该数组中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;push(<span class="string">'user.teams'</span>, <span class="string">'developers'</span>);</div></pre></td></tr></table></figure>
+<p><strong>检索并删除某项</strong></p>
+<p><code>pull</code> 方法会在检索的同时在 session 中删除该项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = $request-&gt;session()-&gt;pull(<span class="string">'key'</span>, <span class="string">'default'</span>);</div></pre></td></tr></table></figure>
+<p><strong>删除 session 中的某项</strong></p>
+<p>你可以使用 <code>forget</code> 方法来删除 session 中的某一项数据，如果你想要移除 session 中的所有数据，你可以使用 <code>flush</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;forget(<span class="string">'key'</span>);</div><div class="line"></div><div class="line">$request-&gt;session()-&gt;flush();</div></pre></td></tr></table></figure>
+<p><strong>重新生成 session ID</strong></p>
+<p>如果你需要重新生成 session ID，你可以使用 <code>regenerate</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;regenerate();</div></pre></td></tr></table></figure>
+<h3 id="闪存数据"><a href="#闪存数据" class="headerlink" title="闪存数据"></a>闪存数据</h3><p>有时候你希望在 session 中存储某些数据，但是只允许下一次请求时使用，使用后即消除。那么就可以使用 <code>flash</code> 方法。这方法在 session 中存储的数据只能在随后的请求中进行访问，并且在之后删除。闪存的数据通常用来做一些临时的状态消息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;flash(<span class="string">'status'</span>, <span class="string">'Task was successful!'</span>);</div></pre></td></tr></table></figure>
+<p>如果你需要维持闪存的数据到更多的请求，你可以使用 <code>reflash</code> 方法，它会维持所有的闪存数据到额外的请求中。如果你只需要维持指定的闪存数据，你可以使用 <code>keep</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$request-&gt;session()-&gt;reflash();</div><div class="line"></div><div class="line">$request-&gt;session()-&gt;keep([<span class="string">'username'</span>, <span class="string">'email'</span>]);</div></pre></td></tr></table></figure>
+<h2 id="添加自定义的-Session-驱动"><a href="#添加自定义的-Session-驱动" class="headerlink" title="添加自定义的 Session 驱动"></a>添加自定义的 Session 驱动</h2><p>你需要使用 <code>Session</code> 假面的 <code>extend</code> 方法才能添加额外的 session 驱动到 Laravel 中。你可以在服务提供者的 <code>boot</code> 方法中来调用 <code>extend</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Session</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Extensions</span>\<span class="title">MongoSessionStore</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SessionServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Perform post-registration booting of services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Session::extend(<span class="string">'mongo'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</div><div class="line">       <span class="comment">// Return implementation of SessionHandlerInterface...</span></div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> MongoSessionStore;</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register bindings in the container.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你应该注意你的自定义 session 驱动应该实现 <code>SessionHandlerInterface</code> 接口。该接口仅包含了几个简单的需要实现的方法。一个实现了的 MongoDB 驱动的结构应该像下面一样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Extensions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MongoHandler</span> <span class="keyword">implements</span> <span class="title">SessionHandlerInterface</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">open</span><span class="params">($savePath, $sessionName)</span> </span>&#123;&#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">close</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span><span class="params">($sessionId)</span> </span>&#123;&#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span><span class="params">($sessionId, $data)</span> </span>&#123;&#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">destroy</span><span class="params">($sessionId)</span> </span>&#123;&#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">gc</span><span class="params">($lifetime)</span> </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于这些方法并不像缓存的 <code>StoreInterface</code> 那样难于理解。所以，我们就来快速的过一下吧：</p>
+<ul>
+<li><code>open</code> 方法一般用于基于文件的 session 存储系统。由于 laravel 已经附带了 <code>file</code> session 驱动，所以你几乎不需要在这个方法中添加任何的代码。你可以直接放置其为空方法。事实上，这是一种可怜的接口设计（我们将会在后面讨论它），PHP 必须要我们实现这个方法。</li>
+<li><code>close</code> 方法，类似于 <code>open</code> 方法，你也可以对其进行忽视，对于大多数驱动来说根本不需要。</li>
+<li><code>read</code> 方法应该根据给定的 <code>$sessionId</code> 返回 session 中关联数据的字符串版本。你不需要在存储或检索时做任何的序列化或其它的编码操作，因为 laravel 会为你执行序列化服务。</li>
+<li><code>destroy</code> 方法应该从 session 存储中删除所关联的数据。</li>
+<li><code>gc</code> 方法应该根据给定的 <code>$lifetime</code> UNIX 时间戳删除 session 所关联的过期数据。对于拥有自动过期能力的系统，比如 Memcached 和 Redis，你可以直接让这个方法为空。</li>
+</ul>
+<p>一旦你的 session 驱动被注册。你就可以在 <code>config/session.php</code> 配置文件中使用 <code>mongo</code> 驱动了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/10/laravel-from-scratch-redis/" rel="next" title="laravel 基础教程 —— Redis">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Redis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/15/vue-paginator-component/" rel="prev" title="vue paginator component">
+                vue paginator component <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Session"><span class="nav-number">1.</span> <span class="nav-text">Session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#驱动先决条件"><span class="nav-number">1.1.2.</span> <span class="nav-text">驱动先决条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础用法"><span class="nav-number">1.2.</span> <span class="nav-text">基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闪存数据"><span class="nav-number">1.2.1.</span> <span class="nav-text">闪存数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加自定义的-Session-驱动"><span class="nav-number">1.3.</span> <span class="nav-text">添加自定义的 Session 驱动</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

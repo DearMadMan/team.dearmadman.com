@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Interface As Contract 接口约定Strong Typing &amp;amp; Water Fowl 强类型和小鸭子在之前的章节里，涵盖了依赖注入的基础知识：什么是依赖注入；如何实现依赖注入；依赖注入有什么好处。之前章节里面的例子也模拟了将 interface 注入到 classes 里面的过程。在我们继续学习之前，有必要深入讲解一下接口，而这正是很多 PHP 开发者所不熟悉的。 在我">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从百草园到三味书屋 —— 接口约定">
+<meta property="og:url" content="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-interface-as-contract/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Interface As Contract 接口约定Strong Typing &amp;amp; Water Fowl 强类型和小鸭子在之前的章节里，涵盖了依赖注入的基础知识：什么是依赖注入；如何实现依赖注入；依赖注入有什么好处。之前章节里面的例子也模拟了将 interface 注入到 classes 里面的过程。在我们继续学习之前，有必要深入讲解一下接口，而这正是很多 PHP 开发者所不熟悉的。 在我">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从百草园到三味书屋 —— 接口约定">
+<meta name="twitter:description" content="Interface As Contract 接口约定Strong Typing &amp;amp; Water Fowl 强类型和小鸭子在之前的章节里，涵盖了依赖注入的基础知识：什么是依赖注入；如何实现依赖注入；依赖注入有什么好处。之前章节里面的例子也模拟了将 interface 注入到 classes 里面的过程。在我们继续学习之前，有必要深入讲解一下接口，而这正是很多 PHP 开发者所不熟悉的。 在我">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-interface-as-contract/"/>
+
+
+
+
+
+  <title>从百草园到三味书屋 —— 接口约定 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-interface-as-contract/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从百草园到三味书屋 —— 接口约定</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T08:59:51+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Interface-As-Contract-接口约定"><a href="#Interface-As-Contract-接口约定" class="headerlink" title="Interface As Contract 接口约定"></a>Interface As Contract 接口约定</h1><h2 id="Strong-Typing-amp-Water-Fowl-强类型和小鸭子"><a href="#Strong-Typing-amp-Water-Fowl-强类型和小鸭子" class="headerlink" title="Strong Typing &amp; Water Fowl 强类型和小鸭子"></a>Strong Typing &amp; Water Fowl 强类型和小鸭子</h2><p>在之前的章节里，涵盖了依赖注入的基础知识：什么是依赖注入；如何实现依赖注入；依赖注入有什么好处。之前章节里面的例子也模拟了将 interface 注入到 classes 里面的过程。在我们继续学习之前，有必要深入讲解一下接口，而这正是很多 PHP 开发者所不熟悉的。</p>
+<p>在我成为 PHP 程序员之前，我是写 .NET 的。你觉得我是 M 吗？在 .NET 里可到处都是接口。事实上很多接口是定义在 .NET 框架核心中了，一个好的理由是：很多 .NET 语言比如 C# 和 VB.NET 都是强类型的。也就是说，你在给一个函数传值，要么传原生类型对象，要么就必须给这个对象一个明确的类型定义。比如考虑以下 C# 方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public int BillUser(User user) &#123;</div><div class="line">  this.biller.bill(user.GetId(), this.amount)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意在这里，我们不仅要定义传进去的参数是什么类型的，还要定义这个方法返回值是什么类型的。C# 鼓励类型安全。除了指定的 <code>User</code> 对象，它不允许我们传递其他类型的对象到 <code>BillUser</code> 方法中。</p>
+<p>然而 PHP 是一种鸭子类型的语言。所谓鸭子类型的语言，一个对象可用的方法取决于使用方式，而非这个方法从哪儿继承或实现。来看个例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">billUser</span><span class="params">($user)</span> </span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;biller-&gt;bill($user-&gt;getId(), <span class="keyword">$this</span>-&gt;amount);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 PHP 里面，我们不必告诉一个方法需要什么类型的参数。实际上我们传递任何类型的对象都可以，只要这个对象能响应 <code>getId</code> 的调用。这里有个关于鸭子类型（下文译作：弱类型）的解释：如果一个东西看起来像个鸭子，叫声也像鸭子叫，那他就是个鸭子。换言之在程序里，一个对象看上去是个 User，方法响应也像个 User，那他就是个 User。</p>
+<p>不过 PHP 到底有没有任何强类型功能呢？当然有！PHP 混合了强类型和弱类型的结构。为了说明这点，咱们来重写一下 <code>billUser</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">billUser</span><span class="params">(User $user)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;biller-&gt;bill($user-&gt;getId(), $amount);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>给方法加上了 <code>User</code> 类型提示后，我们可以确信的说所有传入 <code>billUser</code> 方法的参数，都是 <code>User</code> 类或是继承自 <code>User</code> 类的一个实例。</p>
+<p>强类型和弱类型各有优劣。在强类型语言中，编译器通常能提供编译时错误检查的功能，这功能可是非常有用的。方法的输入和输出也更加明确。</p>
+<p>与此同时，强类型的特性也使得程序僵化。比如 Eloquent ORM 中，类似 <code>whereEmailOrName</code> 的动态方法就不可能在 C# 这样的强类型语言里实现。我们不讨论强类型弱类型哪种更好，而是要记住他们分别的优劣之处。在 PHP 里面使用强类型标记不是错误，使用弱类型特性也不是错误。但是不加思索，不管实际情况去使用一种模式，这么固执的使用就是错的。</p>
+<h2 id="A-Contract-Example-约定的范例"><a href="#A-Contract-Example-约定的范例" class="headerlink" title="A Contract Example 约定的范例"></a>A Contract Example 约定的范例</h2><p>接口就是约定。接口不包含任何代码实现，只是定义了一个对象应该实现的一系列方法。如果一个对象实现了一个接口，那么我们就能确信这个接口所定义的一系列方法都能在这个对象上使用。因为有约定保证了特定方法的实现标准，通过多态也能使类型安全的语言变得更灵活。</p>
+<blockquote>
+<p>Polywhat？多什么态？</p>
+<p>多态含义很广，其本质上是说一个实体拥有多种形式。在本书中，我们讲多态是一个接口有着多种实现。比如 <code>UserRepositoryInterface</code> 可以有 MySQL 和 Redis 两种实现，每一种实现都是 <code>UserRepositoryInterface</code> 的一个实例。</p>
+</blockquote>
+<p>为了说明在强类型语言中接口的灵活性，咱们来写一个酒店客房预订的代码。考虑以下接口：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ProviderInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getLowestPrice</span><span class="params">($location)</span></span>;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">book</span><span class="params">($location)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当用户订房间时，我们需要将此事记录在系统里。所以在 <code>User</code> 类里面写点方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">bookLocation</span><span class="params">(ProviderInterface $provider, $location)</span> </span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $amountCharged = $provider-&gt;book($location);</div><div class="line">    <span class="keyword">$this</span>-&gt;logBookedLocation($location, $amountCharged);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为我们写出了 <code>ProviderInterface</code> 的类型提示，该 <code>User</code> 类的就可以放心大胆的认为 <code>book</code> 方法是可以调用的。这使得 <code>bookLocation</code> 方法有了重用性。当用户想要换一家酒店提供商时也就更灵活。最后咱们来写点代码来强化他的灵活性。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$location = <span class="string">'Hilton, Dallas'</span>;</div><div class="line"></div><div class="line">$cheapestProvider = <span class="keyword">$this</span>-&gt;findCheapest($location, <span class="keyword">array</span>(</div><div class="line">  <span class="keyword">new</span> PricelineProvider,</div><div class="line">  <span class="keyword">new</span> OrbitzProvider,</div><div class="line">));</div><div class="line"></div><div class="line">$user-&gt;bookLocation($cheapestProvider, $location);</div></pre></td></tr></table></figure>
+<p>太棒了！不管哪家是最便宜的，我们都能够将他传入 <code>User</code> 对象来预订房间了。由于 <code>User</code> 对象只需要有一个符合 <code>ProviderInterface</code> 约定的实例就可以预订房间，所以未来有更多的酒店供应商我们的代码也可以很好的工作。</p>
+<blockquote>
+<p>Forget The Details 忘掉细节</p>
+<p>记住，接口实际上不真正做任何事情。它只是简单的定义了类们必须实现的一系列方法。</p>
+</blockquote>
+<h2 id="Interfaces-amp-Team-Development-接口与团队开发"><a href="#Interfaces-amp-Team-Development-接口与团队开发" class="headerlink" title="Interfaces &amp; Team Development 接口与团队开发"></a>Interfaces &amp; Team Development 接口与团队开发</h2><p>当你的团队在开发大型应用时，不同的部分有着不同的开发速度。比如一个开发人员在制作数据层，另一个开发人员在做前端和网站控制器层。前端开发者想测试他的控制器，不过后端开发较慢没法同步测试。那如果两个开发者能以接口的方式达成协议，后台开发的各种类都遵循这种协议，就像这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">OrderRepositoryInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getMostRecent</span><span class="params">(User $user)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦建立了约定，就算约定还没实现，前端开发者也可以测试他的控制器了！这样应用中的不同组件就可以按不同的速度开发，并且单元测试也可以做。而且这种处理方法还可以使组件内部的改动不会影响到其他不相关组件。要记着无知是福。我们写的那些类们不用知道别的类如何实现，只要知道它们能实现什么。这下咱们有了定义好的约定，再来写控制器：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderRepositoryInterface $orders)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;orders = $orders;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getRecent</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $recent = <span class="keyword">$this</span>-&gt;orders-&gt;getMostRecent(Auth::user());</div><div class="line">    <span class="keyword">return</span> View::make(<span class="string">'orders.recent'</span>, compact(<span class="string">'recent'</span>));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>前端开发者甚至可以为这接口写个“假”实现，然后这个应用的视图就可以用假数据填充了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DummyOrderRepository</span> <span class="keyword">implements</span> <span class="title">OrderRepositoryInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getMostRecent</span><span class="params">(User $user)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">array</span>(<span class="string">'Order 1'</span>, <span class="string">'Order 2'</span>, <span class="string">'Order 3'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦假实现写好了，就可以被绑定到 IoC 容器里，然后整个程序都可以调用他了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">App::bind(<span class="string">'OrderRepositoryInterface'</span>, <span class="string">'DummyOrderRepository'</span>);</div></pre></td></tr></table></figure>
+<p>接下来一旦后台开发者写完了真正的实现代码，比如叫 <code>RedisOrderRepository</code>。那么 IoC 容器就可以轻易的切换到真正的实现上。整个应用就会使用 Redis 读出来的数据。</p>
+<blockquote>
+<p>Interface As Schematic 接口就是大纲</p>
+<p>接口在开发程序的“骨架”时非常有用。在设计组件时，使用接口进行设计和讨论都是对你的团队有益处的。比如定义一个 <code>BillingNotifierInterface</code> 然后讨论他有什么方法。在写任何实现代码前先用接口讨论好一套好的 API！</p>
+</blockquote>
+<p>译文地址：<a href="http://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">http://my.oschina.net/zgldh/blog/389246</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/08/larave-from-apprentice-to-artisan-the-ioc-container/" rel="next" title="从百草堂到三味书屋 —— 控制反转容器">
+                <i class="fa fa-chevron-left"></i> 从百草堂到三味书屋 —— 控制反转容器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-service-providers/" rel="prev" title="从百草园到三味书屋 —— 服务提供者">
+                从百草园到三味书屋 —— 服务提供者 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface-As-Contract-接口约定"><span class="nav-number">1.</span> <span class="nav-text">Interface As Contract 接口约定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Strong-Typing-amp-Water-Fowl-强类型和小鸭子"><span class="nav-number">1.1.</span> <span class="nav-text">Strong Typing & Water Fowl 强类型和小鸭子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Contract-Example-约定的范例"><span class="nav-number">1.2.</span> <span class="nav-text">A Contract Example 约定的范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interfaces-amp-Team-Development-接口与团队开发"><span class="nav-number">1.3.</span> <span class="nav-text">Interfaces & Team Development 接口与团队开发</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

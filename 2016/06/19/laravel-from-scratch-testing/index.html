@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="测试简介测试是 Laravel 构建的核心理念。事实上，Laravel 开箱即用的支持 PHPUnit 测试，你的应用的根目录包含了 phpunit.xml 文件。同时，Laravel 也附带了一些方便的帮助方法可以使你丰满应用的测试。 在 tests 目录中提供了一个 ExampleTest.php 文件。在安装完成 Laravel 应用之后，你只需要在根目录运行 phpunit 命令就可以执行">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 测试">
+<meta property="og:url" content="http://yoursite.com/2016/06/19/laravel-from-scratch-testing/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="测试简介测试是 Laravel 构建的核心理念。事实上，Laravel 开箱即用的支持 PHPUnit 测试，你的应用的根目录包含了 phpunit.xml 文件。同时，Laravel 也附带了一些方便的帮助方法可以使你丰满应用的测试。 在 tests 目录中提供了一个 ExampleTest.php 文件。在安装完成 Laravel 应用之后，你只需要在根目录运行 phpunit 命令就可以执行">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 测试">
+<meta name="twitter:description" content="测试简介测试是 Laravel 构建的核心理念。事实上，Laravel 开箱即用的支持 PHPUnit 测试，你的应用的根目录包含了 phpunit.xml 文件。同时，Laravel 也附带了一些方便的帮助方法可以使你丰满应用的测试。 在 tests 目录中提供了一个 ExampleTest.php 文件。在安装完成 Laravel 应用之后，你只需要在根目录运行 phpunit 命令就可以执行">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/19/laravel-from-scratch-testing/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 测试 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/19/laravel-from-scratch-testing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 测试</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-19T10:29:55+08:00">
+                2016-06-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>测试是 Laravel 构建的核心理念。事实上，Laravel 开箱即用的支持 PHPUnit 测试，你的应用的根目录包含了 <code>phpunit.xml</code> 文件。同时，Laravel 也附带了一些方便的帮助方法可以使你丰满应用的测试。</p>
+<p>在 <code>tests</code> 目录中提供了一个 <code>ExampleTest.php</code> 文件。在安装完成 Laravel 应用之后，你只需要在根目录运行 <code>phpunit</code> 命令就可以执行测试。</p>
+<h3 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h3><p>当运行测试时，Laravel 会自动的设置配置环境为 <code>testing</code>。同时，Laravel 会自动的配置 session 和 缓存为 <code>array</code> 驱动。这意味着会话或者缓存数据在测试期间不会被持久化。</p>
+<p>如果你需要，你完全可以自己创建一个测试环境。<code>testing</code> 环境变量是在 <code>phpunit.xml</code> 文件中被配置的，但是你要确保在运行测试之前先运行 <code>config:clear</code> Artisan 命令来清除配置缓存。</p>
+<h3 id="定义-amp-运行测试"><a href="#定义-amp-运行测试" class="headerlink" title="定义 &amp; 运行测试"></a>定义 &amp; 运行测试</h3><p>你可以使用 <code>make:test</code> Artisan 命令来创建一个测试用例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:test UserTest</div></pre></td></tr></table></figure>
+<p>这个命令会在 <code>tests</code> 目录下创建一个新的 <code>UserTest</code> 类。你可以像使用 PHPUnit 一样接着在类中定义一些测试方法。然后你只需要在终端执行 <code>phpunit</code> 命令就可以运行测试：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">WithoutMiddleware</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrationgs</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;assetTrue(<span class="keyword">true</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：如果你在测试用例中定义了自己的 <code>setUp</code> 方法，你需要确保优先调用 <code>parent::setUp</code> 方法。</p>
+</blockquote>
+<h2 id="应用测试"><a href="#应用测试" class="headerlink" title="应用测试"></a>应用测试</h2><p>Laravel 提供非常顺畅的 API 来构建 HTTP 请求检查输出甚至是填充表格。比如，让我们看下 <code>tests</code> 目录下的 <code>ExampleTest.php</code> 文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">WithoutMiddleware</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;visit(<span class="string">'/'</span>)</div><div class="line">          -&gt;see(<span class="string">'Laravel 5'</span>)</div><div class="line">          -&gt;dontSee(<span class="string">'Rails'</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>visit</code> 方法可以在应用中构造一个 <code>GET</code> 请求。<code>see</code> 方法会断言我们应该从应用的响应中看到所给定的文本。<code>dontSee</code> 方法刚好与 <code>see</code> 相反，它断言我们不应该看到给定的文本。这就是 Laravel 提供的最基本的应用测试。</p>
+<h3 id="与应用进行交互"><a href="#与应用进行交互" class="headerlink" title="与应用进行交互"></a>与应用进行交互</h3><p>当然，你可以比这种简单的断言响应给定的文本做的更多。让我们来看一些点击链接和填充表单的例子：</p>
+<p><strong>点击超链</strong></p>
+<p>在这个测试，我们会为应用构造一个请求，在响应中会返回一个可点击的超链，并且我们会断言它应该导向给定的 URL。比如，让我们假设应用中返回了一个文本为 “About Us” 的超链:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/about-us"</span>&gt;</span>About Us<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>现在，让我们编写一个测试并断言点击链接会跳转到相应的页面：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;visit(<span class="string">'/'</span>)</div><div class="line">       -&gt;click(<span class="string">'About Us'</span>)</div><div class="line">       -&gt;seePageIs(<span class="string">'/about-us'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>与表单交互</strong></p>
+<p>Laravel 同样也提供了多种方法来进行表单测试。<code>type</code>，<code>select</code>，<code>check</code>，<code>attach</code>，和 <code>press</code> 方法允许你与所有的表单输入进行交互。比如，让我们来想象一下一个存在于注册页面中的表单：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"/register"</span> <span class="attr">method</span>=<span class="string">"POST"</span>&gt;</span></div><div class="line">  &#123;&#123; csrf_field() &#125;&#125;</div><div class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">    Name: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">value</span>=<span class="string">"yes"</span> <span class="attr">name</span>=<span class="string">"terms"</span>&gt;</span>Accept Terms<span class="tag">&lt;/<span class="name">input</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>我们可以编写一个测试来完成表单并检查结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testNewUserRegistration</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;visit(<span class="string">'/register'</span>)</div><div class="line">       -&gt;type(<span class="string">'Taylor'</span>, <span class="string">'name'</span>)</div><div class="line">       -&gt;check(<span class="string">'terms'</span>)</div><div class="line">       -&gt;press(<span class="string">'Register'</span>)</div><div class="line">       -&gt;seePageIs(<span class="string">'/dashboard'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，如果你的表单中包含了一些单选按钮或者下拉框之类的其他输入，你同样可以轻松的进行填充这些类型的字段。下面列出了所有的表单操作方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$this-&gt;type($text, $elementName)</code></td>
+<td>对给定的字段进行输入</td>
+</tr>
+<tr>
+<td><code>$this-&gt;select($value, $elementName)</code></td>
+<td>选中一个单选按钮或者下拉框</td>
+</tr>
+<tr>
+<td><code>$this-&gt;check($elementName)</code></td>
+<td>选中复选框</td>
+</tr>
+<tr>
+<td><code>$this-&gt;uncheck($elementName)</code></td>
+<td>取消选中复选框</td>
+</tr>
+<tr>
+<td><code>$this-&gt;attach($pathToFile, $elementName)</code></td>
+<td>附加一个文件到表单</td>
+</tr>
+<tr>
+<td><code>$this-&gt;press($buttonTextOrElementName)</code></td>
+<td>单击给定的文本或名称的按钮</td>
+</tr>
+</tbody>
+</table>
+<p><strong>与附件交互</strong></p>
+<p>如果你的表单中包含了 <code>file</code> 输入类型，你可以使用 <code>attach</code> 方法来附加附件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testPhotoCanBeUploaded</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">$this</span>-&gt;visit(<span class="string">'/upload'</span>)</div><div class="line">       -&gt;type(<span class="string">'File Name'</span>, <span class="string">'name'</span>)</div><div class="line">       -&gt;attach($absolutePathToFile, <span class="string">'photo'</span>)</div><div class="line">       -&gt;press(<span class="string">'Upload'</span>)</div><div class="line">       -&gt;see(<span class="string">'Upload Successful!'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="测试-JSON-APIs"><a href="#测试-JSON-APIs" class="headerlink" title="测试 JSON APIs"></a>测试 JSON APIs</h2><p>Laravel 同样也对测试 JSON APIs 和它们的响应提供了多种帮助方法。比如，<code>get</code>，<code>post</code>，<code>put</code>，<code>patch</code>，和 <code>delete</code> 方法可以用来发布一个相应 HTTP 行为方式的请求。你可以轻松的传递数据和头信息到这些方法中。在开始之前，让我们来编写一个 <code>POST</code> 请求的测试来断言 <code>/user</code> 会返回给定数组的 JSON 格式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;json(<span class="string">'POST'</span>, <span class="string">'/user'</span>, [<span class="string">'name'</span> =&gt; <span class="string">'Sally'</span>])</div><div class="line">          -&gt;seeJson([</div><div class="line">            <span class="string">'created'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">          ]) ;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>seeJson</code> 方法会转换给定的数组为 JSON，并且会验证应用响应的完整 JSON 中是否会出现相应的片段。所以，如果响应中还含有其他 JSON 属性，那么这个测试依然会被通过。</p>
+<p><strong>验证完全匹配的 JSON</strong></p>
+<p>如果你希望验证完整的 JSON 响应，你可以使用 <code>seeJsonEquals</code> 方法，除非 JSON 相应于所给定的数组完全匹配，否则该测试不会被通过：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;json(<span class="string">'POST'</span>, <span class="string">'/user'</span>, [<span class="string">'name'</span> =&gt; <span class="string">'Sally'</span>])</div><div class="line">          -&gt;seeJsonEquals([</div><div class="line">            <span class="string">'created'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">          ]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>验证匹配 JSON 结构</strong></p>
+<p>验证 JSON 响应是否采取给定的结构也是可以的。你可以使用 <code>seeJsonStructure</code> 方法并传递嵌套的键列表：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;get(<span class="string">'/user/1'</span>)</div><div class="line">          -&gt;seeJsonStructure([</div><div class="line">            <span class="string">'name'</span>,</div><div class="line">            <span class="string">'pet'</span> =&gt; [</div><div class="line">              <span class="string">'name'</span>, <span class="string">'age'</span></div><div class="line">            ]</div><div class="line">          ]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的例子中表明了期望获取一个含有 <code>name</code> 和 <code>pet</code> 属性的 JSON，并且 <code>pet</code> 键是一个含有 <code>name</code> 和 <code>age</code> 属性的对象。如果含有额外的键，<code>seeJsonStructure</code> 方法并不会失败。比如，如果 <code>pet</code> 还含有 <code>weight</code> 属性，那么测试依然会被通过。</p>
+<p>你可以使用 <code>*</code> 来断言所返回的 JSON 结构中的每一项都应该包含所列出的这些属性：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">// Assert that each user in the list has at least an id, name and email attribute.</span></div><div class="line">     <span class="keyword">$this</span>-&gt;get(<span class="string">'/users'</span>)</div><div class="line">          -&gt;seeJsonStructure([</div><div class="line">            <span class="string">'*'</span> =&gt; [</div><div class="line">              <span class="string">'id'</span>, <span class="string">'name'</span>, <span class="string">'email'</span></div><div class="line">            ]</div><div class="line">          ]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以嵌套使用 <code>*</code>，下面的例子中，我们断言 JSON 响应返回的每一个用户都应该包含所列出的属性，并且 <code>pet</code> 属性应该也包含所给定的属性：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/users'</span>)</div><div class="line">     -&gt;seeJsonStructure([</div><div class="line">       <span class="string">'*'</span> =&gt; [</div><div class="line">         <span class="string">'id'</span>, <span class="string">'name'</span>, <span class="string">'email'</span>, <span class="string">'pets'</span> =&gt; [</div><div class="line">           <span class="string">'*'</span> =&gt; [</div><div class="line">             <span class="string">'name'</span>, <span class="string">'age'</span></div><div class="line">           ]</div><div class="line">         ]</div><div class="line">       ]</div><div class="line">     ]);</div></pre></td></tr></table></figure>
+<h3 id="会话-认证"><a href="#会话-认证" class="headerlink" title="会话 / 认证"></a>会话 / 认证</h3><p>Laravel 为测试期间的会话提供了多种帮助方法。首先，你需要通过 <code>withSession</code> 方法来根据给定的数组设置 session 数据，这通常用来在测试应用的请求到在之前先设置一些 session 数据：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testApplication</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;withSession([<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>])</div><div class="line">         -&gt;visit(<span class="string">'/'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，会话常见的用途就是保留用户的状态，比如用户认证。<code>actingAs</code> 帮助方法提供了一种方式来使用给定的用户作为已认证的当前用户。比如，我们可以使用模型工厂来生成一个认证用户：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testApplication</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $user = factory(App\User::class)-&gt;create();</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;actingAs($user)</div><div class="line">         -&gt;withSession([<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>])</div><div class="line">         -&gt;visit(<span class="string">'/'</span>)</div><div class="line">         -&gt;see(<span class="string">'Hello'</span> . $user-&gt;name);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以传递一个给定的守卫名称到 <code>actingAs</code> 方法的第二个参数来选择用户认证的守卫：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;actingAs($user, <span class="string">'backend'</span>)</div></pre></td></tr></table></figure>
+<h3 id="禁用中间件"><a href="#禁用中间件" class="headerlink" title="禁用中间件"></a>禁用中间件</h3><p>当测试应用时，你可以方便的在测试中禁中间件。这使你可以隔离的测试路由和控制器而免除中间件的顾虑。你可以简单的引入 <code>WithoutMiddleware</code> trait 来在测试类中禁用所有的中间件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">WithoutMiddleware</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">WithoutMiddleware</span>;</div><div class="line"></div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你希望只在个别的测试方法中禁用中间件，你可以在方法中使用 <code>withoutMiddleware</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> funcion testBasicExample()</div><div class="line">   &#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;withoutMiddleware();</div><div class="line"></div><div class="line">     <span class="keyword">$this</span>-&gt;visit(<span class="string">'/'</span>)</div><div class="line">          -&gt;see(<span class="string">'Laravel 5'</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="定制化-HTTP-请求"><a href="#定制化-HTTP-请求" class="headerlink" title="定制化 HTTP 请求"></a>定制化 HTTP 请求</h3><p>如果你希望构造一个自定义的 HTTP 请求，并且返回完整的 <code>Illuminate\Http\Response</code> 对象，你可以使用 <code>call</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testApplication</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  $response = <span class="keyword">$this</span>-&gt;call(<span class="string">'GET'</span>, <span class="string">'/'</span>);</div><div class="line"></div><div class="line">  <span class="keyword">$this</span>-&gt;assertEquals(<span class="number">200</span>, $response-&gt;status());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你构造 <code>POST</code>，<code>PUT</code>，或者 <code>PATCH</code> 请求，你可以传递一个数组来作为请求的输入数据。当然，这些数据可以通过 Request 实例来在你的路由和控制器中可用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$response = <span class="keyword">$this</span>-&gt;call(<span class="string">'POST'</span>, <span class="string">'/user'</span>, [<span class="string">'name'</span> =&gt; <span class="string">'Taylor'</span>]);</div></pre></td></tr></table></figure>
+<h3 id="PHPUnit-断言"><a href="#PHPUnit-断言" class="headerlink" title="PHPUnit 断言"></a>PHPUnit 断言</h3><p>Laravel 对 PHPUnit 测试提供了多种额外的断言方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-&gt;assertResponseOk();</code></td>
+<td>断言客户端响应会返回 OK 状态码</td>
+</tr>
+<tr>
+<td><code>-&gt;assertResponseStatus($code)</code></td>
+<td>断言客户端响应给定的状态码</td>
+</tr>
+<tr>
+<td><code>-&gt;assertViewHas($key, $value = null);</code></td>
+<td>断言响应的视图中是否含有给定的数据片段。</td>
+</tr>
+<tr>
+<td><code>-&gt;assertViewHasAll(array $bindings);</code></td>
+<td>断言视图中是否含有所有的绑定数据</td>
+</tr>
+<tr>
+<td><code>-&gt;assertViewMissing($key);</code></td>
+<td>断言视图中是否缺失所给定的片段</td>
+</tr>
+<tr>
+<td><code>-&gt;assertRedirectedTo($uri, $with = []);</code></td>
+<td>断言客户端是否重定向到给定的 URI</td>
+</tr>
+<tr>
+<td><code>-&gt;assertRedirectedToRoute($name, $parameters = [], $with = []);</code></td>
+<td>断言客户端是否重定向到给定的动作</td>
+</tr>
+<tr>
+<td><code>-&gt;assertSessionHas($key, $value = null);</code></td>
+<td>断言会话中是否含有给定的键</td>
+</tr>
+<tr>
+<td><code>-&gt;assertSessionHasAll(array $bindings);</code></td>
+<td>断言会话中是否包含给定列表的数据</td>
+</tr>
+<tr>
+<td><code>-&gt;assertSessionHasErrors($bindings = [], $format = null);</code></td>
+<td>断言会话中是否包含错误数据</td>
+</tr>
+<tr>
+<td><code>-&gt;assertHasOldInput();</code></td>
+<td>断言会话中是否包含旧的输入</td>
+</tr>
+<tr>
+<td><code>-&gt;assertSessionMissing($key);</code></td>
+<td>断言会话中是否缺失给定的键</td>
+</tr>
+</tbody>
+</table>
+<h2 id="与数据库协作"><a href="#与数据库协作" class="headerlink" title="与数据库协作"></a>与数据库协作</h2><p>Laravel 也提供了各种有用的工具来使测试基于数据库驱动的应用更简单。首先，你可以使用 <code>seeInDatabase</code> 方法来断言给定的规范是否能在数据库中匹配到相应的数据。比如，如果你希望验证 <code>users</code> 表中是否含有 <code>email</code> 为 <code>sally@example.com</code> 的记录，那么你可以这么做：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testDatabase</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">// Make call to application...</span></div><div class="line"></div><div class="line">  <span class="keyword">$this</span>-&gt;seeInDatabase(<span class="string">'users'</span>, [<span class="string">'email'</span> =&gt; <span class="string">'sally@example.com'</span>]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，类似 <code>seeInDatabase</code> 等方法仅仅是为了测试的方便。你可以自由的使用任意的 PHPUnit 自带的断言方法来补充你的测试。</p>
+<h3 id="在每个测试后重置数据库"><a href="#在每个测试后重置数据库" class="headerlink" title="在每个测试后重置数据库"></a>在每个测试后重置数据库</h3><p>我们通常要在每次测试后还原数据库，以便之前的测试数据不会对随后的测试产生干扰。</p>
+<p><strong>使用迁移</strong></p>
+<p>一种选择是在下个测试之前进行数据库回滚和迁移操作。Laravel 提供了简洁的 <code>DatabaseMigrations</code> trait 来自动的处理这些，你只需要在测试类引入该性状：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">WithoutMiddleware</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrations</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">DatabaseMigrations</span>;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;visit(<span class="string">'/'</span>)</div><div class="line">          -&gt;see(<span class="string">'Laravel 5'</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>使用事务</strong></p>
+<p>另外一种选择就是在每个测试用例中都使用数据库的事务进行包装，这一次，Laravel 提供了方便的 <code>DatabaseTransactions</code> trait 来自动的处理这些：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">WithoutMiddleware</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrations</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">DatabaseTransactions</span>;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * A basic functional test example.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicExample</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;visit(<span class="string">'/'</span>)</div><div class="line">          -&gt;see(<span class="string">'Laravel 5'</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意： 这一性状只会包装默认数据库连接的事务。</p>
+</blockquote>
+<h3 id="模型工厂"><a href="#模型工厂" class="headerlink" title="模型工厂"></a>模型工厂</h3><p>当测试时，通常需要在执行测试之前在数据库中添加一些测试所需要的数据记录。Laravel 允许你使用 “factories” 来对你的 Eloquent 模型定义一些默认的属性设置来取代这些手动的添加数据的行为。在开始之前，我们来看一下应用的 <code>database/factories/ModelFactory.php</code> 文件。该文件中只包含了一个工厂的定义：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;define(App\User::class, <span class="function"><span class="keyword">function</span> <span class="params">(Faker\Generator $faker)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> [</div><div class="line">    <span class="string">'name'</span> =&gt; $faker-&gt;name,</div><div class="line">    <span class="string">'email'</span> =&gt; $faker-&gt;email,</div><div class="line">    <span class="string">'password'</span> =&gt; bcrypt(str_random(<span class="number">10</span>)),</div><div class="line">    <span class="string">'remember_token'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">  ] ;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>在工厂定义中的闭包中，你可以返回一些模型中的用作测试的默认值。这个闭包会接收一个 <a href="https://github.com/fzaninotto/Faker" target="_blank" rel="external">Faker</a> PHP 类库的实例，它会帮你生成一些随机数据用于测试。</p>
+<p>当然，你可以自由的在 <code>ModelFactory.php</code> 文件中添加额外的工厂。你也可以创建额外的工厂文件来有效的组织管理。比如，你可以在 <code>database/factories</code> 目录下创建一个 <code>UserFactory.php</code> 和 一个 <code>CommentFactory.php</code> 文件。</p>
+<p><strong>多个工厂类型</strong></p>
+<p>有时候，你可能希望在同一个 Eloquent 模型上有多个工厂类型。比如，可能你希望除了普通用户之外还有一个管理员的工厂。你可以使用 <code>defineAs</code> 方法来定义这些工厂：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;defineAs(App\User::class, <span class="string">'admin'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($faker)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> [</div><div class="line">    <span class="string">'name'</span> =&gt; $faker-&gt;name,</div><div class="line">    <span class="string">'email'</span> =&gt; $faker-&gt;email,</div><div class="line">    <span class="string">'password'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">    <span class="string">'remember_token'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">    <span class="string">'admin'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">  ];</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你可以使用 <code>raw</code> 方法来检索基础工厂的属性，这样可用于属性的复用，然后合并添加你所需要的额外属性：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;defineAs(App\User::class, <span class="string">'admin'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($faker)</span> <span class="title">use</span> <span class="params">($factory)</span> </span>&#123;</div><div class="line">  $user = $factory-&gt;raw(App\User::class);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> array_merge($user, [<span class="string">'admin'</span> =&gt; <span class="keyword">true</span>]); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>在测试中使用工厂</strong></p>
+<p>一旦你定义了工厂，你就可以在你的测试文件或者数据库 seed 文件中使用全局帮助函数 <code>factory</code> 工厂方法来生成模型的实例。那么，让我们来看一些创建模型的示例。首先，我们将使用 <code>make</code> 方法，它将会创建一些模型但是却不会将其保存到数据库：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testDatabase</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  $user = factory(App\User::class)-&gt;make();</div><div class="line"></div><div class="line">  <span class="comment">// Use model in tests...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以通过传递一个数组到 <code>make</code> 方法中来覆盖模型中的默认值。只有指定的部分会被替换掉，而其它部分都会被保留为工厂定义的默认值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = factory(App\User::class)-&gt;make([</div><div class="line">  <span class="string">'name'</span> =&gt; <span class="string">'Abigail'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>你也可以根据给定的类型创建多个模型的集合：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Create three App\User instances...</span></div><div class="line">$user = factory(App\User::class, <span class="number">3</span>)-&gt;make();</div><div class="line"></div><div class="line"><span class="comment">// Create an App\User "admin" instance...</span></div><div class="line">$user = factory(App\User::class, <span class="string">'admin'</span>)-&gt;make();</div><div class="line"></div><div class="line"><span class="comment">// Create three App\User "admin" instance...</span></div><div class="line">$user = factory(App\User::class, <span class="string">'admin'</span>, <span class="number">3</span>)-&gt;make();</div></pre></td></tr></table></figure>
+<p><strong>工厂模型持久化</strong></p>
+<p><code>create</code> 方法不仅仅会创建一个模型实例，它还会使用 Eloquent 的 <code>save</code> 方法将其存储到数据库中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testDatabase</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  $user = factory(App\User::class)-&gt;create();</div><div class="line"></div><div class="line">  <span class="comment">// Use model in tests...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这一次，你也可以传递一个数组到 <code>create</code> 方法中来覆盖默认的属性值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = factory(App\User::class)-&gt;create([</div><div class="line">  <span class="string">'name'</span> =&gt; <span class="string">'Abigail'</span>,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p><strong>为模型添加关系</strong></p>
+<p>你甚至可以持久化多个模型到数据库中。在这个例子中，我们甚至会为创建的模型附加一个关联模型。当使用 <code>create</code> 方法来创建多个模型时，会返回一个集合实例，这允许你使用集合实例的方法，比如 <code>each</code> :</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$users = factory(App\User::class, <span class="number">3</span>)</div><div class="line">           -&gt;create()</div><div class="line">           -&gt;each(<span class="function"><span class="keyword">function</span> <span class="params">($u)</span> </span>&#123;</div><div class="line">             $u-&gt;posts()-&gt;save(factory(App\Post::class)-&gt;make());</div><div class="line">           &#125;);</div></pre></td></tr></table></figure>
+<p><strong>关联 &amp; 属性闭包</strong></p>
+<p>你也可以在工厂定义内使用一个闭包来附加关系模型，比如，如果你希望创建一个 <code>Post</code> 时也创建一个关联的 <code>User</code> 实例，你可以这么做：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;fefine(App\Post::class, <span class="function"><span class="keyword">function</span><span class="params">($faker)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> [</div><div class="line">    <span class="string">'title'</span> =&gt; $faker-&gt;title,</div><div class="line">    <span class="string">'content'</span> =&gt; $faker-&gt;paragraph,</div><div class="line">    <span class="string">'user_id'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> factory(App\User::class)-&gt;create()-&gt;id;</div><div class="line">    &#125;</div><div class="line">  ];</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这些闭包还会接收工厂所包含的评估属性数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;define(App\Post::class, <span class="function"><span class="keyword">function</span> <span class="params">($faker)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> [</div><div class="line">    <span class="string">'title'</span> =&gt; $faker-&gt;title,</div><div class="line">    <span class="string">'content'</span> =&gt; $faker-&gt;paragraph,</div><div class="line">    <span class="string">'user_id'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> factory(App\User::class)-&gt;create()-&gt;id;</div><div class="line">    &#125;,</div><div class="line">    <span class="string">'user_type'</span> =&gt; <span class="function"><span class="keyword">function</span> <span class="params">(array $post)</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> App\User::find($post[<span class="string">'user_id'</span>])-&gt;type;</div><div class="line">    &#125;</div><div class="line">  ]; </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h2><h3 id="模拟事件"><a href="#模拟事件" class="headerlink" title="模拟事件"></a>模拟事件</h3><p>如果你在 Laravel 中大量使用了事件系统，那么你可能会想在进行测试时不触发事件或者模拟运行一些事件。比如，如果你测试用户注册，你可能并不想触发所有 <code>UserRegistered</code> 事件，因为这些可能会发送电子邮件等。</p>
+<p>Laravel 提供了方便的 <code>expectsEvents</code> 方法来验证预期的事件是否触发，但是会避免这些事件的真正的执行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testUserRegistration</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;expectsEvents(App\Events\UserRegistered::class);</div><div class="line"></div><div class="line">    <span class="comment">// Test user registration...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以使用 <code>doesntExpectEvents</code> 方法来验证给定的事件没有被触发：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testPodcastPurchase</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;expectsEvents(App\Events\PodcastWasPurchased::class);</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;doesntExpectEvents(App\Events\PaymentWasDeclined::class);</div><div class="line"></div><div class="line">    <span class="comment">// Test purchasing podcast...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你需要避免所有的事件触发，你可以使用 <code>withoutEvents</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testUerRegistration</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;withoutEvents();</div><div class="line"></div><div class="line">    <span class="comment">// Test user registration code...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="模拟任务"><a href="#模拟任务" class="headerlink" title="模拟任务"></a>模拟任务</h3><p>有时候，你想在构建请求到应用时，简单的测试一下控制器中是否进行了指定任务的分发。这可以使你隔离测试你的路由 / 控制器和你的任务逻辑，当然，你可以再写一个测试用例来单独的测试任务的执行。</p>
+<p>Laravel 提供了方便的 <code>expectsJobs</code> 方法来验证期望的任务是否被分发，但是任务并不会被真正的分发执行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testPurchasePodcast</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;expectsJobs(App\Jobs\PurchasePodcast::class);</div><div class="line"></div><div class="line">    <span class="comment">// Test purchase podcast code...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：这个方法仅用来测试通过 <code>DispatchesJobs</code> trait 的分发或者 <code>dispatch</code> 帮助方法的分发。它并不检测直接使用 <code>Queue::push</code> 发布的任务。</p>
+</blockquote>
+<h3 id="模拟假面"><a href="#模拟假面" class="headerlink" title="模拟假面"></a>模拟假面</h3><p>当测试时，你或许经常需要模拟一个 Laravel 假面的调用。比如，考虑一下下面的控制器操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Cache</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show a list of all users of the application</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $value = Cache::get(<span class="string">'key'</span>);</div><div class="line"></div><div class="line">     <span class="comment">//</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以使用 <code>shouldReceive</code> 方法来模拟调用 <code>Cache</code> 假面，它会返回一个 <a href="https://github.com/padraic/mockery" target="_blank" rel="external">Mockery</a> 的模拟实例。由于假面实际上是通过 Laravel 的服务容器来解析和管理的，所以它们比一般的静态类更具可测性。比如，让我们来模拟 <code>Cache</code> 假面的调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testGetIndex</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    Cache::shouldReceive(<span class="string">'get'</span>)</div><div class="line">             -&gt;once()</div><div class="line">             -&gt;with(<span class="string">'key'</span>)</div><div class="line">             -&gt;andReturn(<span class="string">'value'</span>);</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;visit(<span class="string">'/users'</span>)-&gt;see(<span class="string">'value'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：你不应该模拟 <code>Request</code> 假面。你应该在运行测试时使用 HTTP 帮助方法如 <code>call</code> 和 <code>post</code> 来传递你所希望的输入。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/18/laravel-from-scratch-task-scheduling/" rel="next" title="laravel 基础教程 —— 任务计划">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 任务计划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/22/laravel-from-scratch-validation/" rel="prev" title="laravel 基础教程 —— 验证">
+                laravel 基础教程 —— 验证 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">1.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试环境"><span class="nav-number">1.1.1.</span> <span class="nav-text">测试环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-amp-运行测试"><span class="nav-number">1.1.2.</span> <span class="nav-text">定义 & 运行测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用测试"><span class="nav-number">1.2.</span> <span class="nav-text">应用测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#与应用进行交互"><span class="nav-number">1.2.1.</span> <span class="nav-text">与应用进行交互</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试-JSON-APIs"><span class="nav-number">1.3.</span> <span class="nav-text">测试 JSON APIs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#会话-认证"><span class="nav-number">1.3.1.</span> <span class="nav-text">会话 / 认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用中间件"><span class="nav-number">1.3.2.</span> <span class="nav-text">禁用中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制化-HTTP-请求"><span class="nav-number">1.3.3.</span> <span class="nav-text">定制化 HTTP 请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHPUnit-断言"><span class="nav-number">1.3.4.</span> <span class="nav-text">PHPUnit 断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与数据库协作"><span class="nav-number">1.4.</span> <span class="nav-text">与数据库协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在每个测试后重置数据库"><span class="nav-number">1.4.1.</span> <span class="nav-text">在每个测试后重置数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型工厂"><span class="nav-number">1.4.2.</span> <span class="nav-text">模型工厂</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟"><span class="nav-number">1.5.</span> <span class="nav-text">模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟事件"><span class="nav-number">1.5.1.</span> <span class="nav-text">模拟事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟任务"><span class="nav-number">1.5.2.</span> <span class="nav-text">模拟任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟假面"><span class="nav-number">1.5.3.</span> <span class="nav-text">模拟假面</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

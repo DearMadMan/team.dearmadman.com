@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介在现实中，如果你明白了你所使用工具的工作原理，你就会在使用的时候非常的自信。开发应用并没有什么不同，当你弄懂了这些开发工具功能，你就会在使用时得心应手。 这份文档会深层次的带你浏览 laravel 框架是如何工作的。通过对框架更全面的了解，一切都会显得不再那么神秘，你会更加自信的去构建应用。 如果你并不能理解该文档的所有内容，请不要伤心。你需要先试着掌握一些基本的概念，你的知识体系会随着对文档">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 请求生命周期">
+<meta property="og:url" content="http://yoursite.com/2016/05/15/laravel-from-scratch-request-lifecycle/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="简介在现实中，如果你明白了你所使用工具的工作原理，你就会在使用的时候非常的自信。开发应用并没有什么不同，当你弄懂了这些开发工具功能，你就会在使用时得心应手。 这份文档会深层次的带你浏览 laravel 框架是如何工作的。通过对框架更全面的了解，一切都会显得不再那么神秘，你会更加自信的去构建应用。 如果你并不能理解该文档的所有内容，请不要伤心。你需要先试着掌握一些基本的概念，你的知识体系会随着对文档">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 请求生命周期">
+<meta name="twitter:description" content="简介在现实中，如果你明白了你所使用工具的工作原理，你就会在使用的时候非常的自信。开发应用并没有什么不同，当你弄懂了这些开发工具功能，你就会在使用时得心应手。 这份文档会深层次的带你浏览 laravel 框架是如何工作的。通过对框架更全面的了解，一切都会显得不再那么神秘，你会更加自信的去构建应用。 如果你并不能理解该文档的所有内容，请不要伤心。你需要先试着掌握一些基本的概念，你的知识体系会随着对文档">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/15/laravel-from-scratch-request-lifecycle/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 请求生命周期 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/15/laravel-from-scratch-request-lifecycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 请求生命周期</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-15T13:29:38+08:00">
+                2016-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在现实中，如果你明白了你所使用工具的工作原理，你就会在使用的时候非常的自信。开发应用并没有什么不同，当你弄懂了这些开发工具功能，你就会在使用时得心应手。</p>
+<p>这份文档会深层次的带你浏览 laravel 框架是如何工作的。通过对框架更全面的了解，一切都会显得不再那么神秘，你会更加自信的去构建应用。</p>
+<p>如果你并不能理解该文档的所有内容，请不要伤心。你需要先试着掌握一些基本的概念，你的知识体系会随着对文档的探索而增长。</p>
+<h2 id="生命周期概述"><a href="#生命周期概述" class="headerlink" title="生命周期概述"></a>生命周期概述</h2><h3 id="第一件事"><a href="#第一件事" class="headerlink" title="第一件事"></a>第一件事</h3><p>laravel 应用中的所有请求的入口都是 <code>pulic/index.php</code> 文件，所有的请求都会被导向该文件。 <code>index.php</code> 文件中并没有存储太多的代码，相反，它只是用于装载框架的其余部分的起始点。</p>
+<p><code>index.php</code> 文件会加载 Composer 生成的自动加载器配置信息，然后从 <code>bootstrap/app.php</code> 文件中加载 laravel 应用的实例，Laravel 的第一个动作就是创建一个服务容器的实例。</p>
+<h3 id="HTTP-Console-内核"><a href="#HTTP-Console-内核" class="headerlink" title="HTTP / Console 内核"></a>HTTP / Console 内核</h3><p>根据请求进入应用程序的类型，请求将会被分配到 HTTP 内核 或 Console 内核处理。这两个内核都会作为所有请求流经过的中心处理器。现在，让我们只聚焦在 HTTP 内核上，它被存储在 <code>app/Http/Kernel.php</code> 文件中。</p>
+<p>HTTP 内核继承自 <code>Illuminate\Foundation\Http\Kernel</code> 类，这个类定义了一个 <code>bootstrappers</code> 的数组，这些类会在请求被处理前运行。这些 <code>bootstrappers</code> 执行错误处理，日志，检测当前应用环境的配置和提供一些其它在请求被处理前执行的任务。</p>
+<p>HTTP 内核也定义了一些 HTTP 中间件，所有请求在被处理前都会经过这些中间件。这些中间件包括了读写 HTTP Session 的中间件，判断当前站点是否是维护状态的中间件，验证 CSRF Token 的中间件，等等。</p>
+<p>HTTP 内核的 <code>handle</code> 方法非常的简单：接收一个 <code>Request</code> 返回一个 <code>Response</code>。你可以把这个核心想象成一个黑盒子，左边 HTTP 请求进去，右边返回 HTTP 响应。</p>
+<h3 id="服务提供者"><a href="#服务提供者" class="headerlink" title="服务提供者"></a>服务提供者</h3><p>启动内核中最重要的一步就是为你的应用加载服务提供者。所有的服务提供者都在 <code>config/app.php</code> 文件的 <code>providers</code> 数组中进行配置。首先，所有经过配置的提供者都会执行其自身的 <code>register</code> 方法，然后当所有提供者都完成注册之后，才会陆续的触发 <code>boot</code> 方法。</p>
+<p>服务提供者主要负责启动框架中的各个组件，比如数据库组件、队列、验证和路由组件。因为框架中的各种核心功能都是从这里被提供的，所以服务提供者是整个框架启动中最重要的一环。</p>
+<h3 id="分发请求"><a href="#分发请求" class="headerlink" title="分发请求"></a>分发请求</h3><p>一旦应用启动完成并且所有的服务提供者都完成注册，<code>Request</code> 将会移交到路由器进行分发。路由器将会分发该请求到路由或者控制器中，同时也会经过路由特定的中间件。</p>
+<h2 id="聚焦服务提供者"><a href="#聚焦服务提供者" class="headerlink" title="聚焦服务提供者"></a>聚焦服务提供者</h2><p>服务提供者是 laravel 应用能够成功启动的最关键的部分。首先创建应用的实例，然后注册服务提供者，再然后处理已经启动成功应用的请求。整个请求流程就是这么简单。</p>
+<p>能够深刻理解 laravel 是如何通过服务提供者进行启动和构建应用是非常有价值的。当然你的应用中默认的服务提供者都被存储在 <code>app/Providers</code> 目录中。</p>
+<p>默认的，<code>AppServiceProvider</code> 是一个空的类，这里是你在应用中添加自己的启动项和做服务容器绑定的好去处。当然，在大型应用中，你可以自行的创建一些服务提供者，以使每一个提供者都具有单一的职责。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/14/laravel-from-scratch-blade/" rel="next" title="laravel 基础教程 —— Blade 模板引擎">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Blade 模板引擎
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/15/laravel-from-scratch-application-structure/" rel="prev" title="laravel 基础教程 —— 应用目录结构">
+                laravel 基础教程 —— 应用目录结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期概述"><span class="nav-number">1.1.</span> <span class="nav-text">生命周期概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一件事"><span class="nav-number">1.1.1.</span> <span class="nav-text">第一件事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-Console-内核"><span class="nav-number">1.1.2.</span> <span class="nav-text">HTTP / Console 内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务提供者"><span class="nav-number">1.1.3.</span> <span class="nav-text">服务提供者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分发请求"><span class="nav-number">1.1.4.</span> <span class="nav-text">分发请求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚焦服务提供者"><span class="nav-number">1.2.</span> <span class="nav-text">聚焦服务提供者</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

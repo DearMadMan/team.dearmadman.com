@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="laravel 会计员（Cashier）简介Laravel Cashier 提供了一种表现流利的接口来支持 Stripe 和 Braintree 的计费服务。它封装了许多你畏惧编写的认购计费样板。除了基本的认购管理，Cashier 还可以处理优惠券、服务升级、服务替换、认购份额、取消并保留期限内可用、甚至是生成 PDF 类型的发票。 Stripe 配置Composer 首先，添加 Strpe 的">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 计费">
+<meta property="og:url" content="http://yoursite.com/2016/05/27/laravel-from-scratch-billing/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="laravel 会计员（Cashier）简介Laravel Cashier 提供了一种表现流利的接口来支持 Stripe 和 Braintree 的计费服务。它封装了许多你畏惧编写的认购计费样板。除了基本的认购管理，Cashier 还可以处理优惠券、服务升级、服务替换、认购份额、取消并保留期限内可用、甚至是生成 PDF 类型的发票。 Stripe 配置Composer 首先，添加 Strpe 的">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 计费">
+<meta name="twitter:description" content="laravel 会计员（Cashier）简介Laravel Cashier 提供了一种表现流利的接口来支持 Stripe 和 Braintree 的计费服务。它封装了许多你畏惧编写的认购计费样板。除了基本的认购管理，Cashier 还可以处理优惠券、服务升级、服务替换、认购份额、取消并保留期限内可用、甚至是生成 PDF 类型的发票。 Stripe 配置Composer 首先，添加 Strpe 的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/27/laravel-from-scratch-billing/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 计费 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/27/laravel-from-scratch-billing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 计费</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-27T16:28:28+08:00">
+                2016-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="laravel-会计员（Cashier）"><a href="#laravel-会计员（Cashier）" class="headerlink" title="laravel 会计员（Cashier）"></a>laravel 会计员（Cashier）</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel Cashier 提供了一种表现流利的接口来支持 <a href="https://stripe.com/" target="_blank" rel="external">Stripe</a> 和 <a href="https://braintreepayments.com/" target="_blank" rel="external">Braintree</a> 的计费服务。它封装了许多你畏惧编写的认购计费样板。除了基本的认购管理，Cashier 还可以处理优惠券、服务升级、服务替换、认购份额、取消并保留期限内可用、甚至是生成 PDF 类型的发票。</p>
+<h2 id="Stripe-配置"><a href="#Stripe-配置" class="headerlink" title="Stripe 配置"></a>Stripe 配置</h2><p><strong>Composer</strong></p>
+<p>首先，添加 Strpe 的 Cashier 包到你的 <code>composer.json</code> 文件，然后运行 <code>composer update</code> 命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"laravel/cashier"</span>: <span class="string">"~6.0"</span></div></pre></td></tr></table></figure>
+<p><strong>服务提供者</strong></p>
+<p>然后在 <code>app</code> 配置文件中注册 <code>Laravel\Cashier\CashierServiceProvider</code> 服务提供者。</p>
+<p><strong>数据库迁移</strong></p>
+<p>在使用 Cashier 之前，我们也需要去准备一下数据库。我们需要在 <code>users</code> 表中添加几列，并且创建一个新的 <code>subscriptions</code> 表来保留客户的认购：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'stripe_id'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'card_brand'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'card_lost_four'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamp(<span class="string">'trial_ends_at'</span>)-&gt;nullable();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">Schema::create(<span class="string">'subscriptions'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;increments(<span class="string">'id'</span>);</div><div class="line">  $table-&gt;integer(<span class="string">'user_id'</span>) ;</div><div class="line">  $table-&gt;string(<span class="string">'name'</span>);</div><div class="line">  $table-&gt;string(<span class="string">'stripe_id'</span>);</div><div class="line">  $table-&gt;string(<span class="string">'stripe_plan'</span>);</div><div class="line">  $table-&gt;integer(<span class="string">'quantity'</span>);</div><div class="line">  $table-&gt;timestamp(<span class="string">'trial_ends_at'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamp(<span class="string">'ends_at'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamps();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>一旦迁移表创建完毕，你可以通过 artisan 命令 <code>migrate</code> 进行迁移操作。</p>
+<p><strong>模型起步</strong></p>
+<p>接着，你需要在你的模型定义中添加 <code>Billable</code> trait:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Laravel</span>\<span class="title">Cashier</span>\<span class="title">Billable</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Authenticatable</span> </span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">Billable</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>提供秘钥</strong></p>
+<p>然后你需要在 <code>services.php</code> 配置文件中对你的 Stripe 进行配置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">'stripe'</span> =&gt; [</div><div class="line">  <span class="string">'model'</span> =&gt; App\User::class,</div><div class="line">  <span class="string">'secret'</span> =&gt; env(<span class="string">'SIRIPE_SECRET'</span>),</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="Braintree-配置"><a href="#Braintree-配置" class="headerlink" title="Braintree 配置"></a>Braintree 配置</h2><p><strong>注意事项</strong></p>
+<p>对于大多数的操作，Stripe 和 Braintree 在 Cashier 中的方法实现是相同的，两种服务都提供了对使用信用卡进行认购的计费支持。但是 Braintree 也支持通过 PayPal 的支付方式。Braintree 也相应的缺乏一些 Stripe 所支持的特性。你需要根据自身的需求去对比选择使用 Stripe 还是 Braintree。</p>
+<ul>
+<li>Braintree 支持 PayPal 支付，而 Stripe 不支持。</li>
+<li>Braintree 在认购时不支持 <code>increment</code> 和 <code>decrement</code>，这是 Braintree 自身的限制，而不是 Cashier 的局限性。</li>
+<li>Braintree 不支持百分比的折扣。这是 Braintree 自身的限制，而不是 Cashier 所限制的。</li>
+</ul>
+<p><strong>Composer</strong></p>
+<p>首先，你需要在你的 <code>composer.json</code> 文件中进行添加 <code>Cashier</code> 的文件包并使用 <code>composer update</code> 命令进行安装：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"laravel/cashier-braintree"</span>: <span class="string">"~1.0"</span></div></pre></td></tr></table></figure>
+<p><strong>服务提供者</strong></p>
+<p>接着，注册 <code>laravel\Cashier\CashierServiceProvider</code> 服务提供者到你的 <code>app</code> 配置文件。</p>
+<p><strong>安排信用优惠</strong></p>
+<p>在你使用 Braintree 的 Cashier 之前，你需要先在你的 Braintree 控制面板中定义一个 <code>plan-credit</code> 折扣。这个折扣会被用于正确的按比例从年度改为按月计费或者从月到年计费。你可以在控制面板中定义这个折扣为任意你所希望的值，Cashier 会在我们使用优惠时进行正确的结算。</p>
+<p><strong>数据库迁移</strong></p>
+<p>在使用 Cashier 之前，我们也需要预先构建好数据库。我们需要在 <code>users</code> 表中添加几列并且创建一个 <code>subscriptions</code> 表来处理所有的用户认购：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;string(<span class="string">'braintree_id'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'paypal_email'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'card_brand'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;string(<span class="string">'card_last_four'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamp(<span class="string">'trial_ends_at'</span>)-&gt;nullable(); </div><div class="line">&#125;);</div><div class="line"></div><div class="line">Schema::create(<span class="string">'subscriptions'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($table)</span> </span>&#123;</div><div class="line">  $table-&gt;increments(<span class="string">'id'</span>);</div><div class="line">  $table-&gt;integer(<span class="string">'user_id'</span>);</div><div class="line">  $table-&gt;string(<span class="string">'name'</span>);</div><div class="line">  $table-&gt;string(<span class="string">'braintree_id'</span>);</div><div class="line">  $table-&gt;string(<span class="string">'braintree_plan'</span>);</div><div class="line">  $table-&gt;integer(<span class="string">'quantity'</span>);</div><div class="line">  $table-&gt;timestamp(<span class="string">'trial_ends_at'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamp(<span class="string">'ends_at'</span>)-&gt;nullable();</div><div class="line">  $table-&gt;timestamps();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>一旦迁移的表结构构建完成，你就可以通过 artisan 命令 <code>migrate</code> 运行迁移操作。</p>
+<p><strong>模型起步</strong></p>
+<p>接着，在你的模型中添加 <code>Billable</code> trait:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Laravel</span>\<span class="title">Cashier</span>\<span class="title">Billable</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Authenticatable</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">use</span> <span class="title">Billable</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>提供配置</strong></p>
+<p>然后，你需要在你的 <code>services.php</code> 配置文件中进行相关配置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="string">'braintree'</span> =&gt; [</div><div class="line">  <span class="string">'model'</span> =&gt; App\User::class,</div><div class="line">  <span class="string">'environment'</span> =&gt; env(<span class="string">'BRAINTREE_ENV'</span>),</div><div class="line">  <span class="string">'merchant_id'</span> =&gt; env(<span class="string">'BRAINTREE_MERCHANT_ID'</span>),</div><div class="line">  <span class="string">'public_key'</span> =&gt; env(<span class="string">'BRAINTREE_PUBLIC_KEY'</span>),</div><div class="line">  <span class="string">'private_key'</span> =&gt; env(<span class="string">'BRAINTREE_PRIVATE_KEY'</span>),</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>你还需要在你的 <code>AppServiceProvider</code> 服务提供者的 <code>boot</code> 方法中运行下面的 Braintree SDK 的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Braintree_Configuration::environment(env(<span class="string">'BRAINTREE_ENV'</span>));</div><div class="line">Braintree_Configuration::merchantId(env(<span class="string">'BRAINTREE_MERCHANT_ID'</span>));</div><div class="line">Braintree_Configuration::publicKey(env(<span class="string">'BRAINTREE_PUBLIC_KEY'</span>));</div><div class="line">Braintree_Configuration::privateKey(env(<span class="string">'BRAINTREE_PRIVATE_KEY'</span>));</div></pre></td></tr></table></figure>
+<h2 id="订阅-认购"><a href="#订阅-认购" class="headerlink" title="订阅/认购"></a>订阅/认购</h2><h3 id="创建一个认购"><a href="#创建一个认购" class="headerlink" title="创建一个认购"></a>创建一个认购</h3><p>为了创建一个认购，你首先需要先从 billable 模型中提取一个实例，通常情况下它是 <code>App\User</code> 的一个实例。一旦你拥有了一个模型的实例，你就可以使用 <code>newSubscription</code> 方法来创建一个该模型的认购:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;newSubscription(<span class="string">'main'</span>, <span class="string">'monthly'</span>)-&gt;create($creditCardToken);</div></pre></td></tr></table></figure>
+<p>传递到 <code>newSubscription</code> 方法的第一个参数应该是认购的名称。如果你的应用仅仅只提供一种单一功能的订阅，你或许可以定义为 <code>main</code> 或者 <code>primary</code>。而第二个参数则是用户需要认购的 Stripe / Braintree 的付费计划。这个值应该和你的 Stripe 或者 Braintree 中的计划标识相对应。</p>
+<p><code>create</code> 方法会自动的创建一个认购，并且同客户的 ID 和 其他账单相关的信息更新到数据库。</p>
+<p><strong>其他用户详细信息</strong></p>
+<p>如果你需要指定添加一些额外的用户信息，你可以在 <code>create</code> 方法中传递第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;newSubscription(<span class="string">'main'</span>, <span class="string">'monthly'</span>)-&gt;create($creditCardToken, [</div><div class="line">  <span class="string">'email'</span> =&gt; $email,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p> 你可以查看 <a href="https://stripe.com/docs/api#create_customer" target="_blank" rel="external">Stripe</a> 和 <a href="https://developers.braintreepayments.com/reference/request/customer/create/php" target="_blank" rel="external">Braintree</a> 的文档来获取其所支持的额外字段。</p>
+<p><strong>优惠</strong></p>
+<p>如果你需要在创建一个认购时使用优惠，你可以使用 <code>withCoupon</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;newSubscription(<span class="string">'main'</span>, <span class="string">'monthly'</span>)</div><div class="line">     -&gt;withCoupon(<span class="string">'code'</span>)</div><div class="line">     -&gt;create($creditCardToken);</div></pre></td></tr></table></figure>
+<h3 id="检查认购状态"><a href="#检查认购状态" class="headerlink" title="检查认购状态"></a>检查认购状态</h3><p>一旦订阅了你的应用，你可以通过各种简单方便的方法来检查他们的认购状态。首先，你可以通过 <code>subscribed</code> 方法来检查用户是否激活了认购，即使用户是在试用期中，该方法也会返回 <code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscribed(<span class="string">'main'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过 <code>subscribed</code> 方法，我们可以创建一个极好的路由中间件，用来过滤只有处于订阅状态的用户可以访问路由或者控制器：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">($request, Closure $next)</span> </span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">if</span> ($request-&gt;user() &amp;&amp; ! $request-&gt;user()-&gt;subscribed(<span class="string">'main'</span>)) &#123;</div><div class="line">    <span class="comment">// This user is not a paying customer...</span></div><div class="line">    <span class="keyword">return</span> redirect(<span class="string">'billing'</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> $next($request);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你需要判断用户是不是还在试用期之中，你可以使用 <code>onTrial</code> 方法，该方法通常是用来向用户提醒其还在试用期之中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscription(<span class="string">'main'</span>)-&gt;onTrial()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>subscribedToPlan</code> 方法用来判断用户是否订阅了所给定的 Stripe / Braintree 计划。比如，我们需要判断用户的 <code>main</code> 认购是不是通过 <code>monthly</code> 计划来进行付费的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscribedToPlan(<span class="string">'monthly'</span>, <span class="string">'main'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>取消认购状态</strong></p>
+<p>你可以通过 <code>cancelled</code> 方法来判断用户是否曾经进行过认购，但是却在使用的过程中取消了继续付费订阅:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscription(<span class="string">'main'</span>)-&gt;cancelled()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>或许，你需要判断一个用户取消了持续订阅，但是他的订阅期还未过期。比如，一个用户在 3 月 5 号取消了持续订阅，但是他的上次付费服务还可以继续使用到 3 月 10 号。他还在其可用期内。你应该注意只要是在可用期内，不论是否取消了持续订阅或者还是在试用期内，<code>subscribed</code> 方法都会返回 <code>true</code> :</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscription(<span class="string">'main'</span>)-&gt;onGracePeriod()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="改变付费计划"><a href="#改变付费计划" class="headerlink" title="改变付费计划"></a>改变付费计划</h3><p>在用户认购了你的应用之后，有时候或许他们想要变更付费的计划。你可以使用 <code>swap</code> 方法来变更到一个新的认购计划。比如，我们可以非常简单的切换当前用户到 <code>premium</code> 认购：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = App\User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;swap(<span class="string">'provider-plan-id'</span>);</div></pre></td></tr></table></figure>
+<p>如果用户还处于试用期之中，那么即使切换付费计划，他们的试用期也是会被保持。还有，如果之前认购的份数存在，相应的认购的飞鼠也会被保持：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;swap(<span class="string">'provider-plan-id'</span>);</div></pre></td></tr></table></figure></p>
+<p>如果你想要在切换付费方案的同时取消之前的试用期，你可以使用 <code>skipTrial</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)</div><div class="line">     -&gt;skipTrial()</div><div class="line">     -&gt;swap(<span class="string">'provider-plan-id'</span>);</div></pre></td></tr></table></figure>
+<h3 id="认购份额"><a href="#认购份额" class="headerlink" title="认购份额"></a>认购份额</h3><blockquote>
+<p>注意：认购份额只支持 Stripe 版本的 Cashier。Braintree 并没有 Stripe 份额的概念。</p>
+</blockquote>
+<p>有时候认购时受份额影响的。比如，你的应用可能是按照每用户每月 $10 来进行计费的。要轻松的递增或递减认购的数量，你可以使用 <code>incrementQuantity</code> 和 <code>decrementQuantity</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$user = User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;incrementQuantity();</div><div class="line"></div><div class="line"><span class="comment">// Add five to the subscription's current quantity...</span></div><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;incrementQuantity(<span class="number">5</span>);</div><div class="line"></div><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;decrementQuantity();</div><div class="line"></div><div class="line"><span class="comment">// Subtract five to the subscription's current quantity...</span></div><div class="line"></div><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;decrementQuantity(<span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p>另外，你也可以通过使用 <code>updateQuantity</code> 放法来设置一个指定的份额：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;updateQuantity(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>关于更多的认购份额信息，请查看 <a href="https://stripe.com/docs/guides/subscriptions#setting-quantities" target="_blank" rel="external">Strpe documentation</a>。</p>
+<h3 id="认购税率"><a href="#认购税率" class="headerlink" title="认购税率"></a>认购税率</h3><p>在 Cashier 中，可以非常简单的提供 <code>tax_percent</code> 值到 Stripe / Braintree。为了指定用户支付认购时的税率百分比，你需要实现 <code>taxPercentage</code> 方法到你的 billable 模型中，并且在该方法中返回一个 0 - 100 的值，该值不应该多于 2 个小数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">taxPercentage</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="number">20</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这使你可以应用在多种模型间计算不同的税率,这意味着你可以跨越多个国家的用户群来设置结算税率。</p>
+<h3 id="取消订阅"><a href="#取消订阅" class="headerlink" title="取消订阅"></a>取消订阅</h3><p>你可以简单的调用 <code>cancel</code> 方法来取消用户订阅：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;cancel();</div></pre></td></tr></table></figure>
+<p>当认购被取消时，Cashier 会自动的设置 <code>ends_at</code> 列到数据库中。该列会被用来了解当调用 <code>subscribed</code> 方法时何时应该返回 <code>false</code>。比如，如果用户在 3 月 1 号取消了认购，但是上一次认购期应该是在 3 月 5 号结束，所以， <code>subscribed</code> 方法会持续返回 <code>true</code> 直到 3 月 5 号。</p>
+<p>你可以通过 <code>onGracePeriod</code> 方法来判断一个已经取消订阅的用户是否还在其可用期内：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;subscription(<span class="string">'main'</span>)-&gt;onGracePeriod()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="恢复订阅"><a href="#恢复订阅" class="headerlink" title="恢复订阅"></a>恢复订阅</h3><p>如果用户取消了其订阅，并且想要恢复订阅，那么你可以使用 <code>resume</code> 方法。用户必须是在其可用期内才可以恢复订阅：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user-&gt;subscription(<span class="string">'main'</span>)-&gt;resume();</div></pre></td></tr></table></figure>
+<p>如果用户取消了订阅，并在其可用期内恢复了订阅，那么认购不会立即进行计费支付。订阅只是被重新激活，其付费周期还是基于原先的计费周期。</p>
+<h2 id="试用"><a href="#试用" class="headerlink" title="试用"></a>试用</h2><h3 id="提供试用并记录信用卡信息"><a href="#提供试用并记录信用卡信息" class="headerlink" title="提供试用并记录信用卡信息"></a>提供试用并记录信用卡信息</h3><p>如果你想要在提供试用期的同时还收集支付方式的信息。你应该在你创建用户认购时使用 <code>trialDays</code> 方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$user = User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;newSubscription(<span class="string">'main'</span>, <span class="string">'monthly'</span>)</div><div class="line">     -&gt;trialDays(<span class="number">10</span>)</div><div class="line">     -&gt;create($creditCardToken);</div></pre></td></tr></table></figure>
+<p>该方法会设置一个试用结束日期到数据库的认购记录中。并且会通知 Stripe / Braintree 暂不计费，直到超过了该日期才开始进行计费。</p>
+<blockquote>
+<p>注意：如果你的客户并没有在试用期结束之前取消订阅，那么他们会在试用期结束时自动扣费，所以你应该在试用期结束前那天进行用户通知。</p>
+</blockquote>
+<p>你可以通过用户实例的 <code>onTrial</code> 方法或者认购实例的 <code>onTrial</code> 方法来判断用户是否在试用期：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;onTrial(<span class="string">'main'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($user-&gt;subscription(<span class="string">'main'</span>)-&gt;onTrial()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="提供试用的同时不记录支付信息"><a href="#提供试用的同时不记录支付信息" class="headerlink" title="提供试用的同时不记录支付信息"></a>提供试用的同时不记录支付信息</h3><p>如果你想要在提供试用期的同时而不收集用户的支付方法信息，你可以简单的设置 <code>trial_ends_at</code> 列到你的用户记录中。你应该在该列中设置你所期望的试用结束的日期。比如，这一般是用户注册过程中的典型做法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$user = User::create([</div><div class="line">  <span class="comment">// Populate other user properties...</span></div><div class="line">  <span class="string">'trial_ends_at'</span> =&gt; Carbon::now()-&gt;addDays(<span class="number">10</span>),</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>Cashier 会认为这中类型的试用是一种通用的试用期，因为这个日期并不会被关联到任何已有的订阅中。如果当前日期并没有超过 <code>trial_ends_at</code> 所设置的值，在 <code>User</code> 实例中的 <code>onTrial</code> 方法将会返回为 <code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;onTrial()) &#123;</div><div class="line">  <span class="comment">// User is within their trial period...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你也可以通过 <code>onGenericTrial</code> 方法来判断用户是否还没有进行任何认购，并且还在通用期内：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;onGenericTrial()) &#123;</div><div class="line">  <span class="comment">// User is within their 'generic' trial period...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一旦你准备好去创建一个真实的认购到用户，你通常应该使用 <code>newSubscription</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user = User::find(<span class="number">1</span>);</div><div class="line"></div><div class="line">$user-&gt;newSubscription(<span class="string">'main'</span>, <span class="string">'monthly'</span>)-&gt;create($creditCardToken);</div></pre></td></tr></table></figure>
+<h2 id="处理-Stripe-Webhooks"><a href="#处理-Stripe-Webhooks" class="headerlink" title="处理 Stripe Webhooks"></a>处理 Stripe Webhooks</h2><h3 id="失败的认购"><a href="#失败的认购" class="headerlink" title="失败的认购"></a>失败的认购</h3><p>如果用户的信用卡过期了怎么办？不用担心，Cashier 为你提供了便捷的取消用户订阅的 Webhook 控制器。你只需要将控制器添加到路由就可以了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Route::post(</div><div class="line">  <span class="string">'stripe/webhook'</span>,</div><div class="line">  <span class="string">'\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'</span></div><div class="line">);</div></pre></td></tr></table></figure>
+<p>就那么简单！失败的支付会在这个控制器中捕获和处理。这个控制器会在 Stripe 确定用户的订阅支付失败时（通常是在三次支付失败）取消用户的订阅。不要忘记在你的 Stripe 控制面板中配置 webhook 的 URI。</p>
+<p>因为 Stripe webhooks 需要穿过 laravel 的 CSRF 中间件，所以你应该将你的路由抽离出 <code>web</code> 中间件组，或者在你的 <code>VerifyCsrfToken</code> 中间件中添加排除的 URI：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $except = [</div><div class="line">  <span class="string">'stripe/*'</span>,</div><div class="line">];</div></pre></td></tr></table></figure>
+<h3 id="其他-Webhooks"><a href="#其他-Webhooks" class="headerlink" title="其他 Webhooks"></a>其他 Webhooks</h3><p>如果你想要处理额外的 Stripe webhook 事件，你可以简单的继承 Webhook 控制器。你所继承的控制器名中的方法名称应该与 Cashier 的预期约定想对应。特别的，方法名称应该有 <code>handle</code> 前缀，并且以大写驼峰的方式命名你所期望捕获的 Stripe webhook 事件名称。比如，你想要处理 <code>invoice.payment_succeeded</code> webhook, 那么你应该在控制器中添加 <code>handleInvociePaymentSucceeded</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Laravel</span>\<span class="title">Cashier</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">WebhookController</span> <span class="title">as</span> <span class="title">BaseController</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebhookController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Handle a Stripe webhook.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> array $payload</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handleInvoicePaymentSucceeded</span><span class="params">($payload)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">// Handle The Event</span></div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line">`</div></pre></td></tr></table></figure>
+<h2 id="处理-Braintree-Webhooks"><a href="#处理-Braintree-Webhooks" class="headerlink" title="处理 Braintree Webhooks"></a>处理 Braintree Webhooks</h2><h3 id="失败的订阅"><a href="#失败的订阅" class="headerlink" title="失败的订阅"></a>失败的订阅</h3><p>如果用户的信用卡过期了怎么办？不用担心，Cashier 为你提供了便捷的取消用户订阅的 Webhook 控制器。你只需要将控制器添加到路由就可以了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Route::post(</div><div class="line">  <span class="string">'braintree/webhook'</span>,</div><div class="line">  <span class="string">'\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'</span></div><div class="line">);</div></pre></td></tr></table></figure>
+<p>就那么简单！失败的支付会在这个控制器中捕获和处理。这个控制器会在 Braintree 确定用户的订阅支付失败时（通常是在三次支付失败）取消用户的订阅。不要忘记在你的 Braintree 控制面板中配置 webhook 的 URI。</p>
+<p>因为 Stripe webhooks 需要穿过 laravel 的 CSRF 中间件，所以你应该将你的路由抽离出 <code>web</code> 中间件组，或者在你的 <code>VerifyCsrfToken</code> 中间件中添加排除的 URI：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $except = [</div><div class="line">  <span class="string">'braintree/*'</span>,</div><div class="line">];</div></pre></td></tr></table></figure>
+<h3 id="其他-Webhooks-1"><a href="#其他-Webhooks-1" class="headerlink" title="其他 Webhooks"></a>其他 Webhooks</h3><p>如果你想要处理额外的 Braintree webhook 事件，你可以简单的继承 Webhook 控制器。你所继承的控制器名中的方法名称应该与 Cashier 的预期约定想对应。特别的，方法名称应该有 <code>handle</code> 前缀，并且以大写驼峰的方式命名你所期望捕获的 Stripe webhook 事件名称。比如，你想要处理 <code>dispute_opened</code> webhook, 那么你应该在控制器中添加 <code>handleDisputeOpened</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Braintree</span>\<span class="title">WebhookNotification</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Laravel</span>\<span class="title">Cashier</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">WebhookController</span> <span class="title">as</span> <span class="title">BaseController</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebhookController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Handle a Braintree webhook.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> WebhookNotification $webhook</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handleDisputeOpened</span><span class="params">(WebhookNotification $notification)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="comment">// Handle The Event</span></div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line">`</div></pre></td></tr></table></figure>
+<h2 id="一次性付费"><a href="#一次性付费" class="headerlink" title="一次性付费"></a>一次性付费</h2><h3 id="简单的付费"><a href="#简单的付费" class="headerlink" title="简单的付费"></a>简单的付费</h3><blockquote>
+<p>注意：在使用 Stripe 时，<code>charge</code> 方法接收的金额可以是相应货币的最小单位。而 Braintree，你应该传递美元到 <code>charge</code> 方法：</p>
+</blockquote>
+<p>如果你想要对订阅的用户施行一次性付费，你可以使用 <code>charge</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Stripe Accepts Charges In Cents...</span></div><div class="line">$user-&gt;charge(<span class="number">100</span>);</div><div class="line"></div><div class="line"><span class="comment">// Braintree Accepts Charges In Dollars...</span></div><div class="line">$user-&gt;charge(<span class="number">1</span>);</div></pre></td></tr></table></figure>
+<p><code>charge</code> 方法也可以接收一个数组作为其第二个参数，这个参数将传递给底层的 Stripe / Braintree 用于支付账单的创建：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;charge(<span class="number">100</span>, [</div><div class="line">  <span class="string">'custom_option'</span> =&gt; $value,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<p>当支付失败时，<code>charge</code> 方法将会抛出一个异常，如果支付成功则完整的 Stripe / Braintree 响应将会被返回：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  $response = $user-&gt;charge(<span class="number">100</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="支付并提供发票"><a href="#支付并提供发票" class="headerlink" title="支付并提供发票"></a>支付并提供发票</h3><p>有时候，你可能需要做一次性的支付，并且也要生成一个发票给用户。你可以使用 <code>invoiceFor</code> 方法来生成发票并提供一个 PDF 的收据给用户：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Stripe Accepts Charges In Cents...</span></div><div class="line">$user-&gt;invoiceFor(<span class="string">'One Time Fee'</span>, <span class="number">500</span>);</div><div class="line"></div><div class="line"><span class="comment">// Braintree Accepts Charges In Dollars...</span></div><div class="line">$user-&gt;invoiceFor(<span class="string">'One Time Fee'</span>, <span class="number">5</span>);</div></pre></td></tr></table></figure>
+<p>开具发票会立即向用户的信用卡进行收费。<code>invoiceFor</code> 方法也接收一个数组作为第三个参数，用于传递给底层的 Stripe / Braintree 支付账单创建时使用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$user-&gt;invoiceFor(<span class="string">'One Time Fee'</span>, <span class="number">500</span>, [</div><div class="line">  <span class="string">'custom-option'</span> =&gt; $value,</div><div class="line">]);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<code>invoiceFor</code> 方法会创建 Stripe 发票，这将重新尝试失败的计费。如果你不希望开具发票的同时尝试失败的支付，你需要使用 Stripe API 在他们首次失败时就关闭这个支付。</p>
+</blockquote>
+<h2 id="发票"><a href="#发票" class="headerlink" title="发票"></a>发票</h2><p>你可以通过使用 <code>invoices</code> 方法来检索一个可计费模型的发票数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$invoices = $user-&gt;invoices();</div></pre></td></tr></table></figure>
+<p>当你为客户列出其发票时，你可以使用 invoice 帮助方法来显示相应的发票详情。比如，你想要在表格中列出所有的发票，从而允许用户方便的下载：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;table&gt;</div><div class="line">  @<span class="keyword">foreach</span> ($invoices <span class="keyword">as</span> $invoice) </div><div class="line">    &lt;tr&gt;</div><div class="line">      &lt;td&gt;&#123;&#123; $invoice-&gt;date()-&gt;toFormattedDateString() &#125;&#125;&lt;/td&gt;</div><div class="line">      &lt;td&gt;&#123;&#123; $invoice-&gt;total() &#125;&#125;&lt;/td&gt;</div><div class="line">      &lt;td&gt;&lt;a href=<span class="string">""</span>/user/invoice/&#123;&#123; $invoice-&gt;id &#125;&#125;<span class="string">"&gt;Download&lt;/a&gt;&lt;/td&gt;</span></div><div class="line"><span class="string">    &lt;/tr&gt;</span></div><div class="line"><span class="string">  @endforeach</span></div><div class="line"><span class="string">&lt;/table&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>生成 PDF 类型的发票</strong></p>
+<p>你需要安装 <code>dompdf</code> PHP 类库来生成 PDF:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer <span class="keyword">require</span> dompdf/dompdf</div></pre></td></tr></table></figure>
+<p>在路由或者控制器中，使用 <code>downloadInvoice</code> 方法来生成一个供下载的 PDF 类型的发票。该方法会自动的生成正确的下载响应到浏览器中:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'user/invoice/&#123;invoice&#125;'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($invoiceId)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> Auth::user()-&gt;downloadInvoice($invoiceId, [</div><div class="line">    <span class="string">'vendor'</span> =&gt; <span class="string">'Your Company'</span>,</div><div class="line">    <span class="string">'product'</span> =&gt; <span class="string">'Your Product'</span>,</div><div class="line">  ]); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/27/laravel-from-scratch-artisan-console/" rel="next" title="laravel 基础教程 —— Artisan 命令">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— Artisan 命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/02/laravel-from-scratch-cache/" rel="prev" title="laravel 基础教程 —— 缓存">
+                laravel 基础教程 —— 缓存 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#laravel-会计员（Cashier）"><span class="nav-number">1.</span> <span class="nav-text">laravel 会计员（Cashier）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stripe-配置"><span class="nav-number">1.2.</span> <span class="nav-text">Stripe 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Braintree-配置"><span class="nav-number">1.3.</span> <span class="nav-text">Braintree 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅-认购"><span class="nav-number">1.4.</span> <span class="nav-text">订阅/认购</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个认购"><span class="nav-number">1.4.1.</span> <span class="nav-text">创建一个认购</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查认购状态"><span class="nav-number">1.4.2.</span> <span class="nav-text">检查认购状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变付费计划"><span class="nav-number">1.4.3.</span> <span class="nav-text">改变付费计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认购份额"><span class="nav-number">1.4.4.</span> <span class="nav-text">认购份额</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认购税率"><span class="nav-number">1.4.5.</span> <span class="nav-text">认购税率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取消订阅"><span class="nav-number">1.4.6.</span> <span class="nav-text">取消订阅</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复订阅"><span class="nav-number">1.4.7.</span> <span class="nav-text">恢复订阅</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#试用"><span class="nav-number">1.5.</span> <span class="nav-text">试用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提供试用并记录信用卡信息"><span class="nav-number">1.5.1.</span> <span class="nav-text">提供试用并记录信用卡信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提供试用的同时不记录支付信息"><span class="nav-number">1.5.2.</span> <span class="nav-text">提供试用的同时不记录支付信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理-Stripe-Webhooks"><span class="nav-number">1.6.</span> <span class="nav-text">处理 Stripe Webhooks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失败的认购"><span class="nav-number">1.6.1.</span> <span class="nav-text">失败的认购</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-Webhooks"><span class="nav-number">1.6.2.</span> <span class="nav-text">其他 Webhooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理-Braintree-Webhooks"><span class="nav-number">1.7.</span> <span class="nav-text">处理 Braintree Webhooks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失败的订阅"><span class="nav-number">1.7.1.</span> <span class="nav-text">失败的订阅</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-Webhooks-1"><span class="nav-number">1.7.2.</span> <span class="nav-text">其他 Webhooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一次性付费"><span class="nav-number">1.8.</span> <span class="nav-text">一次性付费</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的付费"><span class="nav-number">1.8.1.</span> <span class="nav-text">简单的付费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支付并提供发票"><span class="nav-number">1.8.2.</span> <span class="nav-text">支付并提供发票</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发票"><span class="nav-number">1.9.</span> <span class="nav-text">发票</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

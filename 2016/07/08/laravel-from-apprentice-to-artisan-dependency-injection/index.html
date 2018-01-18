@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Dependency Injection 依赖注入Laravel 框架的基础是一个功能强大的控制反转容器（IoC container）。为了真正理解本框架，需要好好掌握该容器。然而我们需要了解，控制反转容器只是一种用于方便实现“依赖注入”的工具。但要实现依赖注入并不一定需要控制反转容器，只是用容器会更方便和容易一点。 首先来看看我们为何要使用依赖注入，它能带来什么好处。考虑下列代码： 123456">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从百草堂到三味书屋 —— 依赖注入">
+<meta property="og:url" content="http://yoursite.com/2016/07/08/laravel-from-apprentice-to-artisan-dependency-injection/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Dependency Injection 依赖注入Laravel 框架的基础是一个功能强大的控制反转容器（IoC container）。为了真正理解本框架，需要好好掌握该容器。然而我们需要了解，控制反转容器只是一种用于方便实现“依赖注入”的工具。但要实现依赖注入并不一定需要控制反转容器，只是用容器会更方便和容易一点。 首先来看看我们为何要使用依赖注入，它能带来什么好处。考虑下列代码： 123456">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从百草堂到三味书屋 —— 依赖注入">
+<meta name="twitter:description" content="Dependency Injection 依赖注入Laravel 框架的基础是一个功能强大的控制反转容器（IoC container）。为了真正理解本框架，需要好好掌握该容器。然而我们需要了解，控制反转容器只是一种用于方便实现“依赖注入”的工具。但要实现依赖注入并不一定需要控制反转容器，只是用容器会更方便和容易一点。 首先来看看我们为何要使用依赖注入，它能带来什么好处。考虑下列代码： 123456">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/08/laravel-from-apprentice-to-artisan-dependency-injection/"/>
+
+
+
+
+
+  <title>从百草堂到三味书屋 —— 依赖注入 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/08/laravel-from-apprentice-to-artisan-dependency-injection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从百草堂到三味书屋 —— 依赖注入</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-08T15:38:47+08:00">
+                2016-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Dependency-Injection-依赖注入"><a href="#Dependency-Injection-依赖注入" class="headerlink" title="Dependency Injection 依赖注入"></a>Dependency Injection 依赖注入</h1><p>Laravel 框架的基础是一个功能强大的控制反转容器（IoC container）。为了真正理解本框架，需要好好掌握该容器。然而我们需要了解，控制反转容器只是一种用于方便实现“依赖注入”的工具。但要实现依赖注入并不一定需要控制反转容器，只是用容器会更方便和容易一点。</p>
+<p>首先来看看我们为何要使用依赖注入，它能带来什么好处。考虑下列代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getIndex</span><span class="params">()</span> </span>&#123;</div><div class="line">    $user = User::all();</div><div class="line">    <span class="keyword">return</span> View::make(<span class="string">'users.index'</span>, compact(<span class="string">'users'</span>));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码很简短，但我们要想测试这段代码的话就一定会和实际的数据库发生联系。也就是说，Eloquent ORM（译者注：Laravel 的数据库对象模型库）和该控制器有着紧耦合。如果不使用 Eloquent ORM，不连接到实际数据库，我们就没有办法运行或者测试这段代码。这段代码同时也违背了“关注分离”这个软件设计原则。简单讲：这个控制器知道的太多了。控制器不需要去了解数据是从哪儿来的，只要知道如何访问就行。控制器也不需要知道这数据是从 MySQL 或哪儿来的，只需要知道这数据目前是可用的。</p>
+<blockquote>
+<p>Separation Of Concerns 关注分离<br>每一个类都应该有单独的职责，并且该职责应完全被这个类封装。（译者注：我认为就是不要让多个类负责同样的职责）</p>
+</blockquote>
+<p>关注分离的好处就是能让 Web 控制器和数据访问解耦。这会使得实现存储迁移更容易，测试也会更容易。“Web”就仅仅是为你真正的应用做数据的传输了。</p>
+<p>想象一下你有一个类似于监视器的程序，有着很多的线缆接口（HDMI，VGA，DVI 等等）。你可以通过不同的接口访问不同的监视器。把 Internet 想象成另一个插进你进程线缆接口。大部分显示器的功能是与线缆接口互相独立的。线缆接口只是一种传输机制就像 HTTP 是你程序的一种传输机制一样。所以我们不想把传输机制（控制器）和业务逻辑混在一起。这样的好处是很多其他的传输机制比如 API 调用、移动应用等都可以访问我们的业务逻辑。</p>
+<p>那么我们就别再将控制器和 Eloquent ORM 耦合在一起了。咱们注入一个资料类库。</p>
+<h2 id="Build-A-Contract-建立约定"><a href="#Build-A-Contract-建立约定" class="headerlink" title="Build A Contract 建立约定"></a>Build A Contract 建立约定</h2><p>首先我们定义一个接口，然后实现该接口。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserRepositoryInterface</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DbUserRepository</span> <span class="keyword">implements</span> <span class="title">UserRepositoryInterface</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">return</span> User::all()-&gt;toArray();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后我们将该接口的实现注入我们的控制器。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(UserRepositoryInterface $users)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;users = $users;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getIndex</span><span class="params">()</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $user = <span class="keyword">$this</span>-&gt;users-&gt;all();</div><div class="line">    <span class="keyword">return</span> View::make(<span class="string">'users.index'</span>, compact(<span class="string">'users'</span>));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在我们的控制器就完全和数据层面无关了。在这里无知是福！我们的数据可能来自 MySQL，MongoDB 或者 Redis。我们的控制器不知道也不需要知道他们的区别。仅仅做出了这么小小的改变，我们就可以独立于数据层来测试 Web 层了，将来切换存储实现也会很容易。</p>
+<blockquote>
+<p>Respect Boundaries 严守边界<br>记得要保持清醒的责任边界。控制器和路由是作为 HTTP 和你的应用程序之间的中间件来用的。当编写大型应用程序时，不要将你的领域逻辑混杂在其中（控制器、路由）。</p>
+</blockquote>
+<p>为了巩固学到的知识，咱们来写一个测试案例。首先，我们要模拟一个资料库然后绑定到应用的 IoC 容器里。然后，我们要保证控制器正确的调用了这个资料库：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testIndexActionBindsUsersFromRepository</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="comment">// Arrange...</span></div><div class="line">  $repository = Mockery::mock(<span class="string">'UserRepositoryInterface'</span>);</div><div class="line">  $repository-&gt;shouldReceive(<span class="string">'all'</span>)-&gt;once()-&gt;andReturn(<span class="keyword">array</span>(<span class="string">'foo'</span>));</div><div class="line">  App::instance(<span class="string">'UserRepositoryInterface'</span>, $repository);</div><div class="line">  <span class="comment">// Act...</span></div><div class="line">  $response = <span class="keyword">$this</span>-&gt;action(<span class="string">'GET'</span>, <span class="string">'UserController@getIndex'</span>);</div><div class="line"></div><div class="line">  <span class="comment">// Assert...</span></div><div class="line">  <span class="keyword">$this</span>-&gt;assertResponseOk();</div><div class="line">  <span class="keyword">$this</span>-&gt;assertViewHas(<span class="string">'users'</span>, <span class="keyword">array</span>(<span class="string">'foo'</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Are you Mocking Me 你在模仿我么？<br>在上面的例子里，我们使用了名为 <code>Mockery</code> 的模仿库。这个库提供了一套整洁且富有表达力的方法，用来模仿你写的类。Mockery 可以通过 Composer 安装。</p>
+</blockquote>
+<h2 id="Taking-It-Further-更进一步"><a href="#Taking-It-Further-更进一步" class="headerlink" title="Taking It Further 更进一步"></a>Taking It Further 更进一步</h2><p>让我们考虑另一个例子来巩固理解。可能我们想要去提醒用户该交钱了。我们会定义两个接口，或者约定。这些约定使我们在更改实际实现时更加灵活。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BillerInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">bill</span><span class="params">(array $user, $amount)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BillingNotifierInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">notify</span><span class="params">(array $user, $amount)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来我们要写一个 <code>BillerInterface</code> 的实现：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StripeBiller</span> <span class="keyword">implements</span> <span class="title">BillerInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(BillingNotifierInterface $notifier)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;notifier = $notifier;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">bill</span><span class="params">(array $user, $amount)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="comment">// Bill the user via Stripe...</span></div><div class="line">    <span class="keyword">$this</span>-&gt;notifier-&gt;notify($user, $amount);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>只要遵守了每个类的职责划分，我们很容易将不同的提示器（notifier）注入到账单类里面。比如，我们可以注入一个 <code>SmsNotifier</code> 或者 <code>EmailNotifier</code>。账单类只要遵守了约定，就不用再考虑如何实现提示功能。只要是遵守约定（接口）的类，账单类都能用。这不仅仅是方便了我们的开发，而且我们还可以通过模拟 <code>BillingNotifierInterface</code> 来进行无痛测试。</p>
+<blockquote>
+<p>Be The Interface 使用接口<br>写接口可能看上去挺麻烦，但实际上能加速你的开发。你不用实现任何接口，就能使用模拟库来模拟你的接口，进而测试整个后台逻辑！</p>
+</blockquote>
+<p>那我们如何做依赖注入呢？很简单：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$biller = <span class="keyword">new</span> StripeBiller(<span class="keyword">new</span> SmsNotifier);</div></pre></td></tr></table></figure>
+<p>这就是依赖注入。biller 不需再考虑提醒用户的事儿，我们直接传给他一个提示器（notifier）。这种微小的改动能使你的应用焕然一新。你的代码马上就变得更容易维护，因为明确指定了类的职责边界。并且更容易测试，你只需使用模拟依赖即可。</p>
+<p>那 IoC 容器呢？难道依赖注入不需要 IoC 容器么？当然不需要！在接下来的章节里面你会了解到，容器使得依赖注入更易于管理，但是容器不是依赖注入所必须的。只要遵循本章提出的原则，你可以在你任何的项目里面实施依赖注入，而不必管该项目是否使用了容器。</p>
+<h2 id="Too-Much-Java？太像-Java-了？"><a href="#Too-Much-Java？太像-Java-了？" class="headerlink" title="Too Much Java？太像 Java 了？"></a>Too Much Java？太像 Java 了？</h2><p>有人会说使用接口让 PHP 代码看上去太像 Java 了 —— 即代码太啰嗦了 —— 你必须定义接口然后实现它，要多按好多下键盘。</p>
+<p>对于小而简单的应用来说，以上说法也对。接口通常是不必要的。将代码耦合到那些你认为不会改变的地方也是可以的。在你确信不会改变的地方就没有必要使用接口了。架构师说“不会改变的地方是不存在的”。不过话说回来，有时候的确不会改。</p>
+<p>在大型应用中接口是很有帮助的。和提升的代码灵活性、可测试性比起来，多敲键盘费的功夫就微不足道了。当你迅速的切换了代码实现的时候，你的经理一定会被你的神速吓一跳的。你也可以写出更适应变化的代码。</p>
+<p>总而言之，记住本书提倡“简单”架构。如果你在写小程序的时候无法遵守接口原则，别觉得不好意思。要记住我们写代码是要快乐的写。如果你不喜欢写接口，那就先简单的写代码吧。日后再精进即可。</p>
+<p>译文地址：<a href="http://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">http://my.oschina.net/zgldh/blog/389246</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/07/redirect-data-by-php-curl/" rel="next" title="使用 PHP Curl 做数据中转">
+                <i class="fa fa-chevron-left"></i> 使用 PHP Curl 做数据中转
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/08/larave-from-apprentice-to-artisan-the-ioc-container/" rel="prev" title="从百草堂到三味书屋 —— 控制反转容器">
+                从百草堂到三味书屋 —— 控制反转容器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Dependency-Injection-依赖注入"><span class="nav-number">1.</span> <span class="nav-text">Dependency Injection 依赖注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-A-Contract-建立约定"><span class="nav-number">1.1.</span> <span class="nav-text">Build A Contract 建立约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Taking-It-Further-更进一步"><span class="nav-number">1.2.</span> <span class="nav-text">Taking It Further 更进一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Too-Much-Java？太像-Java-了？"><span class="nav-number">1.3.</span> <span class="nav-text">Too Much Java？太像 Java 了？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

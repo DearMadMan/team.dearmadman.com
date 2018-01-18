@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HTTP请求访问请求为了通过依赖注入能够方便的获取http请求实例，你应该在控制器的构造函数或者控制函数中写入类型声明Illuminate\Http\Request。当前请求的实例会自动的从服务容器中注入: 1234567891011&amp;lt;?phpnamespace App\Http\Controllers;use Illuminate\Http\Request;class UserContro">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 请求">
+<meta property="og:url" content="http://yoursite.com/2016/05/02/laravel-from-scratch-requests/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="HTTP请求访问请求为了通过依赖注入能够方便的获取http请求实例，你应该在控制器的构造函数或者控制函数中写入类型声明Illuminate\Http\Request。当前请求的实例会自动的从服务容器中注入: 1234567891011&amp;lt;?phpnamespace App\Http\Controllers;use Illuminate\Http\Request;class UserContro">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 请求">
+<meta name="twitter:description" content="HTTP请求访问请求为了通过依赖注入能够方便的获取http请求实例，你应该在控制器的构造函数或者控制函数中写入类型声明Illuminate\Http\Request。当前请求的实例会自动的从服务容器中注入: 1234567891011&amp;lt;?phpnamespace App\Http\Controllers;use Illuminate\Http\Request;class UserContro">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/02/laravel-from-scratch-requests/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 请求 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/02/laravel-from-scratch-requests/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 请求</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-02T13:42:16+08:00">
+                2016-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h1><h2 id="访问请求"><a href="#访问请求" class="headerlink" title="访问请求"></a>访问请求</h2><p>为了通过依赖注入能够方便的获取http请求实例，你应该在控制器的构造函数或者控制函数中写入类型声明<code>Illuminate\Http\Request</code>。当前请求的实例会自动的从服务容器中注入:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">store</span> <span class="params">(Request $request)</span> </span>&#123;</div><div class="line">    $name = $request-&gt;input(<span class="string">'name'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你的控制器方法也需要接收来自路由的参数，那么你需要在进行依赖注入的参数之后添加要接收的参数。例如，你的路由是这么定义的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Route::put(<span class="string">'user/&#123;id&#125;'</span>, <span class="string">'UserController@update'</span>);</div></pre></td></tr></table></figure>
+<p>那么你应该先声明依赖注入<code>Illuminate\Http\Reqeust</code>,然后再按序的传递路由参数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span> <span class="params">(Request $request, $id)</span> </span>&#123;</div><div class="line">    <span class="comment">// </span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="基础的请求信息"><a href="#基础的请求信息" class="headerlink" title="基础的请求信息"></a>基础的请求信息</h3><p><code>Illuminate\Http\Request</code>的实例为你的应用提供了多种检查HTTP请求的方法，它继承自<code>Symfony\Component\HttpFoundation\Request</code>。这里列举了一些常用的方法:</p>
+<h4 id="检索请求的URI"><a href="#检索请求的URI" class="headerlink" title="检索请求的URI"></a>检索请求的URI</h4><p><code>path</code>方法返回请求的URI.所以，当请求的目标地址是<code>http://domain.com/foo/bar</code>时，<code>path</code>方法将返回<code>foo/bar</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$uri = $request-&gt;path();</div></pre></td></tr></table></figure>
+<p><code>is</code>方法允许你来效验所请求的URI是否匹配所提供的模式。你可以使用 <code>*</code>字符来作为通配符:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;is(<span class="string">'admin/*'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你想得到请求的完整路径，那么你可以使用 <code>url</code> 或 <code>fullUrl</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Without Query String...</span></div><div class="line"></div><div class="line">$url = $request-&gt;url();</div><div class="line"></div><div class="line"><span class="comment">// With Query String...</span></div><div class="line"></div><div class="line">$url = $request-&gt;fullUrl();</div></pre></td></tr></table></figure>
+<p>你也可以在获取完整请求路径的同时追加请求的参数信息，例如，如果请求的目标是 <code>http://domain.com/foo</code>, 下面的方法将返回<code>http://domain.com/foo?bar=baz</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = $request-&gt;fullUrlWithQuery([<span class="string">'bar'</span> =&gt; <span class="string">'baz'</span>]);</div></pre></td></tr></table></figure>
+<h4 id="检索请求的方式"><a href="#检索请求的方式" class="headerlink" title="检索请求的方式"></a>检索请求的方式</h4><p><code>method</code>方法将返回HTTP请求的方式。你也可以使用<code>isMethod</code>方法来进行http请求方式的匹配效验:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$method = $request-&gt;method();</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($request-&gt;isMethod(<span class="string">'post'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="PSR-7-请求"><a href="#PSR-7-请求" class="headerlink" title="PSR-7 请求"></a>PSR-7 请求</h3><p><a href="http://www.php-fig.org/psr/psr-7/" target="_blank" rel="external">PSR-7</a>标准为http指定了一些消息接口，包括请求和响应.如果你想获得PSR-7请求的实例，你需要先安装一些支持库，laravel使用了 Symfon HTTP Bridge 组件来转换典型的laravel请求和响应为PSR-7兼容的实现:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">composer <span class="keyword">require</span> symfony/psr-http-message-bridge</div><div class="line"></div><div class="line">composer <span class="keyword">require</span> zendframework/zend-diactoros</div></pre></td></tr></table></figure>
+<p>一旦你安装了这些库，你就可以简单在你的路由或控制器中使用类型提示来获取PSR-7请求:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Psr</span>\<span class="title">Http</span>\<span class="title">Message</span>\<span class="title">ServerRequestInterface</span>;</div><div class="line"></div><div class="line">Route::get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(ServerRequestInterface $request)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果路由或控制器返回的是PSR-7响应的实例， 那么它会自动的转换为laravel响应实例。</p>
+<h2 id="获取输入值"><a href="#获取输入值" class="headerlink" title="获取输入值"></a>获取输入值</h2><h3 id="获取输入的值"><a href="#获取输入的值" class="headerlink" title="获取输入的值"></a>获取输入的值</h3><p>你可以通过<code>Illuminate\Http\Request</code>实例的一些方法来简便的获取用户的输入值.而且你并不需要去关心用户所使用的HTTP请求方式，你可以通过<code>input</code>方法获取所有请求方式的值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = $request-&gt;input(<span class="string">'name'</span>);</div></pre></td></tr></table></figure>
+<p>你也可以传递第二个参数到<code>input</code>方法，如果该值并不存在于请求中，将作为默认值返回:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = $request-&gt;input(<span class="string">'name'</span>, <span class="string">'Sally'</span>);</div></pre></td></tr></table></figure>
+<p>当表单提交的一些输入值是数组时,你可以使用<code>.</code>操作符来访问请求中的数组值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$name = $request-&gt;input(<span class="string">'products.0.name'</span>);</div><div class="line"></div><div class="line">$names = $request-&gt;input(<span class="string">'products.*.name'</span>);</div></pre></td></tr></table></figure>
+<h3 id="获取JSON请求的输入值"><a href="#获取JSON请求的输入值" class="headerlink" title="获取JSON请求的输入值"></a>获取JSON请求的输入值</h3><p>你同样可以使用input方法来访问json请求，只要json请求被设置了正确的请求头 <code>Content-Type: application/json</code>， 那么你就可以使用 <code>.</code> 语法来深入访问json中的数组:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = $request-&gt;input(<span class="string">'user.name'</span>);</div></pre></td></tr></table></figure>
+<h3 id="判断输入值是否存在"><a href="#判断输入值是否存在" class="headerlink" title="判断输入值是否存在"></a>判断输入值是否存在</h3><p>你可以使用<code>has</code>方法来判断，请求中是否包含了用户的某个输入值,如果该值不是空的字符串，那么<code>has</code>方法就会返回<code>true</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;has(<span class="string">'name'</span>)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取所有的输入值"><a href="#获取所有的输入值" class="headerlink" title="获取所有的输入值"></a>获取所有的输入值</h3><p>你可以使用<code>all</code>方法来获取所有的用户输入值, 该方法返回包含所有用户值的数组:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$input = $request-&gt;all();</div></pre></td></tr></table></figure>
+<h3 id="获取部分输入值"><a href="#获取部分输入值" class="headerlink" title="获取部分输入值"></a>获取部分输入值</h3><p>你可以使用<code>only</code>或者<code>except</code>方法来获取部分输入值, 这两个方法都接收一个单独的数组或者动态的参数列表:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$input = $request-&gt;only([<span class="string">'username'</span>, <span class="string">'password'</span>]);</div><div class="line"></div><div class="line">$input = $request-&gt;only(<span class="string">'username'</span>, <span class="string">'password'</span>);</div><div class="line"></div><div class="line">$input = $request-&gt;except([<span class="string">'credit_card'</span>]);</div><div class="line"></div><div class="line">$input = $request-&gt;except(<span class="string">'credit_card'</span>);</div></pre></td></tr></table></figure>
+<h3 id="动态属性"><a href="#动态属性" class="headerlink" title="动态属性"></a>动态属性</h3><p>你可以通过<code>Illuminat\Http\Request</code>的实例的动态属性来获取用户的输入值.如果你的应用表单中存在<code>name</code>字段，你可以通过下面的方式来获取该请求字段:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$name = $request-&gt;name;</div></pre></td></tr></table></figure>
+<p>当使用动态属性时，laravel会首先查找请求中是否包含该值，然后才会检索路由中的参数.</p>
+<h2 id="旧的输入"><a href="#旧的输入" class="headerlink" title="旧的输入"></a>旧的输入</h2><p>laravel允许你在下一次请求期间保持该次请求的输入。这种特性在表单验证出错时尤其有用，它可以使你复用上一次的请求进行自动的填充。如果你使用了laravel的验证服务，那么你不需要手动的调用它们，因为laravel内置的验证机制会自动的调用它们。</p>
+<h3 id="闪存输入到会话"><a href="#闪存输入到会话" class="headerlink" title="闪存输入到会话"></a>闪存输入到会话</h3><p><code>Illuminate\Http\Request</code>实例的<code>flash</code>方法会闪存当前请求的输入到会话中，这样可以使应用在接受用户的下次请求时进行复用:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$request-&gt;flash();</div></pre></td></tr></table></figure>
+<p>你也可以使用<code>flashOnly</code>和 <code>flashExcept</code> 方法来闪存部分请求输入到会话：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$request-&gt;flashOnly([<span class="string">'username'</span>, <span class="string">'email'</span>]);</div><div class="line"></div><div class="line">$request-&gt;flashExcept(<span class="string">'password'</span>);</div></pre></td></tr></table></figure>
+<h3 id="闪存输入到会话接着跳转"><a href="#闪存输入到会话接着跳转" class="headerlink" title="闪存输入到会话接着跳转"></a>闪存输入到会话接着跳转</h3><p>一个常用的场景就是你需要连同用户的输入一起返回到上一页中，那么你可以使用<code>withInput</code>链式方法:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect(<span class="string">'form'</span>)-&gt;withInput();</div><div class="line"></div><div class="line"><span class="keyword">return</span> redirect(<span class="string">'form'</span>)-&gt;withInput($request-&gt;except(<span class="string">'password'</span>));</div></pre></td></tr></table></figure></p>
+<h3 id="获取旧输入"><a href="#获取旧输入" class="headerlink" title="获取旧输入"></a>获取旧输入</h3><p>你可以使用<code>old</code>方法来获取上一次请求所闪存的用户请求：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$username = $request-&gt;old(<span class="string">'username'</span>);</div></pre></td></tr></table></figure>
+<p>laravel提供了全局<code>old</code>帮助方法。你也可以在blade模板中使用该方法，如果上次请求未闪存该输入，则会返回<code>null</code>:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input <span class="attribute">type</span>=<span class="string">"text"</span> <span class="attribute">name</span>=<span class="string">"username"</span> <span class="attribute">value</span>=<span class="string">"&#123;&#123; old('username') &#125;&#125;"</span>&gt;</div></pre></td></tr></table></figure>
+<h2 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h2><h3 id="从请求中检索cookie"><a href="#从请求中检索cookie" class="headerlink" title="从请求中检索cookie"></a>从请求中检索cookie</h3><p>在laravel中所有的cookie在被创建时都会经过一个认证码进行签证加密，这就意味着laravel会验证客户端对cookie的修改.你可以使用<code>Illuminate\Http\Request</code>实例的<code>cookie</code>方法来获取<code>cookie</code>值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = $request-&gt;cookie(<span class="string">'name'</span>);</div></pre></td></tr></table></figure>
+<h3 id="在响应中附加一个新的cookie"><a href="#在响应中附加一个新的cookie" class="headerlink" title="在响应中附加一个新的cookie"></a>在响应中附加一个新的cookie</h3><p>laravel提供了一个全局的<code>cookie</code>帮助方法用来生成一个<code>Symfony\Component\HttpFoundation\Cookie</code>实例，该实例可以被<code>Illuminate\Http\Response</code>实例的<code>withCookie</code>附加:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$response = <span class="keyword">new</span> Illuminate\Http\Response(<span class="string">'Hello World'</span>);</div><div class="line"></div><div class="line">$response-&gt;withCookie(<span class="string">'name'</span>, <span class="string">'value'</span>, $minutes);</div><div class="line"></div><div class="line"><span class="keyword">return</span> $response;</div></pre></td></tr></table></figure>
+<p>你可以使用<code>cookie</code>方法来创建一个长达5年的长cookie，它要求你使用不带参数的<code>cookie</code>帮助方法直接调用<code>forever</code>方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$response-&gt;withCookie(cookie()-&gt;forever(<span class="string">'name'</span>, <span class="string">'value'</span>));</div></pre></td></tr></table></figure>
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><h3 id="获取上传的文件"><a href="#获取上传的文件" class="headerlink" title="获取上传的文件"></a>获取上传的文件</h3><p>你可以通过<code>Illuminate\Http\Request</code>的<code>file</code>方法来访问上传的文件。该方法会返回一个<code>Symfony\Component\HttpFoundation\File\UploadedFile</code>类的实例，它继承自<code>SplFileInfo</code>，提供了多种与文件交互的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$file = $request-&gt;file(<span class="string">'photo'</span>);</div></pre></td></tr></table></figure>
+<p>你可以使用<code>hasFile</code>方法来判断文件在请求中是否存在:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;hasFile(<span class="string">'photo'</span>)) &#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="验证文件是否上传成功"><a href="#验证文件是否上传成功" class="headerlink" title="验证文件是否上传成功"></a>验证文件是否上传成功</h3><p>你可以使用<code>isValid</code>方法来验证文件上传的过程中是否出错:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;file(<span class="string">'photo'</span>)-&gt;isValid()) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="移动上传的文件"><a href="#移动上传的文件" class="headerlink" title="移动上传的文件"></a>移动上传的文件</h3><p>你可以使用<code>move</code>方法来将上传的文件从临时目录中迁移到指定的目录中:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$request-&gt;file(<span class="string">'photo'</span>)-&gt;move($destinationPath);</div><div class="line"></div><div class="line">$request-&gt;file(<span class="string">'photo'</span>)-&gt;move($destinationPath, $fileName);</div></pre></td></tr></table></figure>
+<h3 id="其他文件方法"><a href="#其他文件方法" class="headerlink" title="其他文件方法"></a>其他文件方法</h3><p><code>UploadedFile</code>还有其他许多可用的方法，你可以查看 <a href="http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html" target="_blank" rel="external">该类的API文档</a> 来了解更多.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/02/laravel-from-scratch-controllers/" rel="next" title="laravel 基础教程 —— 控制器">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 控制器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/03/laravel-from-scratch-responses/" rel="prev" title="laravel 基础教程 —— 响应">
+                laravel 基础教程 —— 响应 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP请求"><span class="nav-number">1.</span> <span class="nav-text">HTTP请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问请求"><span class="nav-number">1.1.</span> <span class="nav-text">访问请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础的请求信息"><span class="nav-number">1.1.1.</span> <span class="nav-text">基础的请求信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检索请求的URI"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">检索请求的URI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检索请求的方式"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">检索请求的方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PSR-7-请求"><span class="nav-number">1.1.2.</span> <span class="nav-text">PSR-7 请求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取输入值"><span class="nav-number">1.2.</span> <span class="nav-text">获取输入值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取输入的值"><span class="nav-number">1.2.1.</span> <span class="nav-text">获取输入的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取JSON请求的输入值"><span class="nav-number">1.2.2.</span> <span class="nav-text">获取JSON请求的输入值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断输入值是否存在"><span class="nav-number">1.2.3.</span> <span class="nav-text">判断输入值是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取所有的输入值"><span class="nav-number">1.2.4.</span> <span class="nav-text">获取所有的输入值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取部分输入值"><span class="nav-number">1.2.5.</span> <span class="nav-text">获取部分输入值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态属性"><span class="nav-number">1.2.6.</span> <span class="nav-text">动态属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旧的输入"><span class="nav-number">1.3.</span> <span class="nav-text">旧的输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闪存输入到会话"><span class="nav-number">1.3.1.</span> <span class="nav-text">闪存输入到会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闪存输入到会话接着跳转"><span class="nav-number">1.3.2.</span> <span class="nav-text">闪存输入到会话接着跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取旧输入"><span class="nav-number">1.3.3.</span> <span class="nav-text">获取旧输入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookies"><span class="nav-number">1.4.</span> <span class="nav-text">Cookies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从请求中检索cookie"><span class="nav-number">1.4.1.</span> <span class="nav-text">从请求中检索cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在响应中附加一个新的cookie"><span class="nav-number">1.4.2.</span> <span class="nav-text">在响应中附加一个新的cookie</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件"><span class="nav-number">1.5.</span> <span class="nav-text">文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取上传的文件"><span class="nav-number">1.5.1.</span> <span class="nav-text">获取上传的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证文件是否上传成功"><span class="nav-number">1.5.2.</span> <span class="nav-text">验证文件是否上传成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动上传的文件"><span class="nav-number">1.5.3.</span> <span class="nav-text">移动上传的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他文件方法"><span class="nav-number">1.5.4.</span> <span class="nav-text">其他文件方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

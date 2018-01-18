@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,ubuntu," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="服务端安全服务端安全一直是一个不容忽视却最容易被忽视的问题，本篇将介绍一些使服务端更为安全的最佳实践。此篇使用 Ubuntu 作为服务端操作系统。 Ubuntu升级软件对当前系统中默认安装的软件进行版本更新和安全修补，这一步可以使软件库和系统应用到最新的安全补丁： 1apt-get update &amp;amp;&amp;amp; apt-get upgrade 创建新用户我们需要创建一个自己的用户来登录和使用">
+<meta name="keywords" content="php,ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建相对安全的服务器">
+<meta property="og:url" content="http://yoursite.com/2016/08/13/server-security-best-practice/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="服务端安全服务端安全一直是一个不容忽视却最容易被忽视的问题，本篇将介绍一些使服务端更为安全的最佳实践。此篇使用 Ubuntu 作为服务端操作系统。 Ubuntu升级软件对当前系统中默认安装的软件进行版本更新和安全修补，这一步可以使软件库和系统应用到最新的安全补丁： 1apt-get update &amp;amp;&amp;amp; apt-get upgrade 创建新用户我们需要创建一个自己的用户来登录和使用">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="构建相对安全的服务器">
+<meta name="twitter:description" content="服务端安全服务端安全一直是一个不容忽视却最容易被忽视的问题，本篇将介绍一些使服务端更为安全的最佳实践。此篇使用 Ubuntu 作为服务端操作系统。 Ubuntu升级软件对当前系统中默认安装的软件进行版本更新和安全修补，这一步可以使软件库和系统应用到最新的安全补丁： 1apt-get update &amp;amp;&amp;amp; apt-get upgrade 创建新用户我们需要创建一个自己的用户来登录和使用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/13/server-security-best-practice/"/>
+
+
+
+
+
+  <title>构建相对安全的服务器 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/13/server-security-best-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">构建相对安全的服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-13T13:02:23+08:00">
+                2016-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="服务端安全"><a href="#服务端安全" class="headerlink" title="服务端安全"></a>服务端安全</h1><p>服务端安全一直是一个不容忽视却最容易被忽视的问题，本篇将介绍一些使服务端更为安全的最佳实践。此篇使用 Ubuntu 作为服务端操作系统。</p>
+<h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><h3 id="升级软件"><a href="#升级软件" class="headerlink" title="升级软件"></a>升级软件</h3><p>对当前系统中默认安装的软件进行版本更新和安全修补，这一步可以使软件库和系统应用到最新的安全补丁：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get update &amp;&amp; apt-get upgrade</div></pre></td></tr></table></figure>
+<h3 id="创建新用户"><a href="#创建新用户" class="headerlink" title="创建新用户"></a>创建新用户</h3><p>我们需要创建一个自己的用户来登录和使用服务器资源，而不是 root 这种众所周知的神一般的存在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adduser Dearmadman --force-badname</div></pre></td></tr></table></figure>
+<p>接着，把 Dearmadman 加入 sodu 用户组，让自己拥有神的能力：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">usermod -a -G sudo Dearmadman</div></pre></td></tr></table></figure>
+<h3 id="启用-SSH-密钥对认证"><a href="#启用-SSH-密钥对认证" class="headerlink" title="启用 SSH 密钥对认证"></a>启用 SSH 密钥对认证</h3><p>通常远程连接到服务器时，一般都是用用户名密码的方式进行验证，类似下面这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ssh root@dearmadman.com</div><div class="line"></div><div class="line">password: _</div></pre></td></tr></table></figure>
+<p>服务端要求你输入密码进行验证，这种密码验证是有可能被暴力破解的，所以我们可以禁用密码登录功能，使用密钥对来进行认证。</p>
+<p>所谓密钥对就是在本地机器中生成一对密钥 —— 公钥和私钥，你需要将公钥存储于服务器中，服务器会在你请求认证时要求你使用私钥对公钥内容进行解密，并把解密后的消息传递到服务器进行验证。这种方式可以有效的杜绝暴力破解的可能，同时也避免了中间人攻击的可能。</p>
+<h3 id="生成-SSH-密钥对"><a href="#生成-SSH-密钥对" class="headerlink" title="生成 SSH 密钥对"></a>生成 SSH 密钥对</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen</div></pre></td></tr></table></figure>
+<p>这个命令会生成一对秘钥，存放在 ~/.ssh 目录中，其中 id_rsa.pub 是公钥，你需要将公钥传递到服务端，我们可以使用 <code>scp</code> 命令来复制公钥到服务端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp ~/.ssh/id_rsa.pub Dearmadman@dearmadman.com:</div></pre></td></tr></table></figure>
+<p>该命令会将公钥传递到服务器的 Dearmadman 用户的根目录中，我们需要确认在用户根目录中是否存在 <code>.ssh</code> 目录，如果不存在则需要手动创建，并在 .ssh 目录中创建一个保存一系列公钥的文件 <code>authorized_keys</code>，然后将上传的公钥追加到文件中:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/Dearmadman</div><div class="line"></div><div class="line">mkdir .ssh</div><div class="line"></div><div class="line">touch .ssh/authorized_keys</div><div class="line"></div><div class="line">cat ~/id_rsa.pub &gt;&gt; /home/Dearmadman/.ssh/authorized_keys</div></pre></td></tr></table></figure>
+<p>最后修改目录和文件的访问权限，只让 Dearmadman 用户访问 .ssh 目录和 .ssh/authorized_keys 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">chwon -R Dearmadman:Dearmadman .ssh</div><div class="line">chmod 700 .ssh</div><div class="line">chmod 600 .ssh/authorized_keys</div></pre></td></tr></table></figure>
+<h2 id="SSH-配置"><a href="#SSH-配置" class="headerlink" title="SSH 配置"></a>SSH 配置</h2><p>SSH 的配置信息存放在 /etc/ssh/sshd_config 文件中。</p>
+<h3 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h3><p>SSH 默认监听的是 22 号端口，我们可以转换为监听其他端口:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Port 6293</div></pre></td></tr></table></figure>
+<h3 id="禁用密码登录"><a href="#禁用密码登录" class="headerlink" title="禁用密码登录"></a>禁用密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PasswordAuthentication no</div></pre></td></tr></table></figure>
+<h3 id="禁用-root-用户"><a href="#禁用-root-用户" class="headerlink" title="禁用 root 用户"></a>禁用 root 用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PermitRootLogin no</div></pre></td></tr></table></figure>
+<h3 id="重启-SSh"><a href="#重启-SSh" class="headerlink" title="重启 SSh"></a>重启 SSh</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo service ssh restart</div></pre></td></tr></table></figure>
+<h2 id="IPTABLES"><a href="#IPTABLES" class="headerlink" title="IPTABLES"></a>IPTABLES</h2><p>利用 IPTABLES 可以对服务端流入和流出的数据包进行有效的管理。</p>
+<p>保存原有规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables-save &gt; /etc/iptables.rules</div></pre></td></tr></table></figure>
+<p>修改 filter 部分内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*filter</div><div class="line"><span class="comment"># 设置默认的链策略</span></div><div class="line">-P INPUT DROP</div><div class="line">-P FORWARD DROP</div><div class="line">-P OUTPUT ACCEPT</div><div class="line"></div><div class="line"><span class="comment"># 开放 6293 端口，用于 SSH 认证，默认为 22 端口，前文修改为 6293</span></div><div class="line">-A INPUT -p tcp -m tcp --dport 6293 -j ACCEPT</div><div class="line"></div><div class="line"><span class="comment"># 开放 80 和 443 端口，分别用于 http 和 https 协议</span></div><div class="line">-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</div><div class="line">-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT</div><div class="line"></div><div class="line"><span class="comment"># 禁止 ping，默认的连策略已经禁止了 ping，这里修改 DROP 为 ACCEPT 将允许 ping</span></div><div class="line"><span class="comment">#-A INPUT -p icmp -m icmp --icmp-type 8 -j DROP</span></div><div class="line">COMMIT</div></pre></td></tr></table></figure>
+<p>刷新规则:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables-restore &lt; /etc/iptables.rules</div></pre></td></tr></table></figure>
+<p><strong>下面是一些常用 web 服务相关软件，对于这些软件应独立出一个低权限用户来独立运行，并且应禁用该账号的登录权限。在此不做详细说明</strong></p>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><p>修改 php.ini 禁止响应版本号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">expose_php = Off</div></pre></td></tr></table></figure>
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p>修改 nginx.conf 隐藏版本号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http &#123;</div><div class="line">  server_tokens off;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><p>禁用远程访问，如果必要，请选择 ssh 密钥登录</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/08/real-time-laravel-with-socket-io-and-redis/" rel="next" title="Laravel 即时应用的一种实现方式">
+                <i class="fa fa-chevron-left"></i> Laravel 即时应用的一种实现方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/30/single-sign-on/" rel="prev" title="single sign-on">
+                single sign-on <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#服务端安全"><span class="nav-number">1.</span> <span class="nav-text">服务端安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu"><span class="nav-number">1.1.</span> <span class="nav-text">Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#升级软件"><span class="nav-number">1.1.1.</span> <span class="nav-text">升级软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建新用户"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建新用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启用-SSH-密钥对认证"><span class="nav-number">1.1.3.</span> <span class="nav-text">启用 SSH 密钥对认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成-SSH-密钥对"><span class="nav-number">1.1.4.</span> <span class="nav-text">生成 SSH 密钥对</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH-配置"><span class="nav-number">1.2.</span> <span class="nav-text">SSH 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改默认端口"><span class="nav-number">1.2.1.</span> <span class="nav-text">修改默认端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用密码登录"><span class="nav-number">1.2.2.</span> <span class="nav-text">禁用密码登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用-root-用户"><span class="nav-number">1.2.3.</span> <span class="nav-text">禁用 root 用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启-SSh"><span class="nav-number">1.2.4.</span> <span class="nav-text">重启 SSh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPTABLES"><span class="nav-number">1.3.</span> <span class="nav-text">IPTABLES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">1.4.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">1.5.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">1.6.</span> <span class="nav-text">MySQL</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

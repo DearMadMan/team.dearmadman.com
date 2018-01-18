@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HTTP 响应基础响应所有的路由和控制器都应该返回某种响应发送回给用户的浏览器，laravel提供了多种不同的方式来返回响应。最基本的响应就是简单的在路由或控制器中返回字符串: 123Route::get(&apos;/&apos;, function () &amp;#123;  return &apos;Hello World&apos;;&amp;#125;); 这里返回的字符串会被laravel自动的转换为HTTP响应发送出去. 响应对象大多数">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 响应">
+<meta property="og:url" content="http://yoursite.com/2016/05/03/laravel-from-scratch-responses/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="HTTP 响应基础响应所有的路由和控制器都应该返回某种响应发送回给用户的浏览器，laravel提供了多种不同的方式来返回响应。最基本的响应就是简单的在路由或控制器中返回字符串: 123Route::get(&apos;/&apos;, function () &amp;#123;  return &apos;Hello World&apos;;&amp;#125;); 这里返回的字符串会被laravel自动的转换为HTTP响应发送出去. 响应对象大多数">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 响应">
+<meta name="twitter:description" content="HTTP 响应基础响应所有的路由和控制器都应该返回某种响应发送回给用户的浏览器，laravel提供了多种不同的方式来返回响应。最基本的响应就是简单的在路由或控制器中返回字符串: 123Route::get(&apos;/&apos;, function () &amp;#123;  return &apos;Hello World&apos;;&amp;#125;); 这里返回的字符串会被laravel自动的转换为HTTP响应发送出去. 响应对象大多数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/03/laravel-from-scratch-responses/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 响应 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/03/laravel-from-scratch-responses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 响应</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-03T07:11:03+08:00">
+                2016-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HTTP-响应"><a href="#HTTP-响应" class="headerlink" title="HTTP 响应"></a>HTTP 响应</h1><h2 id="基础响应"><a href="#基础响应" class="headerlink" title="基础响应"></a>基础响应</h2><p>所有的路由和控制器都应该返回某种响应发送回给用户的浏览器，laravel提供了多种不同的方式来返回响应。最基本的响应就是简单的在路由或控制器中返回字符串:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'Hello World'</span>;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这里返回的字符串会被laravel自动的转换为HTTP响应发送出去.</p>
+<h3 id="响应对象"><a href="#响应对象" class="headerlink" title="响应对象"></a>响应对象</h3><p>大多数时候，路由或者控制器的行为都应该返回<code>Illuminate\Http\Response</code>实例或者<code>view</code>。<code>Response</code>实例允许你便利的对响应头和响应的状态进行定制化.一个<code>Response</code>实例继承自<code>Symfony\Component\HttpFoundation\Response</code>类，该类提供了多种方法来生成一个HTTP响应:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Response</span>;</div><div class="line"></div><div class="line">Route::get(<span class="string">'home'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> (<span class="keyword">new</span> Response($content, $status))</div><div class="line">                -&gt;header(<span class="string">'Content-Type'</span>, $value); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>laravel也提供了便利的<code>response</code>全局帮助函数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'home'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> response($content, $status) </div><div class="line">           -&gt;header(<span class="string">'Content-Type'</span>, $value);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>所有可以使用的<code>Response</code>实例的方法，你可以查看 <a href="http://laravel.com/api/master/Illuminate/Http/Response.html" target="_blank" rel="external">API 文档</a> 和 <a href="http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/Response.html" target="_blank" rel="external">Symfony API文档</a>.</p>
+</blockquote>
+<h3 id="附加响应头"><a href="#附加响应头" class="headerlink" title="附加响应头"></a>附加响应头</h3><p><code>Response</code>实例的大多数方法都是允许进行链式调用的，你可以使用链式调用来流利的构建响应。例如，你可以使用<code>header</code>方法去添加多种响应头在其被发送到用户客户端之前:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response($content)</div><div class="line">         -&gt;header(<span class="string">'Content-Type'</span>, $type)</div><div class="line">         -&gt;header(<span class="string">'X-Header-One'</span>, <span class="string">'Header Value'</span>)</div><div class="line">         -&gt;header(<span class="string">'X-Header-Two'</span>, <span class="string">'Header Value'</span>);</div></pre></td></tr></table></figure>
+<p>或者你可以使用<code>withHeaders</code>方法来通过指定的数组添加请求头到响应:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response($content)</div><div class="line">         -&gt;withHeaders([</div><div class="line">           <span class="string">'Content-Type'</span> =&gt; $type,</div><div class="line">           <span class="string">'X-Header-One'</span> =&gt; <span class="string">'Header Value'</span>,</div><div class="line">           <span class="string">'X-Header-Two'</span> =&gt; <span class="string">'Header value'</span></div><div class="line">         ]);</div></pre></td></tr></table></figure>
+<h3 id="添加cookie到响应"><a href="#添加cookie到响应" class="headerlink" title="添加cookie到响应"></a>添加cookie到响应</h3><p><code>Response</code>实例的<code>cookie</code>可以简单的追加cookie信息到响应。例如，你可以使用<code>cookie</code>方法来生成cookie并附加到响应中:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response($content)</div><div class="line">         -&gt;header(<span class="string">'Content-Type'</span>, $type)</div><div class="line">         -&gt;cookie(<span class="string">'name'</span>, <span class="string">'value'</span>);</div></pre></td></tr></table></figure>
+<p><code>cookie</code>方法允许你添加额外的参数来进一步定制化你的cookie属性:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-&gt;cookie($name, $value, $minutes, $path, $domain, $secure, $httpOnly)</div></pre></td></tr></table></figure>
+<p>默认的,laravel中所有的cookie都是经过签证加密的，所以客户端的用户是没办法修改或者解读的.所以如果你想在生成某些cookie时，禁用默认的加密，你需要在<code>App\Http\Middleware\EncreyptCookies</code>中间件的<code>$except</code>属性中进行追加:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> $except = [</div><div class="line">  <span class="string">'cookie_name'</span></div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="其它响应类型"><a href="#其它响应类型" class="headerlink" title="其它响应类型"></a>其它响应类型</h2><p>帮助方法<code>response</code>也可以用来便利的生成其它类型的响应实例，如果你使用<code>response</code>帮助方法不传递任何参数，那么它会返回一个实现了<code>Illuminate\Contracts\Routing\ResponseFactory</code> contract的实例。该契约提供了多种有用的方法来生成响应.</p>
+<h3 id="视图响应"><a href="#视图响应" class="headerlink" title="视图响应"></a>视图响应</h3><p>如果你想控制响应的响应头与状态，并且你也需要返回一个视图作为响应的内容，那么你可以使用<code>view</code>方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()</div><div class="line">         -&gt;view(<span class="string">'hello'</span>, $data)</div><div class="line">         -&gt;header(<span class="string">'Content-Type'</span>, $type);</div></pre></td></tr></table></figure>
+<p>当然，如果你并不需要定制化响应的状态或者响应头，那么你可以直接使用全局帮助方法<code>view</code>。</p>
+<h3 id="JSON响应"><a href="#JSON响应" class="headerlink" title="JSON响应"></a>JSON响应</h3><p><code>json</code>方法会自动的设置响应头的<code>Content-Type</code>为<code>application/json</code>,以及使用<code>json_encode</code>方法将提供的数组转换为JSON:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()-&gt;json([<span class="string">'name'</span> =&gt; <span class="string">'Abigail'</span>, <span class="string">'state'</span> =&gt; <span class="string">'CA'</span>]);</div></pre></td></tr></table></figure>
+<p>如果你想要生成<code>jsonp</code>的响应，那么你可以使用<code>json</code>方法然后附加<code>setCallback</code>方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()</div><div class="line">         -&gt;json([<span class="string">'name'</span> =&gt; <span class="string">'Abigail'</span>, <span class="string">'state'</span> =&gt; <span class="string">'CA'</span>])</div><div class="line">         -&gt;setCallback($request-&gt;input(<span class="string">'callback'</span>));</div></pre></td></tr></table></figure>
+<h3 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h3><p><code>download</code>方法可以在返回一个强制用户端浏览器进行下载指定路径文件的响应。<code>download</code>方法也允许传递第二个参数作为浏览器下载时的文件名,你也可以传递http响应头数组作为第三个参数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()-&gt;download($pathToFile);</div><div class="line"></div><div class="line"><span class="keyword">return</span> response()-&gt;download($pathToFile, $name, $headers);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：Symfony HttpFoundation需要被下载的文件有一个ASCII文件名</p>
+</blockquote>
+<h3 id="文件响应"><a href="#文件响应" class="headerlink" title="文件响应"></a>文件响应</h3><p><code>file</code>方法允许你在浏览器直接显示image或pdf类型的文件来代替直接下载。该方法接收文件路径作为第一个参数，也可以接收HTTP响应头数组作为第二个参数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()-&gt;file($pathToFile);</div><div class="line"></div><div class="line"><span class="keyword">return</span> response()-&gt;file($pathToFile, $headers);</div></pre></td></tr></table></figure>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>重定向响应是一个<code>Illuminate\Http\RedirectResponse</code>类的实例，它包含了所有重定向到指定URI所需要的响应头信息。laravel提供了多种方式去生成重定向实例.最简单的方式莫过于使用全局帮助方法<code>redirect</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'dashboard'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> redirect(<span class="string">'home/dashboard'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>有时候你需要将用户重定向到上一次请求的地址，那么你可以使用全局帮助方法<code>back</code>。因为这里用到了session，所以你必须要保证你的路由使用了session中间件，默认的laravel的路由都被包裹在<code>web</code>路由组中，<code>web</code>中间件组中已经包含了session中间件:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::post(<span class="string">'user/profile'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Validate the request...</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span>  back()-&gt;withInput();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="重定向至命名路由"><a href="#重定向至命名路由" class="headerlink" title="重定向至命名路由"></a>重定向至命名路由</h3><p>当你使用<code>redirect</code>方法而不传递任何参数时，laravel将返回<code>Illuminated\Routing\Redirector</code>的一个实例，该实例允许你使用一些方法来处理重定向信息,例如，为了生成重定向到命名路由，你可以使用<code>route</code>方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect()-&gt;route(<span class="string">'login'</span>);</div></pre></td></tr></table></figure>
+<p>如果命名路由也含有参数，那么你可以传递第二个参数到<code>route</code>方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect()-&gt;route(<span class="string">'profile'</span>, [<span class="string">'id'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<p>如果你需要重定向的路由是使用<code>Eloquent</code>模型的<code>id</code>作为参数识别的路由,那么你可以直接在<code>route</code>方法中传递用户实例，它会自动被解析到id：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect()-&gt;route(<span class="string">'profile'</span>, [$user]);</div></pre></td></tr></table></figure>
+<h3 id="重定向至控制器行为"><a href="#重定向至控制器行为" class="headerlink" title="重定向至控制器行为"></a>重定向至控制器行为</h3><p>你也可以生成重定向信息到控制器的某个行为.你可以简单的通过<code>action</code>方法传递控制器名称和控制器行为来做到这些.你应该注意，你并不需要特别的指出控制器的全部命名空间,因为laravel的<code>RouteServiceProvider</code>已经自动的设置了默认的命名空间:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect()-&gt;action(<span class="string">'HomeController@index'</span>);</div></pre></td></tr></table></figure>
+<p>当然，如果你的控制器行为也接收其他的参数，你同样可以在<code>action</code>方法中传递第二个参数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> redirect()-&gt;action(<span class="string">'UserController@profile'</span>, [<span class="string">'id'</span> =&gt; <span class="number">1</span>]);</div></pre></td></tr></table></figure>
+<h3 id="重定向并闪存session"><a href="#重定向并闪存session" class="headerlink" title="重定向并闪存session"></a>重定向并闪存session</h3><p>你可以通过<code>RedirectResponse</code>实例的链式调用来做到在生成重定向信息的同时闪存seession数据，这在执行行为之后存储消息状态的场景尤其有用:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::post(<span class="string">'user/profile'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Update the user's profile...</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> redirect(<span class="string">'dashboard'</span>)-&gt;with(<span class="string">'status'</span>, <span class="string">'profile updated'</span>); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>当然，在用户重定向到新页面时，你是可以访问到闪存的会话信息的，例如，在blade模板中，你可以这么使用:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">if</span> (session(<span class="string">'status'</span>)) </div><div class="line">  &lt;div class="alert alert-success"&gt;</div><div class="line">    &#123;&#123; session(<span class="string">'status'</span>)&#125;&#125;</div><div class="line">  &lt;/div&gt;</div><div class="line">@<span class="keyword">endif</span></div></pre></td></tr></table></figure>
+<h2 id="响应宏"><a href="#响应宏" class="headerlink" title="响应宏"></a>响应宏</h2><p>如果你想自定义某种可复用的响应，你可以使用<code>Response</code> facade的 <code>macro</code>方法或者提供<code>Illuminate\Contracts\Routing\ResponseFactory</code>的一个实现:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Response</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResponseMacroServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span> </span>&#123;</div><div class="line">    Response::macro(<span class="string">'caps'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($value)</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> Response::make(strtoupper($value));</div><div class="line">    &#125;); </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>macro</code>方法接收一个别名作为第一个参数，接收一个闭包作为第二个参数。闭包会在访问<code>ResponseFactory</code>实现的实例的动态属性<code>macro</code>别名时执行，或者通过全局帮助方法<code>response</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> response()-&gt;caps(<span class="string">'foo'</span>);</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/02/laravel-from-scratch-requests/" rel="next" title="laravel 基础教程 —— 请求">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 请求
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/06/what-is-the-webpack/" rel="prev" title="what is the webpack">
+                what is the webpack <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP-响应"><span class="nav-number">1.</span> <span class="nav-text">HTTP 响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础响应"><span class="nav-number">1.1.</span> <span class="nav-text">基础响应</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#响应对象"><span class="nav-number">1.1.1.</span> <span class="nav-text">响应对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附加响应头"><span class="nav-number">1.1.2.</span> <span class="nav-text">附加响应头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加cookie到响应"><span class="nav-number">1.1.3.</span> <span class="nav-text">添加cookie到响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它响应类型"><span class="nav-number">1.2.</span> <span class="nav-text">其它响应类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图响应"><span class="nav-number">1.2.1.</span> <span class="nav-text">视图响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON响应"><span class="nav-number">1.2.2.</span> <span class="nav-text">JSON响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件下载"><span class="nav-number">1.2.3.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件响应"><span class="nav-number">1.2.4.</span> <span class="nav-text">文件响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">1.3.</span> <span class="nav-text">重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向至命名路由"><span class="nav-number">1.3.1.</span> <span class="nav-text">重定向至命名路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向至控制器行为"><span class="nav-number">1.3.2.</span> <span class="nav-text">重定向至控制器行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向并闪存session"><span class="nav-number">1.3.3.</span> <span class="nav-text">重定向并闪存session</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应宏"><span class="nav-number">1.4.</span> <span class="nav-text">响应宏</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

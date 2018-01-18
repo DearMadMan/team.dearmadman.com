@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="授权简介laravel 除了提供开箱即用的授权服务，还提供了许多简单的方式来管理授权逻辑和资源的访问控制。这些各式的方法和帮助函数便于你管理你的授权逻辑。我们将在本章中对其进行一一的解读。 定义能力判断一个用户是否具有执行给定动作的能力的最简单的方式就是使用 Illuminate\Auth\Access\Gate 类去定义相应的能力。laravel 所提供的 AuthServiceProvider">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 授权">
+<meta property="og:url" content="http://yoursite.com/2016/05/25/laravel-from-scratch-authorization/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="授权简介laravel 除了提供开箱即用的授权服务，还提供了许多简单的方式来管理授权逻辑和资源的访问控制。这些各式的方法和帮助函数便于你管理你的授权逻辑。我们将在本章中对其进行一一的解读。 定义能力判断一个用户是否具有执行给定动作的能力的最简单的方式就是使用 Illuminate\Auth\Access\Gate 类去定义相应的能力。laravel 所提供的 AuthServiceProvider">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 授权">
+<meta name="twitter:description" content="授权简介laravel 除了提供开箱即用的授权服务，还提供了许多简单的方式来管理授权逻辑和资源的访问控制。这些各式的方法和帮助函数便于你管理你的授权逻辑。我们将在本章中对其进行一一的解读。 定义能力判断一个用户是否具有执行给定动作的能力的最简单的方式就是使用 Illuminate\Auth\Access\Gate 类去定义相应的能力。laravel 所提供的 AuthServiceProvider">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/25/laravel-from-scratch-authorization/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 授权 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/25/laravel-from-scratch-authorization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 授权</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-25T16:33:12+08:00">
+                2016-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>laravel 除了提供开箱即用的授权服务，还提供了许多简单的方式来管理授权逻辑和资源的访问控制。这些各式的方法和帮助函数便于你管理你的授权逻辑。我们将在本章中对其进行一一的解读。</p>
+<h2 id="定义能力"><a href="#定义能力" class="headerlink" title="定义能力"></a>定义能力</h2><p>判断一个用户是否具有执行给定动作的能力的最简单的方式就是使用 <code>Illuminate\Auth\Access\Gate</code> 类去定义相应的能力。laravel 所提供的 <code>AuthServiceProvider</code> 类是定义这些能力的推荐位置。让我们来看个示例，我们定义一个 <code>update-post</code> 的能力，这个能力接收一个当前 <code>User</code> 和一个 <code>Post</code> 模型。在这个能力中，我们需要判断用户的 <code>id</code> 与 post 的 <code>user_id</code> 是否匹配：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Auth</span>\<span class="title">Access</span>\<span class="title">Gate</span> <span class="title">as</span> <span class="title">GateContract</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Support</span>\<span class="title">Providers</span>\<span class="title">AuthServiceProvider</span> <span class="title">as</span> <span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Register any application authentication / authorization services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Contracts\Auth\Access\Gate $gate</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">(GateContract $gate)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">$this</span>-&gt;registerPolicies($gate);</div><div class="line"></div><div class="line">     $gate-&gt;define(<span class="string">'update-post'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($user, $post)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> $user-&gt;id === $post-&gt;user_id;</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意上面的示例中我们并没有检查所给定的 <code>$user</code> 是否为 <code>NULL</code>。这是因为当给定的用户没有经过认证或者用户没有经过 <code>forUser</code> 方法指定，<code>Gate</code> 类会自动的为所有的能力返回 <code>false</code>。</p>
+<p><strong>基于类的能力</strong></p>
+<p>除了使用 <code>Closures</code> 的方式作为授权检查的回调来注册能力，你还可以通过传递类中的方法来进行能力的注册，当需要的时候，类会通过服务容器来解析：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$gate-&gt;define(<span class="string">'update-post'</span>, <span class="string">'Class@method'</span>);</div></pre></td></tr></table></figure>
+<p><strong>授权检查拦截器</strong></p>
+<p>有时候，你可能需要向某些特殊用户发放所有能力的通行证，这个时候，你可以使用 <code>before</code> 方法来定义一个回调，它会在所有的授权检查之前运行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$gate-&gt;before(<span class="function"><span class="keyword">function</span> <span class="params">($user, $ability)</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> ($user-&gt;isSuperAdmin()) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果 <code>before</code> 的回调函数返回一个非空的结果，那么该结果将作为检查的结果。</p>
+<p>你也可以使用 <code>after</code> 方法来定义一个在每个能力授权检查之后执行的回调函数，但是，你不能在这个回调函数内修改检查的结果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$gate-&gt;after(<span class="function"><span class="keyword">function</span> <span class="params">($user, $ability, $result, $arguments)</span> </span>&#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="检查能力"><a href="#检查能力" class="headerlink" title="检查能力"></a>检查能力</h2><h3 id="通过-Gate-假面"><a href="#通过-Gate-假面" class="headerlink" title="通过 Gate 假面"></a>通过 Gate 假面</h3><p>一旦一个能力被定义完成，我们就可以通过多种方式来进行能力的检查。首先，我们可以使用 <code>Gate</code> 假面的 <code>check</code>，<code>allows</code>，或者 <code>denies</code> 方法。所有的这些方法都会接收能力的名称，并且会把额外的参数传递给相应能力的回调函数中。你并不需要传递当前的用户到这些方法中，<code>Gate</code> 会自动的前置当前用户到参数中并传递给能力的回调函数。所以当我们检查早前定义的 <code>update-post</code> 能力时，我们只需要传递 <code>Post</code> 的实例到 <code>denies</code> 方法中就可以了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Gate</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update the given post.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">($id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $post = Post::findOrFail($id);</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (Gate::denies(<span class="string">'update-post'</span>, $post)) &#123;</div><div class="line">        abort(<span class="number">403</span>);</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// Update Post ...</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，<code>allows</code> 方法与 <code>denies</code> 相反，如果动作被授权通过则返回 <code>true</code>. <code>check</code> 方法就是 <code>allows</code> 方法的别名。</p>
+<p><strong>对指定的用户检查能力</strong></p>
+<p>如果你想要使用 <code>Gate</code> 假面来检查非当前经授权通过用户的其他用户是否具备相应的能力，你可以使用 <code>forUser</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Gate::forUser($user)-&gt;allows(<span class="string">'update-post'</span>, $post)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>传递多个参数</strong></p>
+<p>当然，能力的回调函数可以接收多个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Gate:define(<span class="string">'delete-comment'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($user, $post, $comment)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果你的能力需要接收多个参数，你可以简单的通过 <code>Gate</code> 假面的方法进行传递一个经多个参数所组成的数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Gate::allows(<span class="string">'delete-comment'</span>, [$post, $comment])) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="通过用户模型检查能力"><a href="#通过用户模型检查能力" class="headerlink" title="通过用户模型检查能力"></a>通过用户模型检查能力</h3><p>事实上，你可以通过 <code>User</code> 模型的实例来检查用户的能力。默认的 laravel 的 <code>App\User</code> 模型使用了 <code>Authorizable</code> trait，这个性状包含两个方法：<code>can</code> 和 <code>cannot</code>。这两个方法和 <code>Gate</code> 假面的 <code>allows</code> 和 <code>denies</code> 方法的用法相同。我们还使用上面曾使用过的例子，修改成如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update the given post.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \Illuminate\Http\Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $post = Post::findOrFail($id);</div><div class="line"></div><div class="line">     <span class="keyword">if</span> ($request-&gt;user()-&gt;cannot(<span class="string">'update-post'</span>, $post)) &#123;</div><div class="line">       abort(<span class="number">403</span>);</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// Update Post...</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，<code>can</code> 方法与 <code>cannot</code> 的相反：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($request-&gt;user()-&gt;can(<span class="string">'update-post'</span>, $post)) &#123;</div><div class="line">  <span class="comment">// Update Post...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="在-Blade-模板中检查能力"><a href="#在-Blade-模板中检查能力" class="headerlink" title="在 Blade 模板中检查能力"></a>在 Blade 模板中检查能力</h3><p>为了方便，laravel 提供了 <code>@can</code> Blade 指令来快速的检查当前授权的用户是否具有指定的能力。比如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;a href=<span class="string">"/post/&#123;&#123; $post-&gt;id &#125;&#125;"</span>&gt;View Post&lt;/a&gt;</div><div class="line"></div><div class="line">@can(<span class="string">'update-post'</span>, $post)</div><div class="line">  &lt;a href=<span class="string">"/post/&#123;&#123; $post-&gt;id &#125;&#125;/edit"</span>&gt;Edit Post&lt;/a&gt;</div><div class="line">@endcan</div></pre></td></tr></table></figure>
+<p>你也可以通过 <code>@else</code> 指令来配合 <code>@can</code> 指令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@can(<span class="string">'update-post'</span>, $post)</div><div class="line">  &lt;!-- The Current User Can Update The Post --&gt;</div><div class="line">@<span class="keyword">else</span></div><div class="line">  &lt;!-- The Current User Can<span class="string">'t Update The Post --&gt;</span></div><div class="line"><span class="string">@endcan</span></div></pre></td></tr></table></figure>
+<h3 id="在表单请求中检查能力"><a href="#在表单请求中检查能力" class="headerlink" title="在表单请求中检查能力"></a>在表单请求中检查能力</h3><p>你也可以通过使用表单请求（继承自 Request，用于表单验证的请求类）中自定义的 <code>authoriza</code> 方法来验证 <code>Gate</code> 假面中定义的能力：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Determine if the user is authorized to make this request.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> bool</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">authorize</span><span class="params">()</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   $postId = <span class="keyword">$this</span>-&gt;route(<span class="string">'post'</span>);</div><div class="line"></div><div class="line">   <span class="keyword">return</span> Cate::allows(<span class="string">'update'</span>, Post::findOrFail($postId));</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h2 id="策略（Policies）"><a href="#策略（Policies）" class="headerlink" title="策略（Policies）"></a>策略（Policies）</h2><h3 id="创建策略"><a href="#创建策略" class="headerlink" title="创建策略"></a>创建策略</h3><p>为了不让你把所有的授权逻辑全部放进 <code>AuthServiceProvider</code> 从而使应用增长为一个庞大而笨重的应用。 laravel 允许你通过 <code>Policy</code> 类来分离你的授权逻辑。策略类其实就是一个包含授权逻辑组的原生 PHP 类。</p>
+<p>首先，让我们来生成一个策略来管理我们的 <code>Post</code> 的授权。你可以通过 <code>make:policy</code> 命令来生成一个策略。所生成的策略会存放在 <code>app/Policies</code> 目录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:policy PostPolicy</div></pre></td></tr></table></figure>
+<p><strong>注册策略</strong></p>
+<p>一旦策略存在，我们还需要在 <code>Gate</code> 类中进行注册。在 <code>AuthServiceProvider</code> 中包含了一个 <code>policies</code> 属性，该属性存放所有实体与策略间的映射。所以，我们需要将 <code>Post</code> 模型的策略指定到 <code>PostPolice</code> 类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Policies</span>\<span class="title">PostPolicy</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Support</span>\<span class="title">Providers</span>\<span class="title">AuthServiceProvider</span> <span class="title">as</span> <span class="title">ServiceProvider</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * The policy mappings for the application.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">protected</span> $policies = [</div><div class="line">     Post::class =&gt; PostPolicy::class,</div><div class="line">   ];</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register any application authentication / authorization services.</span></div><div class="line"><span class="comment">    * </span></div><div class="line"><span class="comment">    * <span class="doctag">@param</span> \Illuminate\Contracts\Auth\Access\Gate $gate</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">(GateContract $gate)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="keyword">$this</span>-&gt;registerPolicies($gate); </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="编写策略"><a href="#编写策略" class="headerlink" title="编写策略"></a>编写策略</h3><p>一旦策略被生成和注册后，我们就可以为所有能力的授权添加验证方法。例如，让我们在 <code>PostPolicy</code> 类中定义一个 <code>update</code> 方法，用来验证所给定的用户是否具有 <code>update</code> <code>Post</code> 的能力：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Policies</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Uesr</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostPolicy</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Determine if the given post can be updated by the user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \App\User $user</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> \App\Post $post</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> bool</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(User $user, Post $post)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     <span class="keyword">return</span> $user-&gt;id === $post-&gt;user_id;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以继续在策略中添加其他所需进行授权验证的方法。比如，你可以继续为验证 <code>Post</code> 的各种动作而定义 <code>show</code>，<code>destroy</code>，或者 <code>addComment</code> 方法。</p>
+<blockquote>
+<p>注意：所有的策略类都是通过服务容器解析而来。这意味着你可以使用类型提示来在策略类的构造函数中进行依赖注入所需要的依赖。</p>
+</blockquote>
+<p><strong>拦截所有检查</strong></p>
+<p>有时候，你可能需要发放给指定用户具有所有能力的通行证，这时候，你可以在策略类中定义 <code>before</code> 方法。该方法会在策略中其他所有方法被执行前运行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">before</span><span class="params">($user, $ability)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">if</span> ($user-&gt;isSuperAdmin()) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果 <code>before</code> 方法返回一个非空值，那么其结果将会用来作为授权验证的结果的判断依据。</p>
+<h3 id="检查策略"><a href="#检查策略" class="headerlink" title="检查策略"></a>检查策略</h3><p>策略类的方法和基于授权回调的方法一样通过相同的方式作为 <code>Closure</code> 被调用。你可以使用 <code>Gate</code> 假面，<code>User</code> 模型，<code>@can</code> Blade 指令或者 <code>policy</code> helper 来进行授权的检查。</p>
+<p><strong>通过 Gate 假面</strong></p>
+<p><code>Gate</code> 会通过检查传递给方法中参数的类型来确定应该使用哪一种策略。所以，如果我们传递 <code>Post</code> 实例到 <code>denies</code> 方法，<code>Gate</code> 将会自动的使用相对应的 <code>PostPolicy</code> 来进行授权验证：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Gate</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update the given post.</span></div><div class="line"><span class="comment">   * </span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">($id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $post = Post::findOrFail($id);</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (Gate::denies(<span class="string">'update'</span>, $post)) &#123;</div><div class="line">       abort(<span class="number">403</span>);</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// Update Post...</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>通过用户的模型</strong></p>
+<p><code>User</code> 模型中的 <code>can</code> 和 <code>cannot</code> 方法也会在所给定参数可用时自动匹配相应的策略。这些方法提供了一种便利的方式去验证任意用户实例是否具有所给定的能力:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($user-&gt;can(<span class="string">'update'</span>, $post)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($user-&gt;cannot(<span class="string">'update'</span>, $post)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>通过 Blade 模板</strong></p>
+<p>就像我们所期望的，<code>@can</code> Blade 指令会在所给定参数可用时自动匹配相应的策略：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@can(&apos;update&apos;, $post)</div><div class="line">  &lt;!-- The Current User Can update The Post --&gt;</div><div class="line">@endcan</div></pre></td></tr></table></figure>
+<p><strong>通过策略 Helper</strong></p>
+<p>全局帮助方法 <code>policy</code> 可以通过所给定的类解析相应的 <code>Policy</code> 类。例如，我们可以传递一个 <code>Post</code> 实例到 <code>policy</code> 帮助方法，该方法会返回相应的 <code>PostPolicy</code> 类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (policy($post)-&gt;update($user, $post)) &#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="控制器授权"><a href="#控制器授权" class="headerlink" title="控制器授权"></a>控制器授权</h2><p>默认的，在 laravel 中基于 <code>Ap\Http\Controllers\Controller</code> 的类都引入了 <code>AuthorizesRequests</code> trait（性状）。该性状提供了 <code>authorize</code> 方法来快速的验证所给定的动作是否有执行的能力，如果不具备相应的能力会抛出一个 <code>HttpException</code> 。</p>
+<p><code>authorize</code> 方法共享了其它授权方法的签证方式，如 <code>Gate::allows</code> 和 <code>$user-&gt;can()</code>。那么，让我们来使用 <code>authorize</code> 方法快速的鉴别一个请求是否具有更新 <code>Post</code> 的能力：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Post</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update the given post.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">($id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $post = Post::findOrFail($id);</div><div class="line"></div><div class="line">     <span class="keyword">$this</span>-&gt;authorize(<span class="string">'update'</span>, $post);</div><div class="line"></div><div class="line">     <span class="comment">// Update Post...</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果这个动作通过了授权，控制器将继续执行下面的逻辑。否则会自动的抛出一个 <code>HttpException</code> 错误，这个错误会生成一个 <code>403 Not Authorized</code> 的 Http 响应。就如你所看到的， <code>authorize</code> 方法是一个非常方便的方法，它的方便之处就在于只使用一条语句执行了授权的验证或抛出异常。</p>
+<p><code>AuthorizeRequests</code> trait 也提供了 <code>authorizeForUser</code> 方法来进行非当前用户的用户与给定能力的鉴权：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;authorizeForUser($user, <span class="string">'update'</span>, $post);</div></pre></td></tr></table></figure>
+<p><strong>自动的确定策略方法</strong></p>
+<p>通常的，策略类中的方法是与控制器中的方法相对应的。比如在上面的 <code>update</code> 方法中，控制器的方法和策略的方法使用了相同的命名： <code>update</code>。</p>
+<p>由于这个原因，laravel 允许你通过简单的传递一个实例参数到 <code>authorize</code> 方法，在能力的鉴定中，laravel 会根据当前方法的命名自动的确定策略方法的调用。在上面的例子中，由于 <code>authorize</code> 方法是在控制器中的 <code>update</code> 方法中调用的，所以 <code>PostPolicy</code> 中的 <code>update</code> 将会被调用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Update the given post.</span></div><div class="line"><span class="comment"> * </span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment"> * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">($id)</span></span></div><div class="line"><span class="function"> </span>&#123;</div><div class="line">   $post = Post::findOrFail($id);</div><div class="line"></div><div class="line">   <span class="keyword">$this</span>-&gt;authorize($post);</div><div class="line"></div><div class="line">   <span class="comment">// Update Post...</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/21/laravel-from-scratch-authentication/" rel="next" title="laravel 基础教程 —— 认证">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 认证
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/27/laravel-from-scratch-artisan-console/" rel="prev" title="laravel 基础教程 —— Artisan 命令">
+                laravel 基础教程 —— Artisan 命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#授权"><span class="nav-number">1.</span> <span class="nav-text">授权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义能力"><span class="nav-number">1.2.</span> <span class="nav-text">定义能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查能力"><span class="nav-number">1.3.</span> <span class="nav-text">检查能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-Gate-假面"><span class="nav-number">1.3.1.</span> <span class="nav-text">通过 Gate 假面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过用户模型检查能力"><span class="nav-number">1.3.2.</span> <span class="nav-text">通过用户模型检查能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Blade-模板中检查能力"><span class="nav-number">1.3.3.</span> <span class="nav-text">在 Blade 模板中检查能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在表单请求中检查能力"><span class="nav-number">1.3.4.</span> <span class="nav-text">在表单请求中检查能力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略（Policies）"><span class="nav-number">1.4.</span> <span class="nav-text">策略（Policies）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建策略"><span class="nav-number">1.4.1.</span> <span class="nav-text">创建策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写策略"><span class="nav-number">1.4.2.</span> <span class="nav-text">编写策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查策略"><span class="nav-number">1.4.3.</span> <span class="nav-text">检查策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制器授权"><span class="nav-number">1.5.</span> <span class="nav-text">控制器授权</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

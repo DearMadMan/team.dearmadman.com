@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="laravel基础教程 —— 配置所有配置文件都被保存在config目录下，并且每个配置文件里的配置项都有文档标注。 访问配置值config全局帮助方法被提供在vendor/laravel/framework/src/Illuminate/Foundation/helpers.php 文件中，该函数允许使用 . 语法来获取文件内的配置项值。 1$value = config(&apos;app.timezo">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 配置">
+<meta property="og:url" content="http://yoursite.com/2016/04/18/laravel-from-scratch-configuration/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="laravel基础教程 —— 配置所有配置文件都被保存在config目录下，并且每个配置文件里的配置项都有文档标注。 访问配置值config全局帮助方法被提供在vendor/laravel/framework/src/Illuminate/Foundation/helpers.php 文件中，该函数允许使用 . 语法来获取文件内的配置项值。 1$value = config(&apos;app.timezo">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 配置">
+<meta name="twitter:description" content="laravel基础教程 —— 配置所有配置文件都被保存在config目录下，并且每个配置文件里的配置项都有文档标注。 访问配置值config全局帮助方法被提供在vendor/laravel/framework/src/Illuminate/Foundation/helpers.php 文件中，该函数允许使用 . 语法来获取文件内的配置项值。 1$value = config(&apos;app.timezo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/18/laravel-from-scratch-configuration/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 配置 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/18/laravel-from-scratch-configuration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-18T16:19:40+08:00">
+                2016-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="laravel基础教程-——-配置"><a href="#laravel基础教程-——-配置" class="headerlink" title="laravel基础教程 —— 配置"></a>laravel基础教程 —— 配置</h1><p>所有配置文件都被保存在<code>config</code>目录下，并且每个配置文件里的配置项都有文档标注。</p>
+<h2 id="访问配置值"><a href="#访问配置值" class="headerlink" title="访问配置值"></a>访问配置值</h2><p><code>config</code>全局帮助方法被提供在<code>vendor/laravel/framework/src/Illuminate/Foundation/helpers.php</code> 文件中，该函数允许使用 <code>.</code> 语法来获取文件内的配置项值。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = config(<span class="string">'app.timezone'</span>);</div></pre></td></tr></table></figure>
+<p>你也可以在config函数传递第二个参数作为默认值，当找不到该配置项时返回默认值.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$value = config(<span class="string">'app.timezone'</span>, <span class="string">'Asia/Shanghai'</span>);</div></pre></td></tr></table></figure>
+<p>设置配置项的值：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">config([<span class="string">'app.timezone'</span> =&gt; <span class="string">'Asia/Shanghai'</span>]);</div></pre></td></tr></table></figure>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>我们经常希望开发环境和生产环境具有不同的配置。比如说你在本地开发环境使用不同的缓存驱动，而laravel基于环境的配置使之非常容易。</p>
+<p>laravel使用了<a href="https://github.com/vlucas/phpdotenv" target="_blank" rel="external">DotEnv</a>类库来构建基于环境的配置，默认的基于环境的配置信息在根目录下的<code>.env</code>文件中，如果你是通过<code>composer</code>的方式安装的laravel，那么它会自动的将<code>.env.example</code>文件复制并重命名为<code>.env</code>, 如果不是你则需要手动做了。如果你每增加一个基于环境的配置项，你最好在<code>.env.example</code>中增加相同的配置项，这样在多人协作中别人可以根据<code>.env.example</code>理解你的配置信息.</p>
+<p>每当程序接收到request请求时，应用程序会自动装载<code>.env</code>文件，并将配置信息封装在全局变量<code>$_ENV</code>中，当然你也可以通过全局辅助函数<code>env()</code>来进行获取环境配置项信息并将其设置在你的其它配置文件中，事实上，laravel已经在部分配置文件中使用这种这种方式进行配置。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'debug'</span> =&gt; env(<span class="string">'APP_DEBUG'</span>, <span class="keyword">false</span>),</div></pre></td></tr></table></figure>
+<p><code>env</code>函数中的第二个参数为配置项的默认值，当环境配置文件<code>.env</code>中没有该配置项时会自动使用默认值。</p>
+<p>另外你的<code>.env</code>配置环境不应该提交到版本控制器中，因为其它服务器环境或者开发者环境可能需要引入不同的环境配置。比如生产环境不应该开启debug, 不同的开发者的本地数据库配置信息可能不同。</p>
+<p>如果你是在一个团队中做开发，你应该在<code>.env.example</code>文件中引入你增加的环境配置信息，并提交给其它开发者知道，这样他们就能够理解使用你开发的部分应该引入哪些配置信息。</p>
+<h3 id="确定当前环境"><a href="#确定当前环境" class="headerlink" title="确定当前环境"></a>确定当前环境</h3><p>当前环境是定义在<code>.env</code>文件中的<code>APP_ENV</code>变量里的，你可以通过<code>App</code> <strong>facade</strong> 的 <code>environment</code> 函数来获取：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$environment = App::environment();</div></pre></td></tr></table></figure>
+<p>当然你也可以通过 全局方法 <code>env</code> 或 <code>app</code> 来获取：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash">environment = env(<span class="string">'APP_ENV'</span>);</span></div><div class="line"><span class="meta">#</span><span class="bash"> or</span></div><div class="line"><span class="meta">$</span><span class="bash">environment = app()-&gt;environment();</span></div></pre></td></tr></table></figure>
+<p>有时候我们需要特别识别一下当前环境是哪种环境，并根据不同的环境执行不同的业务逻辑，这时候就需要通过<code>environment</code>函数来进行判断匹配了，当然你可以在其中传递一个或多个环境参数，只要匹配到其中任何一个都会返回true:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (App::environment(<span class="string">'local'</span>)) &#123;</div><div class="line">  /<span class="regexp">/ if env('APP_ENV') === 'local'</span></div><div class="line"><span class="regexp">&#125;</span></div><div class="line"><span class="regexp"></span></div><div class="line"><span class="regexp">if (App::environment('local', 'staging')) &#123;</span></div><div class="line"><span class="regexp">  /</span><span class="regexp">/ env('APP_ENV') === 'local' || env('APP_ENV') === 'staging'</span></div><div class="line"><span class="regexp">&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="缓存配置信息"><a href="#缓存配置信息" class="headerlink" title="缓存配置信息"></a>缓存配置信息</h3><p>在<code>config</code>目录下有很多配置文件，配置文件中有不同的配置信息，为了启动程序更为迅速，我们可以在开发环境中将这些配置信息集中到一个配置文件中，这样，程序在被访问时，不会每次都要加载N个文件了，我们可以通过<code>artisan</code>的 <code>config:cache</code>命令 来做这件事情。所有配置文件被整合在一个文件里并被程序自动加载。</p>
+<p>当然，在开发环境并不建议这么做，因为开发环境我们可能会频繁的更改配置信息，这样为了使配置信息及时生效我们不得不频繁的运行 <code>php artisan config:cache</code>命令， 偶尔我们会忘记执行命令。生产环境缓存配置文件应该是常态,并且应该在版本发布时执行缓存配置文件命令重新生成缓存配置信息。你应该将其做为自动发布的一部分。</p>
+<h3 id="维护模式"><a href="#维护模式" class="headerlink" title="维护模式"></a>维护模式</h3><p>laravel提供了维护模式，维护模式在开启时，所有的访问请求都会被返回某个视图，这个视图是可以自定义的。如果维护模式开启，则每个请求都会返回 503 状态码。<br>开启维护模式的方法:</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">php artisan down</span></div></pre></td></tr></table></figure>
+<p>关闭维护模式的方法：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">php artisan up</span></div></pre></td></tr></table></figure></p>
+<h4 id="维护模式响应模板"><a href="#维护模式响应模板" class="headerlink" title="维护模式响应模板"></a>维护模式响应模板</h4><p>维护模式响应的视图模板存放在<code>resources/views/errors/503.blade.php</code>, 你可以自由的修改。</p>
+<h4 id="维护模式-amp-队列"><a href="#维护模式-amp-队列" class="headerlink" title="维护模式 &amp; 队列"></a>维护模式 &amp; 队列</h4><p>在维护模式开启时，队列工作将会暂停执行，当维护模式关闭时，队列将继续进行处理工作。</p>
+<h4 id="备选方案到维护模式"><a href="#备选方案到维护模式" class="headerlink" title="备选方案到维护模式"></a>备选方案到维护模式</h4><p>由于开启维护模式需要关闭应用程序一段时间，所以你也许可以考虑像<a href="https://envoyer.io/" target="_blank" rel="external">Envoyer</a>这种不需要关闭应用程序的持续集成服务。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/18/laravel-from-scratch-initial-setup/" rel="next" title="laravel 基础教程 —— 安装">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/19/laravel-from-scratch-routing/" rel="prev" title="laravel 基础教程 —— 路由">
+                laravel 基础教程 —— 路由 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#laravel基础教程-——-配置"><span class="nav-number">1.</span> <span class="nav-text">laravel基础教程 —— 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问配置值"><span class="nav-number">1.1.</span> <span class="nav-text">访问配置值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定当前环境"><span class="nav-number">1.1.2.</span> <span class="nav-text">确定当前环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存配置信息"><span class="nav-number">1.1.3.</span> <span class="nav-text">缓存配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#维护模式"><span class="nav-number">1.1.4.</span> <span class="nav-text">维护模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#维护模式响应模板"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">维护模式响应模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护模式-amp-队列"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">维护模式 & 队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备选方案到维护模式"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">备选方案到维护模式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

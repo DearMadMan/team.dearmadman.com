@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Open Closed Principle 开放封闭原则Introduction 介绍在一个应用的生命周期里，大部分时间都花在了向现有代码库增加功能，而非一直从零开始写新功能。正像你所想的那样，这会是一个繁琐且令人痛苦的过程。当你修改代码的时候，你可能引入新的程序错误，或者将原来管用的功能搞坏掉。理想情况下，我们应该可以像写全新的代码一样，来快速且简单的修改现有的代码。只要采用开放封闭原则来正确的">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从百草堂到三味书屋 —— 开放封闭原则">
+<meta property="og:url" content="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-open-closed-principle/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="Open Closed Principle 开放封闭原则Introduction 介绍在一个应用的生命周期里，大部分时间都花在了向现有代码库增加功能，而非一直从零开始写新功能。正像你所想的那样，这会是一个繁琐且令人痛苦的过程。当你修改代码的时候，你可能引入新的程序错误，或者将原来管用的功能搞坏掉。理想情况下，我们应该可以像写全新的代码一样，来快速且简单的修改现有的代码。只要采用开放封闭原则来正确的">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从百草堂到三味书屋 —— 开放封闭原则">
+<meta name="twitter:description" content="Open Closed Principle 开放封闭原则Introduction 介绍在一个应用的生命周期里，大部分时间都花在了向现有代码库增加功能，而非一直从零开始写新功能。正像你所想的那样，这会是一个繁琐且令人痛苦的过程。当你修改代码的时候，你可能引入新的程序错误，或者将原来管用的功能搞坏掉。理想情况下，我们应该可以像写全新的代码一样，来快速且简单的修改现有的代码。只要采用开放封闭原则来正确的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-open-closed-principle/"/>
+
+
+
+
+
+  <title>从百草堂到三味书屋 —— 开放封闭原则 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/laravel-from-apprentice-to-artisan-open-closed-principle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从百草堂到三味书屋 —— 开放封闭原则</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T20:36:21+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Open-Closed-Principle-开放封闭原则"><a href="#Open-Closed-Principle-开放封闭原则" class="headerlink" title="Open Closed Principle 开放封闭原则"></a>Open Closed Principle 开放封闭原则</h1><h2 id="Introduction-介绍"><a href="#Introduction-介绍" class="headerlink" title="Introduction 介绍"></a>Introduction 介绍</h2><p>在一个应用的生命周期里，大部分时间都花在了向现有代码库增加功能，而非一直从零开始写新功能。正像你所想的那样，这会是一个繁琐且令人痛苦的过程。当你修改代码的时候，你可能引入新的程序错误，或者将原来管用的功能搞坏掉。理想情况下，我们应该可以像写全新的代码一样，来快速且简单的修改现有的代码。只要采用开放封闭原则来正确的设计我们的应用程序，那么这是可以做到的！</p>
+<blockquote>
+<p><strong>Open Closed Principle 开放封闭原则</strong></p>
+<p>开放封闭原则规定代码对扩展是开放的，对修改是封闭的。</p>
+</blockquote>
+<h2 id="In-Action-实践"><a href="#In-Action-实践" class="headerlink" title="In Action 实践"></a>In Action 实践</h2><p>为了演示开放封闭原则，我们来继续编写上一章节的 <code>OrderProcecssor</code>。考虑下面的 <code>process</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$recent = <span class="keyword">$this</span>-&gt;orders-&gt;getRecentOrderCount($order-&gt;account);</div><div class="line"></div><div class="line"><span class="keyword">if</span> ($recent &gt; <span class="number">0</span>) &#123;</div><div class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="keyword">Exception</span>(<span class="string">'Duplicate order likely.'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码可读性很高，且因为我们使用了依赖注入，变得很容易测试。然而，如果我们判断订单的规则改变了呢？如果我们又有新的规则了呢？更进一步，如果随着我们的业务发展，要增加一大堆新规则？那我们的 <code>process</code> 方法会很快变成一坨难以维护的浆糊。因为这段代码必须随着每次业务逻辑的改变而跟着改变，它对修改是开放的，这违反了开放封闭原则。记住，我们希望代码对扩展开放，而不是修改。</p>
+<p>不必再把订单验证直接写在 <code>process</code> 方法里面，我们来定义一个新的接口 <code>OrderValidator</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">OrderValidatorInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">validate</span><span class="params">(Order $order)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下一步我们来定义一个实现接口的类，来预防重复订单：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RecentOrderValidator</span> <span class="keyword">implements</span> <span class="title">OrderValidatorInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(OrderRepository $orders)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;orders = $orders;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">validate</span><span class="params">(order $order)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    $recent = <span class="keyword">$this</span>-&gt;orders-&gt;getRecentOrderCount($order-&gt;account);</div><div class="line">    <span class="keyword">if</span> ($recent &gt; <span class="number">0</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="keyword">Exception</span>(<span class="string">'Duplicate order likely.'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很好！我们封装了一个小巧的、可测试的单一业务逻辑。咱们来再创建一个来验证账号是否停用吧：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuspendedAccountValidator</span> <span class="keyword">implements</span> <span class="title">OrderValidatorInterface</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">validate</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">if</span> ($order-&gt;account-&gt;isSuspended()) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="keyword">Exception</span>(<span class="string">'Suspended accounts may not order.'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在我们有两个不同的类实现了 <code>OrderValidatorInterface</code> 接口。咱们将在 <code>OrderProcessor</code> 里面使用它们。我们只需简单的将一个验证器数组注入进订单处理器实例中。这将使我们以后修改代码时能轻松的添加和删除验证器规则。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderProcessor</span> </span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(BillerInterface $biller, OrderRepository $orders, array $validators = array<span class="params">()</span>)</span></span></div><div class="line"><span class="function">  </span>&#123;</div><div class="line">    <span class="keyword">$this</span>-&gt;biller = $biller;</div><div class="line">    <span class="keyword">$this</span>-&gt;orders = $orders;</div><div class="line">    <span class="keyword">$this</span>-&gt;validators = $validators;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后我们只要在 <code>process</code> 方法里面循环这个验证器数组即可：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span><span class="params">(Order $order)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">foreach</span> (<span class="keyword">$this</span>-&gt;validators <span class="keyword">as</span> $validator) &#123;</div><div class="line">    $validator-&gt;validate($order);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// Process valid order...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后我们在 IoC 容器里面注册 <code>OrderProcessor</code> 类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">App::bind(<span class="string">'OrderProcessor'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> OrderProcessor(</div><div class="line">    App::make(<span class="string">'BillerInterface'</span>),</div><div class="line">    App::make(<span class="string">'OrderRepository'</span>),</div><div class="line">    <span class="keyword">array</span>(</div><div class="line">      App::make(<span class="string">'RecentOrderValidator'</span>),</div><div class="line">      App::make(<span class="string">'SuspendedAccountValidator'</span>)</div><div class="line">    )</div><div class="line">  );</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>在现有代码里付出些小努力，做一些小改动之后，我们现在可以添加删除新的验证规则而不必修改任何一行现有代码了。每一个新的验证规则就是对 <code>OrderValidatorInterface</code> 的一个实现类，然后注册进 IoC 容器里。不必再为那个又大又笨的 <code>process</code> 方法做单元测试了，我们现在可以单独测试每一个验证规则。现在，我们的代码对扩展是开放的，对修改是封闭的。</p>
+<blockquote>
+<p><strong>Leaky Abstractions 抽象的漏洞</strong></p>
+<p>小心那些缺少实现细节的依赖（译者注：比如上面的 RecentOrderValidator）。当一个依赖的实现需要改变时，不应该要求它的调用者做任何修改。当需要调用者进行修改时，这就意味着该依赖遗漏了一些实现的细节。当你的抽象有漏洞的话，开放封闭原则就不管用了。</p>
+</blockquote>
+<p>在我们继续学习前，要记住这些原则不是法律。这不是说你应用中每一块代码都应该是“热插拔”式的。例如，一个仅仅从 MySQL 检索几条记录的小应用程序，不值得去严格遵守每一条你想到的设计原则。不要盲目的应用设计原则，那样你会造出一个“过度设计”的繁琐的系统。记住这些设计原则是用来解决通用的架构问题，制造大型容错能力强的应用。我就这么一说，你可别把它当做懒惰的借口！</p>
+<p>译文地址：<a href="http://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">http://my.oschina.net/zgldh/blog/389246</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-single-responsibility-principle/" rel="next" title="从百草堂到三味书屋 —— 单一职责">
+                <i class="fa fa-chevron-left"></i> 从百草堂到三味书屋 —— 单一职责
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/10/laravel-from-apprentice-to-artisan-liskov-substitution-principle/" rel="prev" title="从百草园到三味书屋 —— 里氏替换原则">
+                从百草园到三味书屋 —— 里氏替换原则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Closed-Principle-开放封闭原则"><span class="nav-number">1.</span> <span class="nav-text">Open Closed Principle 开放封闭原则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-介绍"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#In-Action-实践"><span class="nav-number">1.2.</span> <span class="nav-text">In Action 实践</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

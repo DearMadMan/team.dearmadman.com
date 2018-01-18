@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向对象设计原则在正式分析 Laravel 源码之前，我们应该先来回顾一下面向对象的基本设计原则，这个由 罗伯特·C·马丁 所提及的 SOLID 原则可以帮助我们很好的应对代码的扩展与维护，这也是 Laravel 源码如此优雅的关键。 你一定听说过“代码的坏味道”，没错，使用这些设计原则，你可以很好的扫清代码中的坏味道，那么接下来，我们就来聊一聊这五个设计原则：  Single Reponsibi">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 源码分析系列 —— 单一职责">
+<meta property="og:url" content="http://yoursite.com/2016/07/19/analyze-laravel-source-code-single-reponsibility-principle/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="面向对象设计原则在正式分析 Laravel 源码之前，我们应该先来回顾一下面向对象的基本设计原则，这个由 罗伯特·C·马丁 所提及的 SOLID 原则可以帮助我们很好的应对代码的扩展与维护，这也是 Laravel 源码如此优雅的关键。 你一定听说过“代码的坏味道”，没错，使用这些设计原则，你可以很好的扫清代码中的坏味道，那么接下来，我们就来聊一聊这五个设计原则：  Single Reponsibi">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel 源码分析系列 —— 单一职责">
+<meta name="twitter:description" content="面向对象设计原则在正式分析 Laravel 源码之前，我们应该先来回顾一下面向对象的基本设计原则，这个由 罗伯特·C·马丁 所提及的 SOLID 原则可以帮助我们很好的应对代码的扩展与维护，这也是 Laravel 源码如此优雅的关键。 你一定听说过“代码的坏味道”，没错，使用这些设计原则，你可以很好的扫清代码中的坏味道，那么接下来，我们就来聊一聊这五个设计原则：  Single Reponsibi">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/19/analyze-laravel-source-code-single-reponsibility-principle/"/>
+
+
+
+
+
+  <title>Laravel 源码分析系列 —— 单一职责 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/19/analyze-laravel-source-code-single-reponsibility-principle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Laravel 源码分析系列 —— 单一职责</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-19T13:29:22+08:00">
+                2016-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="面向对象设计原则"><a href="#面向对象设计原则" class="headerlink" title="面向对象设计原则"></a>面向对象设计原则</h1><p>在正式分析 Laravel 源码之前，我们应该先来回顾一下面向对象的基本设计原则，这个由 罗伯特·C·马丁 所提及的 SOLID 原则可以帮助我们很好的应对代码的扩展与维护，这也是 Laravel 源码如此优雅的关键。</p>
+<p>你一定听说过“代码的坏味道”，没错，使用这些设计原则，你可以很好的扫清代码中的坏味道，那么接下来，我们就来聊一聊这五个设计原则：</p>
+<ul>
+<li>Single Reponsibility Principle 单一职责原则</li>
+<li>Open Closed Principle 开放封闭原则</li>
+<li>Liskov Substitution Principle 里氏替换原则</li>
+<li>Interface Segregation Principle 接口隔离原则</li>
+<li>Dependency Invertion Principle 依赖反转原则</li>
+</ul>
+<h2 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h2><blockquote>
+<p>它规定一个类，只能有一个引起变化的原因。</p>
+</blockquote>
+<p>你可能不太理解这个变化具体指的是什么，我们可以理解为这个变化就指这个类的职责，它的意思就是一个类，应该只有一个职责，只有这个职责变化时才能引起它的变化，也就是只有职能改变的时候，你才能修改这个类。</p>
+<p>一个类的耦合度，是判断一个类设计好坏的标准。如果说一个类它的职责高度集中，那么我们就说它是一个高内聚的类，而如果一个类包含了太多的职责，那么它就是一个具有耦合性的类。通常我们希望一个类它是高内聚低耦合的。</p>
+<blockquote>
+<p>如果一个类承担的职责过多，就等于把这些职责耦合在一起了。一个职责的变化可能会削弱或者抑制这个类完成其他职责的能力。这种耦合会导致脆弱的设计，当发生变化时，设计会遭受到意想不到的破坏。而如果想要避免这种现象的发生，就要尽可能的遵守单一职责原则。此原则的核心就是解耦和增强内聚性。</p>
+</blockquote>
+<p>那么为什么要遵循单一职责呢？</p>
+<p>我们都知道，软件开发的过程中大多数时候都是类与类之间的交互，那么在理想情况下，我们一定会希望当一个类改变时，不会引起其它类的连锁变化。如果说类 A 具有职能 A，类 B 具有职能 B，那么理想情况下，如果类 A 根据需求的变化而进行了修改，类 B 是不应该也同时被修改的。如果说 A 修改了，我们也必须要修改 B，那么说明这个类 B 肯定具有太多的职责，而导致它违背了单一职责原则。</p>
+<p>所以你应该能看的出，单一职责其实是要求一个类的功能边界和它的职责应该是非常狭窄和紧凑的，它应该只做它该做的事情，并且它不应该被它所依赖的类的任何变化所影响。如果它的依赖变化时它也必须要跟着变化，那说明它知道的太多了。</p>
+<blockquote>
+<p><strong>你知道的太多了</strong></p>
+<p>一只猫拿着把枪追杀一只老鼠<br>老鼠求它别杀它<br>猫说 可以 但你要回答我一个问题 1加1等于几<br>等于二 老鼠说<br>猫一枪把老鼠打死了<br>老鼠垂死挣扎问道 我答对了为什么还要杀我<br>猫回答道 你知道的太多了</p>
+</blockquote>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>为了更好的理解这个原则，我们来举个例子看一下，考察一下下面的类：</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/18/analyze-laravel-source-code-the-point/" rel="next" title="Laravel 源码分析系列 —— 单一入口">
+                <i class="fa fa-chevron-left"></i> Laravel 源码分析系列 —— 单一入口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/20/mail-verifier-design/" rel="prev" title="邮箱有效性验证模块的设计">
+                邮箱有效性验证模块的设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象设计原则"><span class="nav-number">1.</span> <span class="nav-text">面向对象设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单一职责"><span class="nav-number">1.1.</span> <span class="nav-text">单一职责</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">1.2.</span> <span class="nav-text">实战</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

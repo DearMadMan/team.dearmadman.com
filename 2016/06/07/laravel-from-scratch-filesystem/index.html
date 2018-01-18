@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文件系统/云存储简介laravel 提供了一个强大的文件系统的抽象，这得益于 Frank de Jonge 所开发的 Flyststem PHP 包。laravel 的文件系统提供了对一些存储驱动的支持，它们包括本地文件系统，Amazon S3，Rackspace 云存储。更为奇妙的是，它可以通过存储配置选项来切换这些存储系统，因为 laravel 对它们提供了统一的 API 接口。 配置文件系统">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 文件系统">
+<meta property="og:url" content="http://yoursite.com/2016/06/07/laravel-from-scratch-filesystem/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="文件系统/云存储简介laravel 提供了一个强大的文件系统的抽象，这得益于 Frank de Jonge 所开发的 Flyststem PHP 包。laravel 的文件系统提供了对一些存储驱动的支持，它们包括本地文件系统，Amazon S3，Rackspace 云存储。更为奇妙的是，它可以通过存储配置选项来切换这些存储系统，因为 laravel 对它们提供了统一的 API 接口。 配置文件系统">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 文件系统">
+<meta name="twitter:description" content="文件系统/云存储简介laravel 提供了一个强大的文件系统的抽象，这得益于 Frank de Jonge 所开发的 Flyststem PHP 包。laravel 的文件系统提供了对一些存储驱动的支持，它们包括本地文件系统，Amazon S3，Rackspace 云存储。更为奇妙的是，它可以通过存储配置选项来切换这些存储系统，因为 laravel 对它们提供了统一的 API 接口。 配置文件系统">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/07/laravel-from-scratch-filesystem/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 文件系统 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/07/laravel-from-scratch-filesystem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 文件系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-07T21:22:06+08:00">
+                2016-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="文件系统-云存储"><a href="#文件系统-云存储" class="headerlink" title="文件系统/云存储"></a>文件系统/云存储</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>laravel 提供了一个强大的文件系统的抽象，这得益于 Frank de Jonge 所开发的 <a href="https://github.com/thephpleague/flysystem" target="_blank" rel="external">Flyststem</a> PHP 包。laravel 的文件系统提供了对一些存储驱动的支持，它们包括本地文件系统，Amazon S3，Rackspace 云存储。更为奇妙的是，它可以通过存储配置选项来切换这些存储系统，因为 laravel 对它们提供了统一的 API 接口。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>文件系统的配置选项存储在 <code>config/filesystems.php</code> 文件中。在这个文件中你可以对所有的磁盘进行配置。每个磁盘选项包含着其所使用的存储驱动及其存储位置。对于 laravel 默认支持的存储驱动，在这个文件中都有相应的配置示例。所以，你可以简单的在这个文件中修改配置选项就可以使用其强大的功能。</p>
+<p>当然，你可以配置多个磁盘，甚至可以使多个磁盘使用相同的驱动。</p>
+<p><strong>公共磁盘</strong></p>
+<p><code>public</code> 磁盘意味着其可以被公开的访问。默认的 <code>public</code> 磁盘使用的是 <code>local</code> 驱动并且其存储的文件位置是在 <code>storage/app/public</code> 目录。如果你想要这个目录下的文件可以在 web 中进行访问，你需要创建一个 <code>public/storage</code> 到 <code>storage/app/public</code> 的符号链接。这个约定可以使公开访问的文件保持存放在同一个目录中并且可以在使用像 <a href="https://envoyer.io/" target="_blank" rel="external">Envoyer</a> 这种无痛持续部署系统时可以方便的共享整个部署过程。</p>
+<p>当然，一旦文件被存储并且建立了符号链接。你就可以通过 <code>asset</code> 帮助方法来生成文件的 URL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> asset(<span class="string">'storage/file.txt'</span>)</div></pre></td></tr></table></figure>
+<p><strong>本地驱动</strong></p>
+<p>当使用 <code>local</code> 驱动时，你需要知道的是所有的文件操作都是相对于配置文件中的 <code>root</code> 选项所定义的目录。默认的这个值设置的是 <code>storage/app</code> 目录。因此，下面的方法将文件存储到 <code>storage/app/file.txt</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage::disk(<span class="string">'local'</span>)-&gt;put(<span class="string">'file.txt'</span>, <span class="string">'Contents'</span>);</div></pre></td></tr></table></figure>
+<p><strong>其他驱动先决条件</strong></p>
+<p>在使用 S3 或者 Rackspace 驱动之前，你需要先通过 Composer 来安装适当的包文件：</p>
+<ul>
+<li>Amazon S3: <code>league/flysystem-aws-s3-v3 ~1.0</code></li>
+<li>Rackspace: <code>league/flysystem-rackspace ~1.0</code></li>
+</ul>
+<p><strong>FTP 驱动配置</strong></p>
+<p>laravel 的文件系统可以很好的支持 FTP 的集成，但是在默认的配置文件中并没有给出示例。如果你需要配置 FTP 的文件系统，你可以使用下面的配置示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="string">'ftp'</span> =&gt; [</div><div class="line">  <span class="string">'dirver'</span> =&gt; <span class="string">'ftp'</span>,</div><div class="line">  <span class="string">'host'</span> =&gt; <span class="string">'ftp.example.com'</span>,</div><div class="line">  <span class="string">'username'</span> =&gt; <span class="string">'your-username'</span>,</div><div class="line">  <span class="string">'password'</span> =&gt; <span class="string">'your-password'</span>,</div><div class="line"></div><div class="line">  <span class="comment">// Optional FTP Settings...</span></div><div class="line">  <span class="comment">// 'port' =&gt; 21,</span></div><div class="line">  <span class="comment">// 'root' =&gt; '',</span></div><div class="line">  <span class="comment">// 'passive' =&gt; true,</span></div><div class="line">  <span class="comment">// 'ssl' =&gt; true,</span></div><div class="line">  <span class="comment">// 'timeout' =&gt; 30,</span></div><div class="line">],</div></pre></td></tr></table></figure>
+<p><strong>Rackspace 驱动配置</strong></p>
+<p>laravel 的文件系统可以很好的支持 Rackspace 的集成，但是在默认的配置文件中并没有给出示例。如果你需要配置 Rackspace 文件系统，你可以使用下面的示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="string">'rackspace'</span> =&gt; [</div><div class="line">  <span class="string">'driver'</span> =&gt; <span class="string">'rackspace'</span>,</div><div class="line">  <span class="string">'username'</span> =&gt; <span class="string">'your-username'</span>,</div><div class="line">  <span class="string">'key'</span> =&gt; <span class="string">'your-key'</span>,</div><div class="line">  <span class="string">'container'</span> =&gt; <span class="string">'your-container'</span>,</div><div class="line">  <span class="string">'endpoint'</span> =&gt; <span class="string">'https://identity.api.rackspacecloud.com/v2.0/'</span>,</div><div class="line">  <span class="string">'region'</span> =&gt; <span class="string">'IAD'</span>,</div><div class="line">  <span class="string">'url_type'</span> =&gt; <span class="string">'publicURL'</span>,</div><div class="line">],</div></pre></td></tr></table></figure>
+<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><h3 id="获取磁盘实例"><a href="#获取磁盘实例" class="headerlink" title="获取磁盘实例"></a>获取磁盘实例</h3><p><code>Storage</code> 假面可以用来和你所配置的磁盘进行交互。比如，你可以使用它的 <code>put</code> 方法来将用户的头像图片存储到默认的磁盘。如果你在调用该方法的时候没有在其之前使用 <code>disk</code> 方法的话，那么该方法会自动的将头像传递到默认的磁盘：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Storage</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Update teh avatar for the given user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">updateAvatar</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $user = User::findOrFail($id);</div><div class="line"></div><div class="line">     Storage::put(</div><div class="line">        <span class="string">'avatars/'</span>.$user-&gt;id,</div><div class="line">        file_get_contents($request-&gt;file(<span class="string">'avatar'</span>)-&gt;getRealPath())</div><div class="line">      );</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当你使用多个磁盘时，你可以使用 <code>Storage</code> 假面的 <code>disk</code> 方法来指定访问的磁盘。当然，你可以使用链式的方法来进行持续的操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$disk = Storage::disk(<span class="string">'s3'</span>);</div><div class="line"></div><div class="line">$contents = Storage::disk(<span class="string">'local'</span>)-&gt;get(<span class="string">'file.jpg'</span>);</div></pre></td></tr></table></figure>
+<h3 id="检索文件"><a href="#检索文件" class="headerlink" title="检索文件"></a>检索文件</h3><p><code>get</code> 方法可以用来从所给定的文件中检索出其内容。该方法会返回文件的原始字符串内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$contents = Storage::get(<span class="string">'file.jpg'</span>);</div></pre></td></tr></table></figure>
+<p><code>exists</code> 方法可以用来判断所给定的文件是否存在于磁盘中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$exists = Storage::disk(<span class="string">'s3'</span>)-&gt;exists(<span class="string">'file.jpg'</span>);</div></pre></td></tr></table></figure>
+<h3 id="文件-URLs"><a href="#文件-URLs" class="headerlink" title="文件 URLs"></a>文件 URLs</h3><p>当使用 <code>local</code> 或者 <code>s3</code> 驱动时，你可以使用 <code>url</code> 方法来获得给定文件的 URL。如果你使用的是 <code>local</code> 驱动，那它只会简单的在给定的路径前增加 <code>/storage</code> 前缀以返回相对的文件路径。如果你使用的是 <code>s3</code> 驱动，将会返回完整的远端 RUL：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$url = Storage::url(<span class="string">'file1.jpg'</span>);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：当使用的是 <code>local</code> 驱动时，一定要确保创建了 <code>public/storage</code> 到 <code>storage/app/public</code> 的符号链接。</p>
+</blockquote>
+<p><strong>文件元信息</strong></p>
+<p><code>size</code> 方法可以用来获取给定文件的字节大小：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$size = Storage::size(<span class="string">'file1.jpg'</span>);</div></pre></td></tr></table></figure>
+<p><code>lastModified</code> 方法会返回给定文件的最后修改时间，它使用的 是 UNIX 时间戳：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$time = Storage::lastModified(<span class="string">'file1.jpg'</span>);</div></pre></td></tr></table></figure>
+<h3 id="存储文件"><a href="#存储文件" class="headerlink" title="存储文件"></a>存储文件</h3><p><code>put</code> 方法可以用来将文件存储到磁盘。你可以传递一个 PHP 的 <code>resource</code> 到 <code>put</code> 方法，那么它会使用文件系统的底层流支持。在与大型文件交互时，推荐使用文件流：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Storage::put(<span class="string">'file.jpg'</span>, $contents);</div><div class="line"></div><div class="line">Storage::put(<span class="string">'file.jpg'</span>, $resource);</div></pre></td></tr></table></figure>
+<p><code>copy</code> 方法可以用来复制磁盘中已存在的文件到新的位置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage::copy(<span class="string">'old/file1.jpg'</span>, <span class="string">'new/file1.jpg'</span>);</div></pre></td></tr></table></figure>
+<p><code>move</code> 方法可以被用对磁盘中已存在的文件进行名称的修改或移动到新的位置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage:move(<span class="string">'old,file1.jpg'</span>, <span class="string">'new/file1.jpg'</span>);</div></pre></td></tr></table></figure>
+<p><strong>前置或追加内容到文件</strong></p>
+<p><code>prepend</code> 和 <code>append</code> 方法允许你轻松的往文件的起始或结束位置加入内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Storage::prepend(<span class="string">'file.log'</span>, <span class="string">'Prepended Text'</span>);</div><div class="line"></div><div class="line">Storage::append(<span class="string">'file.log'</span>, <span class="string">'Appended Text'</span>);</div></pre></td></tr></table></figure>
+<h3 id="文件可见性"><a href="#文件可见性" class="headerlink" title="文件可见性"></a>文件可见性</h3><p>你可以通过使用 <code>getVisibility</code> 和 <code>setVisibility</code> 方法来进行文件可见性的检索和设置。可见性是跨平台的文件权限的抽象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Storage::getVisibility(<span class="string">'file.jpg'</span>);</div><div class="line"></div><div class="line">Storage::setVisibility(<span class="string">'file.jpg'</span>, <span class="string">'public'</span>);</div></pre></td></tr></table></figure>
+<p>另外，你可以在使用 <code>put</code> 方法的同时设置文件的可见性。有效的可见性值是 <code>public</code> 和 <code>private</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage::put(<span class="string">'file.jpg'</span>, $contents, <span class="string">'public'</span>);</div></pre></td></tr></table></figure>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><p><code>delete</code> 方法可以接受一个文件名或者文件名所组成的数组，它将从磁盘中删除相应的文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Storage::delete(<span class="string">'file.jpg'</span>);</div><div class="line"></div><div class="line">Storage::delete([<span class="string">'file1.jpg'</span>, <span class="string">'file2.jpg'</span>]);</div></pre></td></tr></table></figure>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p><strong>从目录中获取所有文件</strong></p>
+<p><code>files</code> 方法会返回所给定目录中所有的文件所组成的数组。如果你想要在检索到的文件中包含所给定目录的子目录。那么你需要使用 <code>allFiles</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$file = Storage::files($directory);</div><div class="line"></div><div class="line">$files = Storage::allFiles($directory);</div></pre></td></tr></table></figure>
+<p><strong>从给定的目录中获取所有的目录</strong></p>
+<p><code>directories</code> 方法可以返回所给定目录下的所有子目录所组成的数组。另外你可以使用 <code>allDirectories</code> 方法递归检索子目录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$directories = Storage::directories($directory);</div><div class="line"></div><div class="line"><span class="comment">// Recursive...</span></div><div class="line"></div><div class="line">$directories = Storage::allDirectories($directory);</div></pre></td></tr></table></figure>
+<p><strong>创建目录</strong></p>
+<p><code>makeDirectory</code> 方法将创建给定的目录，包括其所需要的子目录：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage::makeDirectory($directory);</div></pre></td></tr></table></figure>
+<p><strong>删除一个目录</strong></p>
+<p>最后，<code>deleteDirectory</code> 方法可以用来删除一个目录，并且其删除磁盘中该目录下所有的文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Storage::deleteDirectory($directory);</div></pre></td></tr></table></figure>
+<h2 id="自定义文件系统"><a href="#自定义文件系统" class="headerlink" title="自定义文件系统"></a>自定义文件系统</h2><p>laravel 的文件系统对几种常见的存储系统提供了开箱即用的支持。事实上，文件系统并没有限制你只使用所提供的这些。你可以自己创建一个适配器来构建一个自定义的驱动去支持你所期望使用的文件存储系统。</p>
+<p>你需要创建一个服务提供者来进行自定义文件存储系统的构建。比如 <code>DropboxServiceProvider</code>。在提供者的 <code>boot</code> 方法中，你需要使用 <code>Storage</code> 假面的 <code>extend</code> 方法来定义你自己的驱动：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Storage</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">Flysystem</span>\<span class="title">Filesystem</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Dropbox</span>\<span class="title">Client</span> <span class="title">as</span> <span class="title">DropboxClient</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">Flysystem</span>\<span class="title">Dropbox</span>\<span class="title">DropboxAdapter</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DropboxServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Perform post-registration booting of services.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     Storage::extend(<span class="string">'dropbox'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app, $config)</span> </span>&#123;</div><div class="line">       $client = <span class="keyword">new</span> DropboxClient(</div><div class="line">        $config[<span class="string">'accessToken'</span>], $config[<span class="string">'clientIdentifier'</span>]</div><div class="line">       );      </div><div class="line"></div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Filesystem(<span class="keyword">new</span> DropboxAdapter($client));</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line"><span class="comment">    * Register bindings in the container.</span></div><div class="line"><span class="comment">    *</span></div><div class="line"><span class="comment">    * <span class="doctag">@return</span> void</span></div><div class="line"><span class="comment">    */</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">      <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>extend</code> 方法中的第一个参数应该是驱动的名称，第二个参数是一个闭包，闭包接受 <code>$app</code> 和 <code>$config</code> 变量。被解析的闭包必须返回一个 <code>League\Flysystem\Filesystem</code> 的实例。<code>$config</code> 变量包含了 <code>config/filesystems.php</code> 文件中指定磁盘的值。</p>
+<p>一旦你创建了服务提供者并且注册了这个扩展，你就可以在 <code>config/filesystem.php</code> 配置文件中使用 <code>dropbox</code> 驱动了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/laravel-from-scratch-events/" rel="next" title="laravel 基础教程 —— 事件">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 事件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/07/laravel-from-scratch-hashing/" rel="prev" title="laravel 基础教程 —— 哈希">
+                laravel 基础教程 —— 哈希 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件系统-云存储"><span class="nav-number">1.</span> <span class="nav-text">文件系统/云存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础用法"><span class="nav-number">1.3.</span> <span class="nav-text">基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取磁盘实例"><span class="nav-number">1.3.1.</span> <span class="nav-text">获取磁盘实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检索文件"><span class="nav-number">1.3.2.</span> <span class="nav-text">检索文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件-URLs"><span class="nav-number">1.3.3.</span> <span class="nav-text">文件 URLs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储文件"><span class="nav-number">1.3.4.</span> <span class="nav-text">存储文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件可见性"><span class="nav-number">1.3.5.</span> <span class="nav-text">文件可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除文件"><span class="nav-number">1.3.6.</span> <span class="nav-text">删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录"><span class="nav-number">1.3.7.</span> <span class="nav-text">目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义文件系统"><span class="nav-number">1.4.</span> <span class="nav-text">自定义文件系统</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

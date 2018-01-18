@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="邮件简介laravel 基于流行的 SwiftMailer 类库构建了一种干净简洁的邮件 API。laravel 提供了驱动以支持 SMTP，Mandrill，SparkPost，Amazon SES，PHP 的 mail 方法和 sendmail 方法，这允许你快速的开始构建通过本地或云服务发送邮件的功能。 驱动先决条件基于 API 的驱动程序如 Mailgun 和 Mandrill 通常要比">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 邮件">
+<meta property="og:url" content="http://yoursite.com/2016/06/08/laravel-from-scratch-mail/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="邮件简介laravel 基于流行的 SwiftMailer 类库构建了一种干净简洁的邮件 API。laravel 提供了驱动以支持 SMTP，Mandrill，SparkPost，Amazon SES，PHP 的 mail 方法和 sendmail 方法，这允许你快速的开始构建通过本地或云服务发送邮件的功能。 驱动先决条件基于 API 的驱动程序如 Mailgun 和 Mandrill 通常要比">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 邮件">
+<meta name="twitter:description" content="邮件简介laravel 基于流行的 SwiftMailer 类库构建了一种干净简洁的邮件 API。laravel 提供了驱动以支持 SMTP，Mandrill，SparkPost，Amazon SES，PHP 的 mail 方法和 sendmail 方法，这允许你快速的开始构建通过本地或云服务发送邮件的功能。 驱动先决条件基于 API 的驱动程序如 Mailgun 和 Mandrill 通常要比">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/08/laravel-from-scratch-mail/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 邮件 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/08/laravel-from-scratch-mail/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 邮件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-08T18:24:27+08:00">
+                2016-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="邮件"><a href="#邮件" class="headerlink" title="邮件"></a>邮件</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>laravel 基于流行的 <a href="http://swiftmailer.org/" target="_blank" rel="external">SwiftMailer</a> 类库构建了一种干净简洁的邮件 API。laravel 提供了驱动以支持 SMTP，Mandrill，SparkPost，Amazon SES，PHP 的 <code>mail</code> 方法和 <code>sendmail</code> 方法，这允许你快速的开始构建通过本地或云服务发送邮件的功能。</p>
+<h3 id="驱动先决条件"><a href="#驱动先决条件" class="headerlink" title="驱动先决条件"></a>驱动先决条件</h3><p>基于 API 的驱动程序如 Mailgun 和 Mandrill 通常要比 SMTP 服务简单快速。所有的 API 驱动都必须引入 Guzzle HTTP 类库，你可以通过在 <code>composer.json</code> 文件中添加下面的内容来进行安装：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"guzzlehttp/guzzle"</span>: <span class="string">"~5.3|~6.0"</span></div></pre></td></tr></table></figure>
+<p><strong>Mailgun 驱动</strong></p>
+<p>如果使用 Mailgun 驱动，你首先需要安装 Guzzle，然后设置 <code>config/mail.php</code> 配置文件的 <code>driver</code> 选项为 <code>mailgun</code>。然后，你需要确认你的 <code>config/services.php</code> 配置文件中包含以下选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">'mailgun'</span> =&gt; [</div><div class="line">  <span class="string">'domain'</span> =&gt; <span class="string">'your-mailgun-domain'</span>,</div><div class="line">  <span class="string">'secret'</span> =&gt; <span class="string">'your-mailgun-key'</span>,</div><div class="line">],</div></pre></td></tr></table></figure>
+<p><strong>Mandrill 驱动</strong></p>
+<p>如果使用 Mandrill 驱动，你首先需要安装 Guzzle，然后设置 <code>config/mail.php</code> 配置文件的 <code>driver</code> 选项为 <code>mandrill</code>。接着，你需要确认你的 <code>config/services.php</code> 配置文件中包含以下选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'mandrill'</span> =&gt; [</div><div class="line">  <span class="string">'secret'</span> =&gt; <span class="string">'your-mandrill-key'</span>,</div><div class="line">],</div></pre></td></tr></table></figure>
+<p><strong>SparkPost 驱动</strong></p>
+<p>如果使用 SparkPost 驱动，你首先需要安装 Guzzle，然后设置你的 <code>config/mail.php</code> 配置文件中的 <code>driver</code> 选项为 <code>sparkpost</code>。接着，你需要确认你的 <code>config/services.php</code> 配置文件中包含以下选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'sparkpost'</span> =&gt; [</div><div class="line">  <span class="string">'secret'</span> =&gt; <span class="string">'your-sparkpost-key'</span>,</div><div class="line">],</div></pre></td></tr></table></figure>
+<p><strong>SES 驱动</strong></p>
+<p>如果使用 Amazon SES 驱动，你需要在 PHP 中引入 Amazon AWS SDK。你可以通过在 <code>composer.json</code> 文件中进行引入安装：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"aws/aws-sdk-php"</span>: <span class="string">"~3.0"</span></div></pre></td></tr></table></figure>
+<p>然后设置你的 <code>config/mail.php</code> 配置文件的 <code>driver</code> 选项为 <code>ses</code>。接着，你需要确认你的 <code>config/services.php</code> 配置文件中包含以下选项：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'ses'</span> =&gt; [</div><div class="line">  <span class="string">'key'</span> =&gt; <span class="string">'your-ses-key'</span>,</div><div class="line">  <span class="string">'secret'</span> =&gt; <span class="string">'your-ses-secret'</span>,</div><div class="line">  <span class="string">'region'</span> =&gt; <span class="string">'ses-region'</span>, <span class="comment">//e.g. us-east-1</span></div><div class="line">],</div></pre></td></tr></table></figure>
+<h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p>laravel 允许你使用视图来存储你的邮件信息。比如，你可以在 <code>resources/views</code> 目录下创建一个 <code>emails</code> 目录来管理你的邮件视图：</p>
+<p>你需要使用 <code>Mail</code> 假面的 <code>send</code> 方法来发送一个邮件。<code>send</code> 方法接收三个参数，第一个参数应该是视图的名称。第二个参数应该是传递到视图中的数据所组成的数组。最后，是一个 <code>Closure</code> 回调函数，这个回调函数会接收一个 message 实例，这允许你自由的配置收件人，主题，和其他方面的邮件信息：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Mail</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">User</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Send an e-mail reminder to the user.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> Request $request</span></div><div class="line"><span class="comment">   * <span class="doctag">@param</span> int $id</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendEmailReminder</span><span class="params">(Request $request, $id)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $user = User::findOrFail($id);</div><div class="line"></div><div class="line">     Mail::send(<span class="string">'emails.reminder'</span>, [<span class="string">'user'</span> =&gt; $user], <span class="function"><span class="keyword">function</span> <span class="params">($m)</span> <span class="title">use</span> <span class="params">($user)</span> </span>&#123;</div><div class="line">       $m-&gt;from(<span class="string">'hello@app.com'</span>, <span class="string">'Your Application'</span>);</div><div class="line"></div><div class="line">       $m-&gt;to($user-&gt;email, $user-&gt;name)-&gt;subject(<span class="string">'Your Reminder!'</span>);</div><div class="line">     &#125;);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为上面的示例中我们传递了 <code>user</code> 键到数组中，所以我们可以在我们的邮件视图中使用用户的名称：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> $user-&gt;name; <span class="meta">?&gt;</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意： 一个 <code>$message</code> 变量会自动的传递到邮件视图，并且允许内联附件。所以，你应该避免手动的传递到视图 <code>message</code> 变量。</p>
+</blockquote>
+<p><strong>构建一个 Message</strong></p>
+<p>就如我们上面谈到的，传递到 <code>send</code> 方法的第三个参数是一个 <code>Closure</code>，这个闭包允许你设置邮件信息的各种选项。使用闭包，你可以指定信息的其它属性，比如复写，密抄等：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mail::send(<span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  $message-&gt;from(<span class="string">'us@example.com'</span>, <span class="string">'Laravel'</span>);</div><div class="line"></div><div class="line">  $message-&gt;to(<span class="string">'foo@example.com'</span>)-&gt;cc(<span class="string">'bar@example.com'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这里列出了 <code>$message</code> 构建实例所有可用的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$message-&gt;from($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;sender($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;to($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;cc($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;bcc($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;replyTo($address, $name = <span class="keyword">null</span>);</div><div class="line">$message-&gt;subject($subject);</div><div class="line">$message-&gt;priority($level);</div><div class="line">$message-&gt;attach($pathToFile, <span class="keyword">array</span> $options = []);</div><div class="line"></div><div class="line"><span class="comment">// Attach a file from a raw $data string...</span></div><div class="line">$message-&gt;attachData($data, $name, <span class="keyword">array</span> $options = []);</div><div class="line"></div><div class="line"><span class="comment">// Get the underlying SwiftMailer message instance...</span></div><div class="line">$message-&gt;getSwiftMessage();</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：message 实例继承自 SwiftMailer 信息类并会被传递到 <code>Mail::send</code> 闭包中。这允许你在访问所有 SwiftMailer 信息类的方法。</p>
+</blockquote>
+<p><strong>纯文本邮件</strong></p>
+<p>默认的，<code>send</code> 方法会假设传递到其中的视图包含了 HTML。但是，你可以传递一个数组到 <code>send</code> 方法的第一个参数，你指定一个纯文本视图来合并 HTML 视图：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Mail::send([<span class="string">'html.view'</span>, <span class="string">'text.view'</span>], $data, $callback);</div></pre></td></tr></table></figure>
+<p>或者你可以只传递一个纯文本的邮件，你需要指定数组的键为 <code>text</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Mail::send([<span class="string">'text'</span> =&gt; <span class="string">'view'</span>], $data, $callback);</div></pre></td></tr></table></figure>
+<p><strong>原始字符串邮件</strong></p>
+<p>你可以使用 <code>raw</code> 方法来直接发送原始字符串邮件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mail::raw(<span class="string">'Text to e-mail'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span></span>&#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h3><p>你可以使用传递到闭包中的 <code>$message</code> 对象的 <code>attach</code> 方法来在邮件中添加附件。<code>attach</code> 方法接收一个完整的文件路径作为第一个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mail::send(<span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  <span class="comment">//</span></div><div class="line"></div><div class="line">  $message-&gt;attach($pathToFile); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>当你添加一个邮件附件时，你可能也需要指定附件显示的名称或者 MIME type。你可以向 <code>attach</code> 方法传递一个数组作为第二个参数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$message-&gt;attach($pathToFile, [<span class="string">'as'</span> =&gt; $display, <span class="string">'mime'</span> =&gt; $mime]);</div></pre></td></tr></table></figure>
+<p><code>attachData</code> 方法可以用来添加一个原始字节字符串作为一个附件。比如，你可能需要使用这个方法来将内存中生成的 PDF 直接添加到附件中，而不需要先存储到磁盘：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$message-&gt;attachData($pdf, <span class="string">'invoice.pdf'</span>);</div><div class="line"></div><div class="line">$message-&gt;attachData($pdf, <span class="string">'invoice.pdf'</span>, [<span class="string">'mime'</span> =&gt; $mime]);</div></pre></td></tr></table></figure>
+<h3 id="内联附件"><a href="#内联附件" class="headerlink" title="内联附件"></a>内联附件</h3><p><strong>在邮件视图中嵌入一个图片</strong></p>
+<p>在邮件中内联一个图片通常是比较笨重的。但是，laravel 提供了一种便捷的方式在你的邮件中附加一个图片并且取回适当的 CID。你需要在邮件视图中使用 <code>$message</code> 变量的 <code>embed</code> 方法。你应该记得，Laravel 会自动的创建一个 <code>$message</code> 变量并将其传递到你的邮件视图中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  Here is an image:</div><div class="line"></div><div class="line">  &lt;img src=<span class="string">"&lt;?php echo $message-&gt;embed($pathToFile); ?&gt;"</span></div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure>
+<p><strong>嵌入原始数据到视图</strong></p>
+<p>如果你希望嵌入一个原始数据到邮件信息中，你可以使用 <code>$message</code> 变量的 <code>embedData</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  Here is an image from raw data:</div><div class="line"></div><div class="line">  &lt;img src=<span class="string">"&lt;?php echo $message-&gt;embedData($data, $name); ?&gt;"</span></div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure>
+<h3 id="邮件队列"><a href="#邮件队列" class="headerlink" title="邮件队列"></a>邮件队列</h3><p><strong>队列化邮件信息</strong></p>
+<p>由于发送邮件是非常消耗资源的一件事，这样会影响到应用的响应时间。所以很多开发者都选择使用队列来完成异步的邮件发送。Laravel 使用统一的队列接口来使这些非常简单。你需要使用 <code>Mail</code> 假面的 <code>queue</code> 方法来使邮件队列化：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mail::queue(<span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>该方法会自动的在队列添加发送邮件的任务，该任务会在后台自动的执行。当然，你需要先配置好队列。</p>
+<p><strong>延迟消息队列</strong></p>
+<p>如果你希望延迟执行邮件的发送队列。你需要使用 <code>later</code> 方法。你需要在方法的第一个参数传送一个你希望延迟执行的秒数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mail::later(<span class="number">5</span>, <span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  <span class="comment">//</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>添加到指定的队列</strong></p>
+<p>如果你希望添加邮件任务到指定的队列，你需要使用 <code>queueOn</code> 和 <code>laterOn</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Mail::queueOn(<span class="string">'queue-name'</span>, <span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">Mail::laterOn(<span class="string">'queue-name'</span>, <span class="number">5</span>, <span class="string">'emails.welcome'</span>, $data, <span class="function"><span class="keyword">function</span> <span class="params">($message)</span> </span>&#123;</div><div class="line">  <span class="comment">// </span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="邮件-amp-本地开发"><a href="#邮件-amp-本地开发" class="headerlink" title="邮件 &amp; 本地开发"></a>邮件 &amp; 本地开发</h2><p>当开发一个发送邮件的服务时，你可能并不希望真实的去发送一个邮件。只需要模拟测试成功就可以了。laravel 提供了多种方式来禁用真实的邮件发送。</p>
+<p><strong>log 驱动</strong></p>
+<p>其中一个解决方案就是在本地开发时使用 <code>log</code> 邮件驱动。这个驱动会将所有的邮件信息写入到日志文件中。</p>
+<p><strong>通用的邮件</strong></p>
+<p>另外一个解决方案就是设置一个通用的邮件来接收所有的应用发出的邮件。这种方式，会使应用生成的所有邮件都发送到这个地址。你可以通过配置 <code>config/mail.php</code> 文件的 <code>to</code> 选项来进行设置：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">'to'</span> =&gt; [</div><div class="line">  <span class="string">'address'</span> =&gt; <span class="string">'dev@domain.com'</span>,</div><div class="line">  <span class="string">'name'</span> =&gt; <span class="string">'Dev Example'</span></div><div class="line">],</div></pre></td></tr></table></figure>
+<p><strong>mailtrap</strong></p>
+<p>最后，你也可以使用一些像 <a href="https://mailtrap.io/" target="_blank" rel="external">Mailtrap</a> 和 <code>smtp</code> 驱动的服务来发送你的邮件到一个虚拟邮箱，而且你也可以通过真实的邮件客户端进行查看。这可以使你看到真实的邮件在 Mailtrap 中的显示效果。</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>laravel 会在发送邮件之前触发事件。你应该注意的是，它是在邮件发送之前触发事件，而不是添加到队列时。你可以在 <code>EventServiceProvider</code> 中注册一个事件监听者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The event listener mappings for the application.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@var</span> array</span></div><div class="line"><span class="comment"> */</span></div><div class="line"> <span class="keyword">protected</span> $listen = [</div><div class="line">  <span class="string">'Illuminate\Mail\Events\MessageSending'</span> =&gt; [</div><div class="line">    <span class="string">'App\Listeners\LogSentMessage'</span>,</div><div class="line">  ],</div><div class="line"> ];</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/08/laravel-from-scratch-localization/" rel="next" title="laravel 基础教程 —— 本土化">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 本土化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/08/laravel-from-scratch-packages/" rel="prev" title="laravel 基础教程 —— 包开发">
+                laravel 基础教程 —— 包开发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#邮件"><span class="nav-number">1.</span> <span class="nav-text">邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#驱动先决条件"><span class="nav-number">1.1.1.</span> <span class="nav-text">驱动先决条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送邮件"><span class="nav-number">1.2.</span> <span class="nav-text">发送邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附件"><span class="nav-number">1.2.1.</span> <span class="nav-text">附件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内联附件"><span class="nav-number">1.2.2.</span> <span class="nav-text">内联附件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件队列"><span class="nav-number">1.2.3.</span> <span class="nav-text">邮件队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邮件-amp-本地开发"><span class="nav-number">1.3.</span> <span class="nav-text">邮件 & 本地开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件"><span class="nav-number">1.4.</span> <span class="nav-text">事件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php,laravel," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分页简介在其他框架中，分页通常是比较痛苦的。laravel 使其变的非常简单。laravel 可以根据当前页面快速的生成智能的范围链接，并且其生成的 HTML 是兼容 Bootstrap CSS framework 的。 基础用法对查询构建器结果进行分页这里有几种方式来对元素进行分页。而最简单的方式就是通过使用查询构造器或者 Eloquent 查询的 paginate 方法。paginate 方法">
+<meta name="keywords" content="php,laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="laravel 基础教程 —— 分页">
+<meta property="og:url" content="http://yoursite.com/2016/06/10/laravel-from-scratch-pagination/index.html">
+<meta property="og:site_name" content="Team.dearmadman.com">
+<meta property="og:description" content="分页简介在其他框架中，分页通常是比较痛苦的。laravel 使其变的非常简单。laravel 可以根据当前页面快速的生成智能的范围链接，并且其生成的 HTML 是兼容 Bootstrap CSS framework 的。 基础用法对查询构建器结果进行分页这里有几种方式来对元素进行分页。而最简单的方式就是通过使用查询构造器或者 Eloquent 查询的 paginate 方法。paginate 方法">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-13T15:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="laravel 基础教程 —— 分页">
+<meta name="twitter:description" content="分页简介在其他框架中，分页通常是比较痛苦的。laravel 使其变的非常简单。laravel 可以根据当前页面快速的生成智能的范围链接，并且其生成的 HTML 是兼容 Bootstrap CSS framework 的。 基础用法对查询构建器结果进行分页这里有几种方式来对元素进行分页。而最简单的方式就是通过使用查询构造器或者 Eloquent 查询的 paginate 方法。paginate 方法">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/10/laravel-from-scratch-pagination/"/>
+
+
+
+
+
+  <title>laravel 基础教程 —— 分页 | Team.dearmadman.com</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Team.dearmadman.com</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just do it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/10/laravel-from-scratch-pagination/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dearmadman">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Team.dearmadman.com">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">laravel 基础教程 —— 分页</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-10T09:25:56+08:00">
+                2016-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在其他框架中，分页通常是比较痛苦的。laravel 使其变的非常简单。laravel 可以根据当前页面快速的生成智能的范围链接，并且其生成的 HTML 是兼容 <a href="http://getbootstrap.com/" target="_blank" rel="external">Bootstrap CSS framework</a> 的。</p>
+<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><h3 id="对查询构建器结果进行分页"><a href="#对查询构建器结果进行分页" class="headerlink" title="对查询构建器结果进行分页"></a>对查询构建器结果进行分页</h3><p>这里有几种方式来对元素进行分页。而最简单的方式就是通过使用查询构造器或者 Eloquent 查询的 <code>paginate</code> 方法。<code>paginate</code> 方法会根据当前用户所访问的当前页面来自动的设置正确的位移和显示的范围。默认的，当前页面是通过 HTTP 请求的查询字符串 <code>?page</code> 来自动获取的。当然，laravel 会自动的检测到这个值，并且会自动的在生成的分页器的链接中插入合适的值。</p>
+<p>首先，让我们来看一下在查询中调用 <code>paginate</code> 方法。在这个例子中，你仅需要在 <code>paginate</code> 方法中传递每页所需要展示的数量。让我们来设置每页展示的数量为 <code>15</code> :</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">DB</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>\<span class="title">Controller</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line"><span class="comment">   * Show all of the users for the application.</span></div><div class="line"><span class="comment">   *</span></div><div class="line"><span class="comment">   * <span class="doctag">@return</span> Response</span></div><div class="line"><span class="comment">   */</span></div><div class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">     $users = DB::table(<span class="string">'users'</span>)-&gt;paginate(<span class="number">15</span>);</div><div class="line"></div><div class="line">     <span class="keyword">return</span> view(<span class="string">'user.index'</span>, [<span class="string">'users'</span> =&gt; $users]);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：目前，laravel 中使用 <code>groupBy</code> 语法不能正确的进行分页操作。如果你需要使用 <code>groupBy</code> 来对结果进行分页，推荐你手动的执行查询和进行分页。</p>
+</blockquote>
+<p><strong>简单的分页</strong></p>
+<p>如果你只需要简单的显示“上一页”和“下一页”链接，你可以选择使用 <code>simplePaginate</code> 方法来执行一个有效的查询。这对于一些大型的数据库在视图中不需要显示每一页的链接时非常有效：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user = DB::table(<span class="string">'users'</span>)-&gt;simplePaginate(<span class="number">15</span>);</div></pre></td></tr></table></figure>
+<p><strong>对 Eloquent 结果进行分页</strong></p>
+<p>你也可以对 Eloquent 查询的结果进行分页。我们来对 <code>User</code> 模型以每页显示 15 项的方式来进行分页。其语法和使用查询构造器进行分页非常像：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = App\User::paginate(<span class="number">15</span>);</div></pre></td></tr></table></figure>
+<p>当然，你也可以优先进行其他查询之后再进行分页操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$users = User::where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;paginate(<span class="number">15</span>);</div></pre></td></tr></table></figure>
+<p>你同样也可以在 Eloquent 模型分页时使用 <code>simplePaginate</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$user = User::where(<span class="string">'votes'</span>, <span class="string">'&gt;'</span>, <span class="number">100</span>)-&gt;simplePaginate(<span class="number">15</span>);</div></pre></td></tr></table></figure>
+<h3 id="手动的创建分页器"><a href="#手动的创建分页器" class="headerlink" title="手动的创建分页器"></a>手动的创建分页器</h3><p>有时候你可能需要手动的创建一个分页实例，它传递项目的数组。你可以创建 <code>Illuminate\Pagination\Paginator</code> 或者 <code>Illuminate\Pagination\LengthAwarePaginator</code> 实例，这取决于你的需求。</p>
+<p><code>Paginator</code> 类不需要知道结果中项目的总数量。事实上，正是因为这样，这个类并没有提供获取最后一页的方法。<code>LengthAwarePaginator</code> 类似于 <code>Paginator</code> 接收几乎同样的参数。但是，它需要在结果中包含项目的总数目。</p>
+<p>另一方面，<code>Paginator</code> 对应查询构造器和 Eloquent 中的 <code>simplePaginate</code> 方法。而 <code>LengthAwarePaginator</code> 对应 <code>paginate</code> 方法。</p>
+<p>当手动的创建分页器实例时，你应该手动的对传递到分页器中的结果进行切片操作，如果你并不明白如何去进行分片，请查看 PHP 的 <a href="http://php.net/manual/en/function.array-slice.php" target="_blank" rel="external">array_slice</a> 方法。</p>
+<h2 id="在视图中显示结果"><a href="#在视图中显示结果" class="headerlink" title="在视图中显示结果"></a>在视图中显示结果</h2><p>当你对查询构造器或者 Eloquent 查询使用 <code>paginate</code> 或者 <code>simplePaginate</code> 方法时，你可以获取到分页器的实例。当调用 <code>paginate</code> 方法时，你会获取到一个 <code>Illuminate\Pagination\LengthAwarePaginator</code> 实例，当调用 <code>simplePaginate</code> 方法时，你会获得一个 <code>Illuminate\Pagination\Paginator</code> 的实例。这些对象会提供多种方法来描述结果集。除了这些帮助方法，分页器本身也是一个迭代器，它可以像数组一样被循环操作。</p>
+<p>所以，一旦你获取到了分页结果，你可以像这样在 Blade 视图中来显示和生成分页链接：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;div class="container"&gt;</div><div class="line">  @<span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user)</div><div class="line">    &#123;&#123; $user-&gt;name &#125;&#125;</div><div class="line">  @<span class="keyword">endforeach</span></div><div class="line">&lt;/div&gt;</div><div class="line"></div><div class="line">&#123;&#123; $users-&gt;links() &#125;&#125;</div></pre></td></tr></table></figure>
+<p><code>links</code> 方法会根据结果集来生成分页结果。对每一个链接都会自动包含 <code>?page</code> 查询变量。使用 <code>links</code> 方法生成的 HTML 是兼容 Bootstrap CSS 框架的。</p>
+<p><strong>自定义分页器 URL</strong></p>
+<p><code>setPath</code> 方法允许你对分页器生成的链接的 URI 进行定制化。比如，你希望分页器生成类似于 <code>http://example.com/custom/url?page=N</code>，你可以传递 <code>custom/url</code> 到 <code>setPath</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  $users = App\User::paginate(<span class="number">15</span>);</div><div class="line"></div><div class="line">  $users-&gt;setPath(<span class="string">'custom/url'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>追加查询字符串到分页器链接</strong></p>
+<p>你可以通过使用 <code>appends</code> 方法来添加查询字符串到分页器链接中。比如，在分页器链接中追加 <code>&amp;sort=votes</code> 查询字符串。你可以像下面一样调用 <code>appends</code> 方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; $users-&gt;appends([<span class="string">'sort'</span> =&gt; <span class="string">'votes'</span>])-&gt;links() &#125;&#125;</div></pre></td></tr></table></figure>
+<p>如果你需要在分页器的 URLs 中添加一个 hash 分段，你可以使用 <code>fragment</code> 方法。比如，在分页链接中添加 <code>#foo</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; $users-&gt;fragment(<span class="string">'foo'</span>)-&gt;links() &#125;&#125;</div></pre></td></tr></table></figure>
+<p><strong>其他帮助方法</strong></p>
+<p>你可以调用分页器实例的下面的方法来访问额外的分页器信息：</p>
+<ul>
+<li><code>$results-&gt;count()</code></li>
+<li><code>$results-&gt;currentPage()</code></li>
+<li><code>$results-&gt;firstItem()</code></li>
+<li><code>$results-&gt;hasMorePages()</code></li>
+<li><code>$results-&gt;lastItem() (Not avaliable when using simplePaginate)</code></li>
+<li><code>$results-&gt;nextPageUrl()</code></li>
+<li><code>$results-&gt;perPage()</code></li>
+<li><code>$results-&gt;previousPageUrl()</code></li>
+<li><code>$results-&gt;total() (Not available when using simplePaginate)</code></li>
+<li><code>$results-&gt;url($page)</code></li>
+</ul>
+<h2 id="转换结果为-JSON"><a href="#转换结果为-JSON" class="headerlink" title="转换结果为 JSON"></a>转换结果为 JSON</h2><p>laravel 的分页器类实现了 <code>Illuminate\Contracts\Support\JsonableInterface</code> 契约并且暴露了 <code>toJson</code> 方法，所以它可以非常简单的将分页结果转换为 JSON 格式。</p>
+<p>你也可以在路由或者控制器动作中简单的返回分页器实例来进行 JSON 格式的响应：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Route::get(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> App\User::paginate(); </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>分页器的 JSON 信息会包含许多的元数据，比如 <code>total</code>，<code>current_page</code>，<code>last_page</code> 等等。而实际的结果对象集会保存在 JSON 数组的 <code>data</code> 键中。下面是一个从路由中返回分页器实例的响应示例：</p>
+<p><strong>分页器 JSON 示例</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">   <span class="string">"total"</span>: <span class="number">50</span>,</div><div class="line">   <span class="string">"per_page"</span>: <span class="number">15</span>,</div><div class="line">   <span class="string">"current_page"</span>: <span class="number">1</span>,</div><div class="line">   <span class="string">"last_page"</span>: <span class="number">4</span>,</div><div class="line">   <span class="string">"next_page_url"</span>: <span class="string">"http://laravel.app?page=2"</span>,</div><div class="line">   <span class="string">"prev_page_url"</span>: <span class="keyword">null</span>,</div><div class="line">   <span class="string">"from"</span>: <span class="number">1</span>,</div><div class="line">   <span class="string">"to"</span>: <span class="number">15</span>,</div><div class="line">   <span class="string">"data"</span>:[</div><div class="line">        &#123;</div><div class="line">            <span class="comment">// Result Object</span></div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            <span class="comment">// Result Object</span></div><div class="line">        &#125;</div><div class="line">   ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/08/laravel-from-scratch-packages/" rel="next" title="laravel 基础教程 —— 包开发">
+                <i class="fa fa-chevron-left"></i> laravel 基础教程 —— 包开发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/10/laravel-from-scratch-queues/" rel="prev" title="laravel 基础教程 —— 队列">
+                laravel 基础教程 —— 队列 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dearmadman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分页"><span class="nav-number">1.</span> <span class="nav-text">分页</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础用法"><span class="nav-number">1.2.</span> <span class="nav-text">基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对查询构建器结果进行分页"><span class="nav-number">1.2.1.</span> <span class="nav-text">对查询构建器结果进行分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动的创建分页器"><span class="nav-number">1.2.2.</span> <span class="nav-text">手动的创建分页器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在视图中显示结果"><span class="nav-number">1.3.</span> <span class="nav-text">在视图中显示结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换结果为-JSON"><span class="nav-number">1.4.</span> <span class="nav-text">转换结果为 JSON</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dearmadman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
